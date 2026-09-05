@@ -1,6 +1,6 @@
 # Intake: signal-current-v1-spec
 
-**Status**: DRAFT
+**Status**: APPROVED
 
 **Date**: 2026-09-05
 **Author**: Vane (drafted for Danny's review/approval — not self-approved)
