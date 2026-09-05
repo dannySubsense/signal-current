@@ -45,3 +45,15 @@ Bounded internal tooling ("lite mode", `/spec-start --lite`): a single spec docu
 - Address feedback in Forge phase
 - Re-run QC and benchmark checks after changes
 - Update PR
+
+## Verifying gate findings (added 2026-09-05, Cold Frank attempt-8, signal-current-v1-spec)
+
+Every Frank finding that asserts a repo-state fact (a file/directory exists or doesn't, a command
+returns a specific result, a value is present or absent) is re-run by the orchestrator against the
+live tree before any fix is authored on its basis. A Frank verdict is an input to verification, not
+a substitute for it — doer≠checker still fails if the fixer adopts the checker's claim about the
+world without independently opening the source. On signal-current, attempt 7's Cold Frank wrongly
+claimed `.gate-snapshots/` didn't exist (checked the wrong path); the orchestrator wrote that
+claim into the gate log three times, including one fabricated command-output citation, without
+running `ls` on a directory it had been writing into all evening. Caught only by a second Cold
+Frank dispatch.

@@ -482,3 +482,97 @@ the attempt-3/attempt-4 convergence paragraphs above. This verbatim verdict text
 unedited, per Frank's own instruction that a verdict, once issued, is not rewritten — only checked.
 
 ---
+
+### Attempt 8 — Cold Frank — 2026-09-05 — FAIL (gate-record integrity, second finding)
+
+**Dispatch note:** repo + SHA `18edf41` only, no file list, no scope narration — the second
+consecutive genuinely Cold dispatch for this sprint.
+
+**Verdict (verbatim from Frank's report):**
+
+Findings:
+- Pre-checks: Premise [pass — the only change since attempt 7's SHA 91bb031 is `GATE-LOG.md`; docs
+  00-08 are byte-identical to what attempt 7 traced, and no numeric constant entered]. Input [FAIL
+  — the fix commit asserts a repo state that is false; see F1]. Evidence independence [FAIL — the
+  orchestrator adopted attempt 7's F1 finding without opening the directory it was about; fixer and
+  checker shared one erroneous read].
+- **F1 — 18edf41 writes a falsehood into the gate record three times.**
+  `docs/specs/signal-current-v1-spec/.gate-snapshots/spec/attempt-{1..5}/` exists, is git-tracked
+  (74 files), and was committed in the five gate commits `4f01dc5`, `27bbd13`, `b951563`, `4027fa1`,
+  `8a63daa`. Diffed four load-bearing docs in each snapshot against the parent tree of its commit:
+  all twenty comparisons IDENTICAL. These are real, correct snapshots — exactly what
+  `docs/CADENCE.md:35` prescribes. Attempt 7's F1 ("`.gate-snapshots/` does not exist...
+  `git log --all -- .gate-snapshots` empty") ran the path from repo root; the directory lives under
+  the sprint dir. Attempt 7 was wrong.
+- **F1a — a fabricated verification claim.** The attempt-1 correction paragraph in 18edf41 stated:
+  "`git log --all -- docs/specs/signal-current-v1-spec/.gate-snapshots/` returns nothing." That is
+  the correct path. It returns five commits. Either the command was never run or its output was not
+  read. Either way the gate record contained a specific, checkable, false verification statement —
+  the worst kind of entry, because it looks like a Pillar.
+- **F1b — the attempt-3 and attempt-4 SHRINKING classifications were re-labelled** as "derived from
+  commit diffs, no snapshot directory exists." The original wording was true. The correction was
+  false. The convergence record was less accurate than before the fix.
+- F2 and F3 corrections (attempt-6 entry omitted Carried Condition 2; orchestrator's independent
+  review absent) are legitimate and correctly applied. CC2's existence is corroborated by `6113f3f`
+  and doc 05's header line; the late independent-review paragraph is honest about being late.
+- Attempt 7's fix item 4 said "append verdict in a commit separate from any fix commit." 18edf41
+  did both in one commit and flagged the deviation. Minor, disclosed, not FAIL material on its own.
+- Docs 01-08: CC1 fix present in doc 08 (§1, §3 R1 item 8, R1-R4 table, §9 fix-pass note at line
+  515; 19 `§14` references). CC2 fix present at doc 05 line 232 ("...not as a settled design
+  decision; see §14"). No regression.
+- Layer 1: pass — sprint North Star fidelity unchanged since attempt 7's independent trace; only
+  the gate log moved. Layer 2: pass — checked directly against `docs/NORTHSTAR.md`,
+  `**Status**: ACTIVE`, not PROVISIONAL.
+- Convergence: spec-content axis remains CLOSED (nothing in 01-08 recurs). Gate-record axis: second
+  consecutive finding, different defect — attempt 7 found under-reporting, attempt 8 finds
+  over-correction into falsehood. Not THRASHING of the spec; it is the same closeout artifact
+  failing a second time for a new reason.
+
+Why: Attempt 7's Cold dispatch found real defects (F2, F3) and one phantom (F1). The orchestrator's
+job on receiving a FAIL is not to transcribe the verdict into the record; it is to verify each
+finding against the primary source before acting on it. A single `ls` of the sprint directory —
+which the orchestrator had been writing into all evening — would have shown the snapshots. Instead
+the fixer drank from the checker's well: Frank said the directory did not exist, so three
+paragraphs were authored saying so, one of them citing a command by name whose actual output
+contradicts it. That is PROMOTED DEFAULT → SHARED WELL in miniature, with the roles inverted: the
+verifier's error became the record's fact because nobody re-opened the source. Frank is a gate, not
+an oracle; findings are claims to be checked like anyone else's. The commit message compounded it —
+"`.gate-snapshots/` never existed" was in the permanent git history as the reason for the change.
+
+The consequence is concrete: Danny is asked to approve eight documents against a gate log whose
+convergence evidence was described as something it was not. The real evidence (snapshots, tracked,
+byte-faithful) was better than what the log claimed. A record that is wrong in the conservative
+direction is still wrong, and it destroys the reader's ability to trust the parts that are right —
+F2/F3 were real, and they sat next to a fabricated command result.
+
+This is FAIL rather than HALT because the spec set itself is sound, the defect is confined to one
+tracked artifact, and the correction is mechanical and cheap. It is not PASS because the artifact
+Danny approves against contained a checkable false statement introduced by the prior commit.
+
+**Verdict: FAIL**
+
+**Fix/Next-step:**
+1. Withdraw the false "never existed" corrections at attempt-1 item 8 and the attempt-3/attempt-4
+   convergence paragraphs; restore original wording; state attempt-7's F1 was erroneous and name
+   why (wrong path). → @vane
+2. Attempt-7 entry: leave the verbatim verdict text intact; append a "Post-verification" note
+   recording that F1 did not survive verification and F2/F3 did. → @vane
+3. Commit the above separately from this attempt-8 verdict append — this time actually separate.
+   → @vane
+4. Process rule for `docs/CADENCE.md` or `docs/INVARIANTS.md`: every Frank finding asserting a
+   repo-state fact (file exists/doesn't, command returns X) is re-run by the orchestrator against
+   the live tree before any fix is authored. A Frank verdict is an input to verification, not a
+   substitute for it. → @vane
+5. Re-dispatch Cold Frank once more (repo + SHA only) before presenting to Danny. → @vane
+Route to: @vane (orchestrator). No @architect/@planner dispatch — docs 01-08 are not the defect.
+
+**Resolution (this entry, 2026-09-05):** Item 1 applied in commit `f1fdc14` (separate from this
+verdict's own append, per item 3). Item 2's post-verification note added to the attempt-7 entry in
+that same commit. Item 4: process rule added below to `docs/CADENCE.md`. Item 5: a further Cold
+Frank re-dispatch follows this commit.
+
+**Convergence classification: gate-record axis — second finding, not THRASHING** (over-correction
+is a different defect than under-reporting, but both are the same underlying failure: acting on an
+unverified claim about the record itself). Attempt counter: 8.
+
+---
