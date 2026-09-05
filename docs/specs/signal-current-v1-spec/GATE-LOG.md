@@ -177,3 +177,65 @@ already carries this record.
 
 Attempt counter: 3 of 3 nominal (uncapped per Danny's ruling — continuing past this rather than
 halting; SHRINKING classification independently supports continuing rather than escalating).
+
+### Attempt 4 — 2026-09-05 — FAIL (SHRINKING, terminal notch named by Frank)
+
+**Layer 1: PASS** (re-verified, nothing regressed). **Layer 2: FAIL**, narrowly.
+
+Attempt 3's F1 and F2 both **CLOSED substantively**: `reproducedBy` now has the same derivation
+rule as `originalAuthor` (self-supplied identity mechanically impossible at the
+`IndependentReproductionRecord` layer); `orchestrationSessionId` required for agent actors,
+vocabulary reconciled between docs 04/07. No stale cross-references from the §5 restructure
+(verified: every "§5 item N" hit elsewhere in the repo is a Constitution §5 citation, not doc 04's).
+
+**New-notch F1 (terminal residue of the F1 line):** the derivation chain now bottoms out at
+`AuditLineageEvent.actor`, but no document states who populates `actor` on the event or that a
+caller-supplied `actor` in any typed tool call is malformed. The set already has this exact pattern
+solved for the lockbox (02 §4.1: "the gateway itself performs the check — not caller-side
+discipline") — the actor field, which the project's one falsifiable claim rides on, has no
+equivalent sentence.
+
+**New-notch F2 (terminal residue of the F2 line):** session-initiation authority is unspecified.
+Doc 04 says sessions are assigned "at session start"; doc 07 says runs "within one session" share
+an ID — implicitly permitting one orchestrator to span multiple sessions. Nothing stops an
+orchestrator from requesting a fresh session between driving the validator and the reproducer,
+satisfying distinctness on paper while remaining one well in fact.
+
+**Overreach flagged:** 05 §2.1 item 3 now claims the derivation rule "structurally rules out a
+rubber-stamp entry" — true only once F1 above closes; a claim ahead of its mechanism, same failure
+shape as attempt 1's "zero remaining occurrences" overreach.
+
+**Convergence classification: SHRINKING**, re-derived from all 4 snapshot diffs. Frank explicitly
+named this the terminal notch: the next layer down is authentication itself (which identity
+provider, which token mechanism) — already correctly PROVISIONAL under U-12, owner Danny. The spec
+cannot and should not pick the auth product; it must only (a) name the enforcement point for the
+actor field, the way it already does for the lockbox, and (b) fence session-minting so an agent
+cannot manufacture its own distinctness. Frank's own stated stopping condition: if attempt 5 closes
+these two sentences, the gap is closed to its legitimate PROVISIONAL boundary. If attempt 5
+surfaces yet another notch on the same line instead, reclassify STATIC and escalate to Danny — that
+would mean the architect can't see the enforcement-point pattern the set already uses for the
+lockbox, a briefing problem, not a spec problem.
+
+**Fix routing (all to @architect, docs 04/05/07, plus a new PROVISIONAL row in 04/06/08):**
+1. 04 §5.4: name the enforcement point — the component recording any AuditLineageEvent (Simulation
+   Engine, Validation Service, Data Access Gateway, Audit/Event Log) MUST populate actor from the
+   authenticated caller principal; actor is never a parameter of any typed tool call/API; a call
+   supplying one is malformed/rejected. Mirror 02 §4.1's wording.
+2. 04 §8 (or 06 §16 / 08 §3 U-12 widened in place): new PROVISIONAL row, owner Danny — "exact
+   mechanism verifying AuditActor.actorId and minting/verifying orchestrationSessionId" — resolved
+   in the same auth/authz design pass as U-12. This is the terminal boundary; below it the spec
+   legitimately stops.
+3. 04 §5.4 and 07 §3.1 item 3/§3.2: state session-initiation authority — a session is initiated
+   only by a human principal, recorded as an AuditLineageEvent whose actor is that human; an agent
+   run (including any orchestrator role) cannot initiate a session; every run spawned within a
+   session inherits its ID, no nested minting. Fix 07's "within one session" phrasing so it no
+   longer implies one orchestrator can legitimately span several.
+4. 05 §2.1 item 2: when either actor is an agent, check the session-initiation event's human
+   actorId for distinctness, not just orchestrationSessionId inequality.
+5. 05 §2.1 item 3: rescope the overreach — state what the rule does rule out (a reproducedBy with
+   no production event behind it) and what it defers (actor authenticity, to the new PROVISIONAL
+   item).
+6. 05 §13 and 07 §11: re-run after 1-5, rewrite.
+
+Attempt counter: 4, uncapped, continuing. Orchestrator instruction from Frank: hold attempt 5 to
+this stated terminal condition; reclassify STATIC and escalate to Danny if it doesn't hold.
