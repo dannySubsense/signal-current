@@ -26,7 +26,7 @@ the now-further-amended documents 02/04/07. **HALT-flagged, not blocking:** whet
 the same human principal should, by themselves, count as non-distinct for row 59's purposes is a genuine
 open question about what "distinct" means at the human level (a legitimately different validator and
 reproducer could share one human-operated account) — flagged to Danny in this pass rather than silently
-resolved; see §2.1 item 2's closing note. @architect, 2026-09-05, per Frank's spec-gate attempt-5 fixes 3/5 — added a sentence to §2.1 stating an `IndependentReproductionRecord` cannot satisfy the gate until document 06 §16's widened U-12 item's actor/session-verification sub-items resolve, mirroring the match-tolerance item's existing treatment; added a real §14 table row for the human-actorId-distinctness judgment call §2.1 item 2 raises (previously an orphaned §13 cross-reference); added `08-implementation-roadmap.md` to §13's consistency-check list and re-ran that check against document 08 §3's Phase R1 sequencing.
+resolved; see §2.1 item 2's closing note. @architect, 2026-09-05, per Frank's spec-gate attempt-5 fixes 3/5 — added a sentence to §2.1 stating an `IndependentReproductionRecord` cannot satisfy the gate until document 06 §16's widened U-12 item's actor/session-verification sub-items resolve, mirroring the match-tolerance item's existing treatment; added a real §14 table row for the human-actorId-distinctness judgment call §2.1 item 2 raises (previously an orphaned §13 cross-reference); added `08-implementation-roadmap.md` to §13's consistency-check list and re-ran that check against document 08 §3's Phase R1 sequencing. @architect, 2026-09-05, per Frank's spec-gate attempt-6 Carried Condition 2 — added a "see §14" cross-reference to §2.1 item 2's closing note, so the sentence that raises the human-actorId-distinctness judgment call now points directly at the §14 table row tracking it, instead of that pointer existing only in this header line and in §13.
 
 **Primary question this document answers:** What evidence is required before promotion, and how is
 self-deception constrained?
@@ -229,7 +229,7 @@ not merely a different string, and not merely a different role label. Concretely
    widened U-12 item (cross-referenced from document 04 §8 and document 07 §12) already defers. Until U-12
    resolves, this document adopts the stricter reading above (same human `actorId` never satisfies
    distinctness when either side is an agent) as the safer default, and flags it to Danny as requiring
-   confirmation once U-12's identity model is chosen — not as a settled design decision.
+   confirmation once U-12's identity model is chosen — not as a settled design decision; see §14.
 3. A human actor and an agent actor are always distinct, subject to items 1-2 still applying if the
    "human" side is itself a human merely rubber-stamping the same agent session's own output without
    independently driving a separate `orchestrationSessionId`'s reproduction run. With `reproducedBy`'s
