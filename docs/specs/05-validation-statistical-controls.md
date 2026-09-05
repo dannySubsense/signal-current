@@ -17,7 +17,16 @@ now-amended documents 02/04. @architect, 2026-09-05, per Frank's spec-gate attem
 added the missing `reproducedBy` derivation sentence and tightened `originalAuthor`'s wording to match
 (§2), tightened §2.1 item 3's human-rubber-stamp clause now that derivation is mechanical, re-ran the §13
 consistency check against the now-further-amended documents 02/04/07, and moved gate-narration language out
-of body text/doc-comments into this header line.
+of body text/doc-comments into this header line. @architect, 2026-09-05, per Frank's spec-gate attempt-4 findings F1 (overreach)/fix items
+4/5 — §2.1 item 2 now also checks the session-initiation event's human `actorId` for distinctness when either
+actor is an agent, not `orchestrationSessionId` inequality alone (document 04 §5.4's session-initiation-
+authority rule makes this checkable); §2.1 item 3 is rescoped to state precisely what the derivation rule
+rules out versus what it still defers to document 06 §16's widened U-12 PROVISIONAL item; re-ran §13 against
+the now-further-amended documents 02/04/07. **HALT-flagged, not blocking:** whether two sessions initiated by
+the same human principal should, by themselves, count as non-distinct for row 59's purposes is a genuine
+open question about what "distinct" means at the human level (a legitimately different validator and
+reproducer could share one human-operated account) — flagged to Danny in this pass rather than silently
+resolved; see §2.1 item 2's closing note.
 
 **Primary question this document answers:** What evidence is required before promotion, and how is
 self-deception constrained?
@@ -195,18 +204,53 @@ not merely a different string, and not merely a different role label. Concretely
    orchestrator, one session = one well" loophole: role-name inequality is not identity
    inequality, and the promotion gate MUST check `orchestrationSessionId`, not role labels, when either
    actor is `actorType: 'agent'`.
+
+   **Extended check (Frank spec-gate attempt-4 fix 4):** `orchestrationSessionId` inequality alone is
+   necessary but not sufficient. Per document 04 §5.4's session-initiation-authority rule, every
+   `orchestrationSessionId` traces back to exactly one session-initiation `AuditLineageEvent` whose `actor`
+   is the human principal who started it. When either `originalAuthor` or `reproducedBy` resolves to an
+   `AuditActor` with `actorType: 'agent'`, the promotion gate MUST also resolve each side's session-initiation
+   event and compare the human `actorId` on each — not merely the `orchestrationSessionId`s themselves. Two
+   distinct `orchestrationSessionId`s initiated by the same human `actorId` do NOT, by themselves, satisfy
+   this item; this is what actually closes the residual "one orchestrator quietly spans two sessions"
+   loophole a fresh-session-per-role pattern would otherwise leave open, since fresh sessions alone no longer
+   suffice.
+
+   **Flagged open question, not silently resolved (per this pass's explicit instruction):** whether this is
+   the right disposition is a genuine judgment call this document does not have standing to settle
+   unilaterally. Requiring distinct human initiators could produce a false positive against a legitimate
+   configuration — e.g., two different individual validators who each independently drive a reproduction
+   under one team's shared human-operated service account, which is a real distinct-identity case at the
+   level Matrix row 59 actually cares about ("someone other than the original author"), even though both
+   sessions trace to the same `actorId`. This document does not pick between "same human `actorId`
+   disqualifies" and "same `actorId` is fine if the underlying operator is provably different" — that choice
+   depends on how `AuditActor.actorId` for humans is actually assigned (one `actorId` per natural person vs.
+   per shared account), which is exactly the identity-provider/token-mechanism question document 06 §16's
+   widened U-12 item (cross-referenced from document 04 §8 and document 07 §12) already defers. Until U-12
+   resolves, this document adopts the stricter reading above (same human `actorId` never satisfies
+   distinctness when either side is an agent) as the safer default, and flags it to Danny as requiring
+   confirmation once U-12's identity model is chosen — not as a settled design decision.
 3. A human actor and an agent actor are always distinct, subject to items 1-2 still applying if the
    "human" side is itself a human merely rubber-stamping the same agent session's own output without
    independently driving a separate `orchestrationSessionId`'s reproduction run. With `reproducedBy`'s
    derivation now mechanical (§2 above), a human-authorization entry recorded as `reproducedBy` must
    itself be a real `AuditActor.actorId` resolved the same way — from the `AuditLineageEvent` that
-   actually recorded production of the reproduction's own `SimulationRun`/`ValidationArtifact` — which
-   structurally rules out a rubber-stamp entry with no corresponding production event behind it. This
-   does not eliminate every residual risk: a human reviewer can still choose to authorize a reproduction
-   run without meaningfully scrutinizing its output before recording it, and no schema field can compel
-   genuine scrutiny. That residual is a process question for how lockbox/reproduction requests are
-   authorized (§11.1), not something this field alone can fully police, and reviewers must treat it as
-   such.
+   actually recorded production of the reproduction's own `SimulationRun`/`ValidationArtifact`.
+
+   **Rescoped precisely (Frank spec-gate attempt-4 fix 5 — attempt-3's wording overreached, claiming this
+   rule "structurally rules out a rubber-stamp entry" outright; that was true only once document 04 §5.4's
+   `actor`-enforcement point existed, which it did not until this fix pass):** what this derivation rule now
+   mechanically rules out is a `reproducedBy` (or `originalAuthor`) value with no actual production event
+   behind it at all — a bare free-text name or a self-reported identity with nothing in the Audit/Event Log
+   to back it. That is enforced now that document 04 §5.4 names the recording component as the sole
+   populator of `actor` and states that a caller-supplied `actor` is malformed and rejected. What this rule
+   still defers, and does not claim to close, is authenticity at the identity-provider level: whether the
+   authenticated caller principal document 04 §5.4 refers to is really who it claims to be, and whether a
+   human reviewer's authorization was backed by genuine scrutiny of the reproduction's output before
+   recording it. Both of those are deferred to document 06 §16's widened U-12 PROVISIONAL item (cross-
+   referenced from document 04 §8 and document 07 §12) and, for the scrutiny question specifically, remain a
+   process question for how lockbox/reproduction requests are authorized (§11.1) that no schema field can
+   fully police.
 
 **Lockbox confirmation:** if the original validation this record
 reproduces included Sealed Lockbox confirmation (§11), the independent rerun MUST also include lockbox
@@ -601,15 +645,17 @@ above:
 
 ## 13. Consistency check against Constitution, Architecture, Research Methodology, Data Architecture, and Agent & Orchestration Layer
 
-**Re-run 2026-09-05** — the prior version of this section predated documents 02 §3.1/§3.2/§5, 04 §5.4,
-and 07 §3.1/§3.2's further amendments (this fix pass) and was stale. This document was re-checked for
-contradiction against the current text of `01-constitution.md`, `02-system-architecture.md` (as amended by
-this fix pass), `03-research-methodology.md`, `04-data-architecture-strategy-ir.md` (as amended by this fix
-pass), and `07-agent-orchestration-layer.md` (as amended by this fix pass), in full. No conflict was found:
-every clause above elaborates a boundary or contract those five documents already establish (Constitution
-§5, §4, §9, §3 item 7; Architecture §3, §4, §5, §11; Research Methodology §9; Data Architecture §2.4, §3,
-§5, §5.4; Agent & Orchestration §3.1, §3.2, §11) at the validation-decision level, without contradicting or
-silently re-deciding any of their fixed clauses. In particular:
+**Re-run 2026-09-05, Frank spec-gate attempt-4 fix 6** — the prior version of this section predated documents
+04 §5.4's enforcement-point/session-initiation-authority paragraphs and 07 §3.1/§3.2/§12's matching amendments
+(this fix pass) and was stale. This document was re-checked for contradiction against the current text of
+`01-constitution.md`, `02-system-architecture.md`, `03-research-methodology.md`,
+`04-data-architecture-strategy-ir.md` (as amended by this fix pass), `06-portfolio-deployment-monitoring.md`
+§16 (as amended by this fix pass), and `07-agent-orchestration-layer.md` (as amended by this fix pass), in
+full. No conflict was found: every clause above elaborates a boundary or contract those six documents already
+establish (Constitution §5, §4, §9, §3 item 7; Architecture §3, §4, §5, §11; Research Methodology §9; Data
+Architecture §2.4, §3, §5, §5.4; Portfolio/Deployment §16; Agent & Orchestration §3.1, §3.2, §11, §12) at the
+validation-decision level, without contradicting or silently re-deciding any of their fixed clauses. In
+particular:
 
 - this document does not re-decide the Exploration/Validation/Lockbox zone mechanism itself (Architecture
   §4 already fixes the Data Access Gateway as the sole enforcement point) — it specifies the request/audit
@@ -620,23 +666,29 @@ silently re-deciding any of their fixed clauses. In particular:
 - this document does not re-decide search-budget/hypothesis-lineage recording mechanics (Research
   Methodology §9) — it consumes that bookkeeping as an input to `MultipleTestingDecision.trialContext`
   (§6);
-- this document's §2 `originalAuthor`/`reproducedBy` derivation sentences (this fix pass) now name the
-  exact `AuditLineageEvent` each field is resolved from — the event recording production of the original
-  `SimulationRun`/`ValidationArtifact`, and the event recording production of the reproduction's own
-  `SimulationRun`/`ValidationArtifact`, respectively — which is consistent with, and consumes without
-  re-deciding, document 04 §5.4's `AuditLineageEvent.artifactRefs` field and its statement (also amended
-  this fix pass) that the Validation Service, not the caller, derives both actor fields;
-- this document's §2.1 item 2 "distinct identity" rule for agent actors is now consistent with document 04
-  §5.4's `orchestrationSessionId` being required (not optional) when `actorType === 'agent'`, and with
-  document 07 §3.1 item 3/§3.2's reconciling statement that every agent run carries the
-  `orchestrationSessionId` of the session that spawned it — this section consumes both as the mechanism by
-  which agent-actor distinctness is checked, it does not invent a second identity model, and the "two agent
-  roles, one orchestrator, one session" loophole closed at §2.1 item 2 is now closed at its source (document
-  07) as well as consumed here;
-- §2.1 item 3's human-rubber-stamp clause (tightened this fix pass) is consistent with document 04 §5.4's
-  actor-derivation rule: a human authorization recorded as `reproducedBy` must resolve to a real
-  `AuditActor.actorId` from the event that actually produced the reproduction, the same mechanical
-  derivation §2 now states for every `reproducedBy` value, agent or human.
+- this document's §2 `originalAuthor`/`reproducedBy` derivation sentences name the exact `AuditLineageEvent`
+  each field is resolved from, consistent with document 04 §5.4's `AuditLineageEvent.artifactRefs` field and
+  its statement that the Validation Service, not the caller, derives both actor fields — this section does
+  not restate or duplicate document 04 §5.4's newly-added `actor`-enforcement-point sentence (Frank spec-gate
+  attempt-4 fix 1), it simply consumes the fact that `actor` is never caller-supplied, which is what makes
+  the derivation sentences here meaningful rather than aspirational;
+- this document's §2.1 item 2 "distinct identity" rule for agent actors is consistent with document 04
+  §5.4's `orchestrationSessionId` being required when `actorType === 'agent'` and with its newly-added
+  session-initiation-authority paragraph (a session is initiated only by a human, recorded as its own
+  `AuditLineageEvent`), and with document 07 §3.1 item 3/§3.2's matching restatement that a single continuous
+  orchestration necessarily stays within the one session a human initiated it under — this section's
+  extended check (comparing the session-initiation event's human `actorId`, not `orchestrationSessionId`
+  alone) is the mechanism that actually depends on document 04's session-initiation-authority rule existing;
+  before this fix pass, that rule did not exist in document 04, so this section's item 2 previously rested on
+  an unstated assumption, now closed at its source;
+- §2.1 item 3 is now rescoped (Frank spec-gate attempt-4 fix 5) to state precisely what the derivation rule
+  rules out (a `reproducedBy`/`originalAuthor` with no production event behind it, mechanically enforced now
+  that document 04 §5.4 names the enforcement point) versus what it defers (actor/session authenticity at the
+  identity-provider level, to document 06 §16's widened U-12 item) — this matches, rather than overreaches
+  beyond, what document 04 §5.4 and document 06 §16 actually establish;
+- this document's new PROVISIONAL cross-reference (§2.1 item 2's flagged open question, pointing to document
+  06 §16's widened U-12 item) is consistent with, and does not duplicate, the identical cross-references
+  added this fix pass to document 04 §8 and document 07 §12 — all three name the same resolution condition.
 
 ## 14. PROVISIONAL items and resolution paths
 

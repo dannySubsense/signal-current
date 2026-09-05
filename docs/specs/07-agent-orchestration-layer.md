@@ -10,7 +10,7 @@ independently reviewed. Frozen only after the full eight-document set clears Fra
 Frank's spec-gate attempt-3 finding F2 — reconciled §3.1 item 3/§3.2's "agent-run identity and iteration
 index" vocabulary with document 04 §5.4's `orchestrationSessionId` (every agent run carries the session id
 of whatever spawned it; runs from one orchestrator in one session share it), added document 04 to §11's
-consistency-check list, and re-ran that check.
+consistency-check list, and re-ran that check. @architect, 2026-09-05, per Frank's spec-gate attempt-4 fix 3 — stated session-initiation authority precisely (human-only initiation, no nested/fresh minting mid-session) in §3.1 item 3/§3.2, consistent with document 04 §5.4's amended wording, fixed the "within one session" phrasing so it no longer implies an orchestrator can legitimately span several sessions, added a cross-referenced PROVISIONAL row (§12) pointing to document 06 §16's widened U-12 entry, and re-ran the §11 consistency check.
 
 **Primary question this document answers:** What may agents do, with which tools, under which permissions
 and gates?
@@ -178,7 +178,15 @@ record, in addition to Research Methodology §9's per-campaign requirements:
    identity inequality, because both roles share one `orchestrationSessionId`. "Iteration index," by
    contrast, is this section's own addition beyond `orchestrationSessionId` — it distinguishes individual
    iterations within a single session/run, a finer grain than session identity, and is not itself part of
-   document 04 §5.4's contract.
+   document 04 §5.4's contract. **Session-initiation authority, stated precisely (Frank spec-gate attempt-4
+   fix 3):** "within one session" above describes runs an already-initiated session spawns — it does not mean
+   an orchestrator may initiate a fresh session mid-task to manufacture apparent distinctness. Per document 04
+   §5.4, a session is initiated only by a human principal; an agent run, including any orchestrator role
+   however named, cannot itself initiate a new session. Every run spawned from within an existing session
+   inherits that session's `orchestrationSessionId`; no nested or fresh minting is permitted mid-session. A
+   single continuous orchestration therefore necessarily stays within the one session a human initiated it
+   under — it cannot legitimately span several sessions to satisfy document 05 §2.1 item 2's distinctness
+   check on paper while remaining one well in fact.
 4. **Promotion-gated, never validation-outcome-producing.** Consistent with Matrix row 8's explicit
    limitation: an agent run's output is bounded to `ResearchHypothesis`/`CampaignSpec` drafts. It may request
    that an already-authorized `CampaignSpec` be executed (§2.2), but it may never itself produce a
@@ -194,7 +202,10 @@ references, per Constitution §9.1 and Matrix row 53 — no exception for agent-
 same Audit/Event Log component (Architecture §5) every other actor's events use. Per §3.1 item 3's
 reconciliation above, that actor's `orchestrationSessionId` (document 04 §5.4) is the session that spawned
 the run recording the event — never self-assigned by the agent run or its orchestrator, per document 04
-§5.4's assignment rule (Agent Tool Layer/harness, at session start).
+§5.4's assignment rule. Per document 04 §5.4's session-initiation-authority rule (restated in §3.1 item 3
+above), the session itself was initiated only by a human principal, never by the agent run or its
+orchestrator — the run merely inherits the ID of the session a human already started, at no point minting
+one of its own.
 
 ## 4. LLM output classification (Matrix row 18, Constitution §7 tier 3)
 
@@ -382,6 +393,20 @@ level, without contradicting or silently re-deciding any of their fixed clauses.
   second, competing session-identity model; it names document 04's field as the binding target and adds only
   "iteration index" as a finer-grained addition within a session, per §3.1 item 3 above. This reconciliation
   was checked this fix pass and found consistent, not merely asserted.
+- **Re-run 2026-09-05, Frank spec-gate attempt-4 fix 6:** §3.1 item 3/§3.2's session-initiation-authority
+  sentences (added this fix pass) are consistent with document 04 §5.4's own session-initiation-authority
+  paragraph (added the same fix pass) — both state, without contradiction, that a session is initiated only
+  by a human principal, that initiation is itself an `AuditLineageEvent` whose actor is that human, and that
+  an agent run (including any orchestrator role) cannot initiate a session or mint a fresh one mid-task. This
+  document does not re-decide document 04's rule; it restates it from the agent-permission side only, per
+  this section's existing pattern for every other cross-document restatement.
+- This document's new §12 PROVISIONAL row (actor/session authenticity) is checked against, and found
+  consistent with, document 04 §8's and document 06 §16's cross-referenced entries for the same item — all
+  three name the identical resolution condition and none duplicates or contradicts another's wording.
+- The enforcement-point sentence document 04 §5.4 now states for `AuditLineageEvent.actor` (Frank spec-gate
+  attempt-4 fix 1) requires no restatement in this document: §3.2 already requires every agent-originated
+  event to use the same Audit/Event Log component and actor contract every other actor's events use, and that
+  clause is unaffected by, and remains consistent with, document 04's newly-stated enforcement point.
 
 No HALT condition applies.
 
@@ -390,6 +415,8 @@ No HALT condition applies.
 | Item | Tag | Owner | Concrete resolution condition |
 |---|---|---|---|
 | Exact agent-activation readiness checklist/scorecard satisfying §7.2's structural contract | PROVISIONAL — unvalidated | Danny | Defined once documents 04/05/06's typed contracts are implementation-stable enough to constrain against, per Matrix row 56's own sequencing logic — a post-P0 decision, not a spec-time one |
+| **U-12 (extended)** — exact mechanism verifying `AuditActor.actorId` authenticity and minting/verifying `orchestrationSessionId` referenced by §3.1 item 3/§3.2 | PROVISIONAL — unvalidated | Danny | Cross-referenced, not duplicated: this is the same PROVISIONAL item as document 06 §16's widened U-12 row (also cross-referenced from document 04 §8) — resolved in the same auth/authz design pass, since all three depend on the same identity-provider/token-mechanism choice. Terminal boundary: below it, the spec set correctly stops. |
+
 | Exact per-role permission matrix populating §5.1's tool-access categories with named agent roles | PROVISIONAL — unvalidated | Danny | Resolved alongside the activation readiness checklist above, once concrete agent roles are proposed against stable typed contracts |
 | Agent-run budget ceiling numeric value(s) (§3.1) | Not a global constant — per-run operational parameter, consistent with Research Methodology §9's treatment of per-campaign budgets | Whoever authorizes a given agent run | Set at run-authorization time; no global default is fixed by this document |
 | Specific agent framework/SDK/orchestration product choice | Deferred, not PROVISIONAL — implementation decision, out of this document's scope | Document 08 / implementation owner | Resolved during Implementation Roadmap or build-phase tooling selection, not spec-time |

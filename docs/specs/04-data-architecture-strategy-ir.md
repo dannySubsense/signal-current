@@ -14,7 +14,11 @@ each resolved from (§5.4 closing paragraph), made `orchestrationSessionId` requ
 `actorType: 'agent'` and stated it is assigned by the Agent Tool Layer/harness at session start, never
 self-declared (§5.4), repaired the broken first-paragraph sentence and restructured §5 into proper
 §5.1-§5.3 subsections ahead of §5.4 rather than renumbering a cross-referenced anchor, and removed
-process-narration language from body text.
+process-narration language from body text. @architect, 2026-09-05, per Frank's spec-gate attempt-4
+findings F1/F2 — named the `AuditLineageEvent.actor` enforcement point mirroring Architecture §4.1's
+lockbox pattern, stated session-initiation authority (human-only, no nested minting) (§5.4), and added
+a cross-referenced PROVISIONAL row for actor/session authenticity to `06-portfolio-deployment-monitoring.md`
+§16's widened U-12 entry (§8).
 
 **Primary question this document answers:** What are the canonical data, artifact, schema, lineage and
 executable strategy contracts?
@@ -347,6 +351,33 @@ interface AuditLineageEvent {
 }
 ```
 
+**Enforcement point (mirrors Architecture §4.1's lockbox pattern):** `actor` above is never a parameter
+accepted in any typed tool call or API request that produces a `SimulationRun`, a `ValidationArtifact`, a
+lockbox-access event, or any other audit/lineage event. The component *recording* the event — the
+Deterministic Simulation Engine for `SimulationRun` production, the Validation & Statistical Controls
+Service for `ValidationArtifact` production, the Data Access Gateway for lockbox events (Architecture §4.1),
+and the Audit/Event Log for every other event kind generally — MUST itself populate `actor` from the
+authenticated caller principal at the moment it records the event, never from a caller-supplied field. Per
+Architecture §4.1's own wording for the lockbox ("the gateway itself performs the check — not caller-side
+discipline"), the same discipline applies here: a typed request that attempts to supply its own `actor`
+value is malformed and MUST be rejected by the recording component, not merely discouraged by convention.
+Exactly which authentication mechanism establishes "the authenticated caller principal" in the first place —
+the identity provider, token format, or session-verification technology — is not fixed here; that is the new
+PROVISIONAL item in §8 below, which is deliberately the terminal boundary: below it, authentication-mechanism
+selection is U-12's job (document 06 §16), not this document's.
+
+**Session-initiation authority:** an orchestration session (the source of `orchestrationSessionId` above) is
+initiated only by a human principal (`actorType: 'human'`). Session initiation is itself recorded as an
+`AuditLineageEvent` whose `actor` is that human and whose payload carries the newly-minted
+`orchestrationSessionId`. An agent run — including any orchestrator role, however named — cannot itself
+initiate a new session; every run spawned from within an existing session inherits that session's
+`orchestrationSessionId`, and no nested or fresh minting is permitted mid-session. This closes the residual
+gap Frank's spec-gate attempt-4 named: without this sentence, an orchestrator could request a fresh session
+between driving a validator and driving a reproducer, satisfying document 05 §2.1 item 2's distinctness
+check on paper while remaining one well in fact. Document 07 §3.1 item 3/§3.2 restate this same rule from the
+agent-permission side and must not be read as permitting one orchestrator to legitimately span several
+sessions.
+
 This is the binding target for document 05 §2's `IndependentReproductionRecord.originalAuthor` and
 `reproducedBy` fields, and both are derived by the Validation Service, never supplied by the caller.
 `originalAuthor` is resolved from the `AuditLineageEvent` recording production of the original
@@ -414,6 +445,7 @@ as requiring dedicated design work this drafting pass must not substitute for.
 | **U-02b** — Exact stop/target intrabar collision-resolution rule | PROVISIONAL — unvalidated | Danny | Resolved in the same execution-semantics ADR as U-02a; must be justified against at least one documented worst-case gap/collision scenario, not asserted without example |
 | **U-02c** — Exact default cost-model values (slippage model class defaults, fee schedule defaults) | PROVISIONAL — unvalidated | Danny | Resolved in the execution-semantics ADR; per Constitution §5 item 6, any zero-cost default requires explicit justification, not silent adoption |
 | **U-03** — Exact broker/venue normalization field schema (calendar representation format, roll-adjustment method taxonomy, currency-conversion policy fields) | PROVISIONAL — unvalidated | Danny | Dedicated StrategyIR/data-schema design session with golden-example worked strategies spanning at least two materially different venues/asset classes, per Architecture §7.2's heterogeneity requirement (may be combined with U-01a's design session) |
+| **U-12 (extended)** — exact mechanism verifying `AuditActor.actorId` authenticity and minting/verifying `orchestrationSessionId` (§5.4) | PROVISIONAL — unvalidated | Danny | Cross-referenced, not duplicated: this is the same PROVISIONAL item as document 06 §16's widened U-12 row — resolved in the same auth/authz design pass, since both depend on the same identity-provider/token-mechanism choice. This is the terminal boundary: below it, the spec set correctly stops (authentication mechanism selection is not a spec-time decision, per U-12's existing treatment). |
 
 No numeric constant is adopted as a Signal Current setting anywhere in this document. The only numeric
 literals present are an external config-default value cited from prior-art research (§4.2's Zipline-reloaded
