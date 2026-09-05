@@ -37,11 +37,11 @@ This sprint exists to redo document 01 properly through the spec-agent framework
 - Numeric constants entering any document in this sprint go through the benchmark agent before QC, per Danny's standing directive — no exception without explicit justification.
 - PROVISIONAL tags on any constant are not acceptable as a final state in a locked document — they must carry a concrete path to resolution (a named owner and what they're waiting on), per Danny's sharpened standard.
 
-## Open Questions
+## Open Questions — resolved by Danny 2026-09-05
 
-- Should `docs/specs/01-constitution.md` (the existing hand-authored draft) be discarded entirely and re-drafted from scratch by `@architect`, or should it be handed to `@architect` as a starting-point input alongside Sol's findings? (Leaning toward: hand it over as input + Sol's findings as the fix list, since much of its content is sound per Sol's own review — only the traceability claim, the human-authorization gate, and the determinism/nondeterminism distinction are flagged as defects, not the whole document.)
-- Does this sprint also formally correct `docs/research/prior-art/PA-10-reuse-decision-register.md` per Sol's findings 5-8 (register overstates its own reports, "Empty working register" header stale, evidence-level fields missing), or is that a separate follow-up sprint? (Leaning toward: in scope here, since Architecture (Step 4) will read that register directly and inherit its overstatements otherwise.)
-- Confirm whether `docs/NORTHSTAR.md` exists and its `Status` line, since Frank's Step 8 Layer 2 check depends on it directly.
+- **Constitution draft disposition: KEEP as input, not discarded.** Handed to `@architect` alongside Sol's findings as the fix list. Sol's blocking finding was the false traceability claim, not the substance — most clauses map to real matrix rows, just uncited/under-anchored. The major findings (dropped human-authorization gate, determinism/nondeterminism conflation) are additive fixes, not grounds for a rewrite.
+- **PA-10 register correction: IN SCOPE for this sprint.** `@architect` reads that register directly in Step 4 (System Architecture); an uncorrected register would propagate every overstatement Sol found (premature skfolio ADOPT, self-contradictory PARITY ORACLE labels, dropped caveats) into Architecture. Cheaper to fix upstream now than to redo Architecture after a later correction.
+- `docs/NORTHSTAR.md` confirmed: exists, `Status: ACTIVE` (non-DRAFT) — Frank's Step 8 Layer 2 check will not need a PROVISIONAL stamp.
 
 ---
 
