@@ -239,3 +239,47 @@ lockbox, a briefing problem, not a spec problem.
 
 Attempt counter: 4, uncapped, continuing. Orchestrator instruction from Frank: hold attempt 5 to
 this stated terminal condition; reclassify STATIC and escalate to Danny if it doesn't hold.
+
+### Attempt 5 — 2026-09-05 — FAIL (enforcement-depth axis CLOSED; new sequencing axis found)
+
+**Layer 1: PASS** (re-verified, nothing regressed). **Layer 2: FAIL**, on a new finding only.
+
+**The enforcement-depth axis Frank held attempt 5 to is CLOSED.** All 6 attempt-4 fix items
+verified substantively closed: 04 §5.4's enforcement-point paragraph gives the same component-side
+MUST-reject guarantee as 02 §4.1's lockbox precedent (not just similar prose); session-initiation
+authority actually fails closed (an agent-initiated session carries no human initiator, so 05
+§2.1 item 2's check fails); the item-3 overreach is properly rescoped; cross-references across
+04/06/07 are consistent in substance. The flagged human-actorId distinctness judgment call is an
+acceptable interim disposition — the stricter reading can only block a legitimate reproduction,
+never manufacture a false "validated," and is correctly bound to U-12's eventual resolution.
+
+**New finding (blocking, different axis — caused by Frank's own attempt-4 fix routing):** the
+widened U-12 PROVISIONAL item is sequenced wrong in doc 08. The actor/session-verification
+sub-items are load-bearing for the FIRST StrategyArtifact promotion (row 59's reproduction gate
+depends on them), but doc 08 §3/§1 places all of U-12 in Phase R3, preconditioned on "≥1
+StrategyArtifact exists" — circular: the first StrategyArtifact is promoted through a gate whose
+identity mechanism is scheduled for after a StrategyArtifact exists. Neither 05 §13 nor 07 §11's
+consistency checks cover doc 08, so nobody caught this. Frank attributes this to his own attempt-4
+fix instruction (widen U-12 in place) not saying "and re-sequence it."
+
+**Convergence classification: SHRINKING.** The enforcement-depth axis (attempts 2-4) is fully
+closed — nothing from that line recurs. The new finding is a deterministic downstream consequence
+of attempt 4's own fix, landing in the one document that fix didn't touch and no check covered —
+a single sequencing decision, not new open territory. Not STATIC, not THRASHING.
+
+**Fix routing:**
+1. 08 §1/§3/R1-R4 table: split U-12's sequencing — actor/session-verification sub-items move to
+   Phase R1 alongside the reproduction match tolerance (both gate the same first promotion);
+   HumanAuthorizationRecord's identity-provider/protocol sub-item may stay R3. → @planner
+2. 06 §16 U-12 row: amend resolution condition to match (not gated on "deployment target/user
+   model chosen" for the R1 sub-items); 04 §8 / 07 §12 cross-references updated to match. → @architect
+3. 05 §2.1: add a sentence — until U-12's actor/session sub-items resolve, an
+   IndependentReproductionRecord cannot satisfy the gate (same treatment as the tolerance item).
+   Add a real §14 table row for the flagged human-actorId distinctness question (owner Danny,
+   interim = stricter reading) so §13's claim points at something real. → @architect
+4. 07 §12: delete a blank line splitting the PROVISIONAL table (formatting only). → @architect
+5. 05 §13 and 07 §11: add doc 08 to the consistency-check list, re-run after 1-4 land. → @architect
+
+Attempt counter: 5, uncapped, continuing. Frank's stated test for attempt 6: items 1-5 land and
+nothing new surfaces in doc 08 → PASS. If attempt 6 surfaces a further sequencing consequence
+elsewhere, that's THRASHING (a new axis per attempt) — escalate to Danny, do not keep looping.
