@@ -576,3 +576,112 @@ is a different defect than under-reporting, but both are the same underlying fai
 unverified claim about the record itself). Attempt counter: 8.
 
 ---
+
+### Attempt 9 — Cold Frank — 2026-09-05 — PASS
+
+**Dispatch note:** repo + SHA `402b150` only, no file list, no scope narration — third consecutive
+genuinely Cold dispatch.
+
+**Verdict (verbatim from Frank's report):**
+
+Findings:
+- Pre-checks: Premise [pass — `git diff --stat 91bb031 402b150` excluding GATE-LOG.md and
+  CADENCE.md is empty; docs 00-08 are byte-identical to what attempts 7 and 8 traced. Independently
+  swept all eight canonical docs for numeric literals: the only hits are `≥1 StrategyArtifact`
+  preconditions, `minutes_per_day=390` (02:252, 04:239 — cited as an external Zipline-reloaded
+  default from PA-01, explicitly *not adopted*, and both docs' closing paragraphs say so at
+  02:421/04:453), `~4x` (05:477, explicitly not cited), and `100x/160x` (06:618, explicitly rejected
+  as vendor-unverified). Every threshold/tolerance is a PROVISIONAL item with no value yet, owner
+  Danny, resolution phase named]. Input [pass — opened `00-source-inventory-reconciliation.md` head
+  and tail; row 59 at line 125 and §6 item 14 at line 161 carry the Thesis wording; §9 Freeze Rule
+  intact. Opened `.gate-snapshots/spec/attempt-{1..5}/` directly: 74 files, git-tracked. Compared
+  every snapshot blob hash against its commit's parent tree: 73/74 IDENTICAL; the one exception is
+  attempt-1's `05-REVIEW.md`, which has no parent because the file was untracked until `9890e58` —
+  and the snapshot matches that first tracked version exactly. The snapshot record is faithful].
+  Evidence independence [pass — this dispatch was repo+SHA only; the Thesis chain was traced from
+  `docs/NORTHSTAR.md` through the live files without reading any prior verdict's route first. The
+  gate log's attempt-8 corrections were checked against the tree, not adopted].
+- F1 — Gate-record integrity axis: CLOSED. `f1fdc14` restores the original (correct) wording at
+  attempt-1 item 8 and the attempt-3/attempt-4 convergence paragraphs, annotates each with why
+  attempt 7's F1 was wrong (wrong path), leaves attempt 7's verbatim verdict untouched with a dated
+  post-verification note, and `402b150` appends attempt 8 verbatim in a genuinely separate commit
+  as instructed. Every repo-state claim now in the log (74 files, five commits
+  `4f01dc5`/`27bbd13`/`b951563`/`4027fa1`/`8a63daa`, byte-identical to parents) was reproduced. No
+  false statement remains.
+- F2 — Spec-content axis: CLOSED, independently re-traced. `NORTHSTAR.md` Thesis → Matrix row 59 →
+  Constitution §3 item 7 (quotes Thesis verbatim) → 05 §2.1 (`ValidationPlan.status` MUST NOT reach
+  `promotion-gated` unless the Validation Service itself computes `matched === true` AND
+  `reproducedBy` resolves to a distinct `AuditActor.actorId`; agent actors distinct only across
+  different `orchestrationSessionId`s) → 04 §5.4 (`actor` never a caller parameter, populated from
+  authenticated principal, caller-supplied value MUST be rejected; sessions initiated only by a
+  human principal, no nested minting) → 02 §5 Promotion/Gate Service refuses `StrategyArtifact`
+  without a resolved `IndependentReproductionRecord` → 06 §2 and 07 §2.3 gate on `promotion-gated`
+  status (indirect but load-bearing, since 05 §2.1 makes that status conditional) → U-12
+  actor/session sub-items sequenced in 08 Phase R1 item 8 with the circularity against R3's `≥1
+  StrategyArtifact` precondition explicitly named at 08:223. The chain bottoms out at a legitimate
+  PROVISIONAL boundary (auth mechanism, owner Danny), which is where a spec should stop.
+- F3 — Process rule in `docs/CADENCE.md` §"Verifying gate findings" is correctly scoped: it does
+  not make Frank's verdict advisory, it makes the fixer re-open the source before acting. Right
+  lesson, right document.
+- Minor, non-blocking: `01-constitution.md` Status line still reads "awaiting re-gate" — true in
+  September-morning terms, stale after nine gates. All eight docs are correctly `Draft` until
+  freeze; only this one clause is stale.
+- Layer 1: pass — all eight docs exist, provenance lines name their subagents, traceability is
+  row-anchored not blanket, PA-10 and Constitution corrections stand, `03-UI-SPEC.md` is an
+  explicit stub per Interview Q5, benchmark disposition vacuous and durably recorded. Layer 2: pass
+  — checked directly against `docs/NORTHSTAR.md`, `**Status**: ACTIVE`, no PROVISIONAL stamp.
+- Convergence (attempt 9, past the nominal ceiling per Danny's uncapped ruling in INTERVIEW.md Q6):
+  spec-content axis has produced zero findings since attempt 6. Gate-record axis: attempt 7
+  under-reported, attempt 8 over-corrected, attempt 9 finds nothing. SHRINKING to zero on both
+  axes — this is what convergence looks like.
+
+Why: The two things that could have been wrong at this SHA are the record and the documents it
+describes. The record was wrong twice, in opposite directions, for one root cause: the fixer acted
+on a checker's claim about the world without opening the world. The fix this time did the opposite
+— it went back to the directory, counted the files, hashed them, and wrote down what it found, and
+independent verification produced the same numbers. That is the first time in three attempts that a
+gate-record claim and the tree agree without correction on either side. The documents themselves
+have not moved since `91bb031`, and the Thesis chain is not a paraphrase chain — each link is a
+MUST/MUST-NOT with a named enforcing component, terminating at an owned PROVISIONAL item that is
+scheduled *before* the first artifact it gates. The `390` this sweep caught and prior attempts did
+not mention is correctly handled: cited as someone else's default, explicitly not adopted, and both
+host documents say so in their closing numeric-constant paragraphs. Nothing here is running on a
+number nobody sourced.
+
+This PASS certifies the artifact set and its gate record. It does not authorize implementation — 08
+§7 and the Matrix's §9 Freeze Rule are unambiguous that Danny's independent approval is the next
+step, and this gate does not stand in for it.
+
+**Verdict: PASS**
+
+**Fix/Next-step (Carried Condition — non-blocking, must be copied into the sprint's tracked
+artifact before this PASS is closed out):**
+1. `docs/specs/01-constitution.md:3` (Status line): "awaiting re-gate" is stale → at the v1.0
+   freeze step, when Danny approves, all eight `**Status:** Draft` lines are set to the frozen v1.0
+   status in one pass; this clause goes with them. Land it in the freeze commit; record the pass in
+   `GATE-LOG.md` under this attempt-9 entry.
+Route to: @vane (orchestrator) — append this verdict verbatim, then present the set to Danny for
+freeze approval. No @architect/@planner dispatch.
+
+**Orchestrator post-verification (2026-09-05, before acting on this verdict, per the CADENCE.md
+rule added at attempt 8):** independently reproduced Frank's core repo-state claims rather than
+transcribing them — `git diff --stat 91bb031 402b150` outside GATE-LOG.md/CADENCE.md is empty
+(confirmed no doc drift); `find .gate-snapshots/spec -type f | wc -l` = 74 (confirmed); attempt-1's
+`05-REVIEW.md` snapshot (`git show 4f01dc5:...`) hashes identically to the first tracked version
+(`git show 9890e58:...`) — `a16e9df8368e6cb4b96335eba496a19c` both (confirmed); `01-constitution.md`
+line 3 does read "awaiting re-gate" (confirmed stale). All claims verified against the live tree,
+not adopted on Frank's say-so.
+
+**Orchestrator's independent review (2026-09-05):** beyond the repo-state checks above, re-read the
+Thesis-to-enforcement chain directly: `docs/NORTHSTAR.md`'s Thesis, Matrix row 59, Constitution §3
+item 7, Validation §2.1's promotion-gate condition, and 04 §5.4's actor-enforcement point all agree
+with each other and with what attempts 4-6 built. No gap found beyond the one Carried Condition
+Frank named (stale Status line, deferred to the freeze commit by design). This is not a rubber
+stamp of Frank's PASS — it is a second, independent trace of the same chain, and it agrees.
+
+**Convergence classification: CLOSED, both axes** (spec-content since attempt 6; gate-record as of
+this attempt). Attempt counter: 9, PASS. The Carried Condition (stale Constitution Status line) is
+deferred to the freeze commit, per Frank's own routing — not a blocker to presenting this set to
+Danny now.
+
+---
