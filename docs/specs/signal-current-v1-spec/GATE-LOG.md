@@ -283,3 +283,50 @@ a single sequencing decision, not new open territory. Not STATIC, not THRASHING.
 Attempt counter: 5, uncapped, continuing. Frank's stated test for attempt 6: items 1-5 land and
 nothing new surfaces in doc 08 → PASS. If attempt 6 surfaces a further sequencing consequence
 elsewhere, that's THRASHING (a new axis per attempt) — escalate to Danny, do not keep looping.
+
+### Attempt 6 — 2026-09-05 — PASS (Carried Condition 1)
+
+**Layer 1: PASS** (re-verified, nothing regressed). **Layer 2: PASS**, with one carried condition.
+
+Attempt 5's fix items 1-5 verified substantively closed: doc 08's U-12 sequencing split (actor/
+session-verification sub-items in Phase R1, `HumanAuthorizationRecord` sub-item in Phase R3) lands
+correctly and is no longer circular; doc 06 §16's U-12 row resolution condition matches; doc 05
+§2.1 carries the sentence gating the reproduction record on U-12's actor/session sub-items and adds
+a real §14 table row for the human-actorId-distinctness judgment call; doc 07 §12's blank line is
+removed; doc 05 §13 and doc 07 §11 both add doc 08 to their consistency-check lists and re-run
+clean.
+
+**Carried Condition 1 (non-blocking for this PASS, tracked to closure):** doc 08's own §1 roundup
+sentence, §3 Phase R1 item 8, and the R1-R4 summary table's R1 row still describe collecting every
+PROVISIONAL item from documents 04/05/06/07 in aggregate, without individually naming Validation
+§14's human-actorId-distinctness row (added by attempt-5 fix item 3) as a specific, cited
+sub-question of the same Phase R1 U-12 sub-resolution. The row shares that phase's timing exactly
+(Validation §14 names the same U-12 identity-model resolution as its own condition) — this is a
+naming/citation completeness gap in doc 08 only, not a sequencing error, and not blocking on this
+PASS since the underlying gate logic in doc 05 is already correct and load-bearing independent of
+doc 08's phrasing. Routed to @planner as a fast-follow, no re-gate required for this fix alone
+unless it surfaces new territory elsewhere in doc 08.
+
+**Convergence classification: CLOSED.** No new axis found. The PASS verdict is binding for Layer
+1/Layer 2 fidelity; Carried Condition 1 is a documentation-completeness item, not a re-opened
+finding.
+
+**Fix routing (Carried Condition 1):**
+1. 08 §1/§3 Phase R1 item 8/R1-R4 summary table: name Validation §14's human-actorId-distinctness
+   row explicitly as a sub-question resolved within Phase R1 item 8's U-12 sub-resolution, cited
+   directly to Validation §14. → @planner
+2. 08 §9 (or wherever doc 08 records prior fix-pass history): append a one-line re-run note
+   recording this fix pass. → @planner
+
+**Resolution of Carried Condition 1 (this pass, 2026-09-05):** @planner closed both fix-routing
+items above directly in `docs/specs/08-implementation-roadmap.md` — the human-actorId-distinctness
+row (Validation §14) is now named explicitly in §1's roundup sentence, §3 Phase R1 item 8 (as a
+named sub-bullet citing Validation §14 directly), and the R1-R4 summary table's R1 row; §9 carries
+a new "Fix-pass history" paragraph recording this re-run. Doc 08's own Editorial-corrections header
+line was updated to record the same. No new territory surfaced; Carried Condition 1 is CLOSED.
+
+Attempt counter: 6, PASS with Carried Condition 1, now closed. Danny's independent approval remains
+the next required step per §7 of doc 08 and the Reconciliation Matrix's Freeze Rule (§9) — this
+PASS does not itself authorize implementation.
+
+---

@@ -19,7 +19,14 @@ alongside the independent-reproduction match tolerance, since both gate the same
 `StrategyArtifact` promotion (Validation §2.1); the narrower, original `HumanAuthorizationRecord`
 identity-provider/protocol sub-item remains in Phase R3, since it genuinely depends on a deployment
 target/user model being chosen. Corrects the prior draft's circular placement of the whole widened item
-in Phase R3 (which itself requires ≥1 `StrategyArtifact` to exist).
+in Phase R3 (which itself requires ≥1 `StrategyArtifact` to exist). @planner, 2026-09-05, per Frank's
+spec-gate attempt-6 Carried Condition 1 — added the human-actorId-distinctness judgment call
+(Validation §14) as a named sub-question resolved within Phase R1 item 8's U-12 sub-resolution, since it
+shares the same phase/resolution timing as the `AuditActor.actorId` authenticity /
+`orchestrationSessionId` minting-and-verification sub-items already sequenced there; updated §1's roundup
+sentence, §3 Phase R1 item 8, and the R1-R4 summary table's R1 row to reflect this explicitly. Prior
+drafts collected this item only implicitly inside the general U-12 reference, never naming Validation
+§14's specific row.
 
 **Primary question this document answers:** In what sequence do we build and prove the system without
 violating the specification?
@@ -50,12 +57,13 @@ condition, in §8. This document also collects and sequences — without resolvi
 already tagged in documents 04, 05, 06, and 07 (U-01a/b/c, U-02a/b/c, U-03, U-04, U-05, U-06, the
 adverse-cost-stress magnitude, the robustness-family thresholds, the independent-reproduction match
 tolerance (Validation §14, surfaced by Matrix row 59), U-07a/b, U-12 — **split across two phases, see §3**:
-its `AuditActor.actorId`/`orchestrationSessionId` sub-items in Phase R1, its narrower
-`HumanAuthorizationRecord` identity-provider/protocol sub-item in Phase R3 — the diversification/
-contribution thresholds, the incubation-stage durations, the `StrategyArtifactPassport.complexity` field
-schema, and the agent-activation readiness checklist/permission matrix). §3 is the sequencing table for all
-of these; §8 restates only this document's own four new items (U-08/U-09/U-10/U-13) in the standard
-PROVISIONAL format.
+its `AuditActor.actorId`/`orchestrationSessionId` sub-items in Phase R1, alongside the
+human-actorId-distinctness judgment call resolved as part of that same Phase R1 U-12 sub-resolution
+(Validation §14), its narrower `HumanAuthorizationRecord` identity-provider/protocol sub-item in Phase R3 —
+the diversification/contribution thresholds, the incubation-stage durations, the
+`StrategyArtifactPassport.complexity` field schema, and the agent-activation readiness checklist/permission
+matrix). §3 is the sequencing table for all of these; §8 restates only this document's own four new items
+(U-08/U-09/U-10/U-13) in the standard PROVISIONAL format.
 
 **On document 07 §12's two implementation-technology items:** 07 §12 additionally lists two items —
 the specific agent framework/SDK/orchestration product choice, and the specific tool-permission enforcement
@@ -219,6 +227,16 @@ ExecutionContext/CostModel-shaped object as its own input.
    authorization rather than to `StrategyArtifact` promotion — remains in Phase R3, since that sub-item
    genuinely depends on a deployment target/user model being chosen (a decision this Roadmap does not make
    until §4).
+   - **Sub-question named explicitly: the human-actorId-distinctness judgment call (Validation §14)** —
+     whether the same human `AuditActor.actorId` across two distinct `orchestrationSessionId`s can ever
+     count as a distinct identity (e.g., two individuals sharing one team service account), or never counts
+     as distinct while an agent is on either side (Validation §2.1 item 2's interim stricter reading) —
+     resolves within this same Phase R1 U-12 sub-resolution, not as a separately-timed item. Validation §14
+     names its resolution condition as "once document 06 §16's widened U-12 item's identity model
+     (per-person vs. per-shared-account `actorId` assignment) is chosen — the same Phase R1 sub-resolution
+     the match-tolerance item above depends on." It shares this phase's precondition and timing exactly
+     because it is a sub-question of the same `AuditActor.actorId` authenticity mechanism named in this
+     item's opening sentence, not a distinct decision with its own dependency chain.
 
 **Why this phase must complete before Phase R2:** Validation's `ValidationPlan` sub-decisions (Validation
 §§3-10) each reference a `SimulationRun`, a `CostModel`, or an `ExecutionContext` by ID — none of Validation's
@@ -227,12 +245,12 @@ strategies until Phase R1 produces a `StrategyIR` shape and execution-semantics 
 `SimulationRun`s can actually be generated against. The independent-reproduction match tolerance (item 7
 above) has the same dependency for a different reason: it is not tested against a `SimulationRun`'s content
 but against the content-addressing mechanism (U-01c) itself. Item 8 above (the widened U-12 actor/session
-sub-items) has yet a different reason for belonging here rather than in Phase R3: it is not gated on any
-`SimulationRun`, `StrategyIR` shape, or deployment-target decision at all — it is gated only on the
-`AuditActor`/`AuditLineageEvent` contract (document 04 §5.4) already being fixed, which this phase's other
-items already require to exist for their own audit trails, and it must resolve before the first
-`StrategyArtifact` promotion, which is the earliest point at which any later phase's preconditions
-(including Phase R3's) could even begin to be evaluated.
+sub-items, including the human-actorId-distinctness sub-question) has yet a different reason for belonging
+here rather than in Phase R3: it is not gated on any `SimulationRun`, `StrategyIR` shape, or
+deployment-target decision at all — it is gated only on the `AuditActor`/`AuditLineageEvent` contract
+(document 04 §5.4) already being fixed, which this phase's other items already require to exist for their
+own audit trails, and it must resolve before the first `StrategyArtifact` promotion, which is the earliest
+point at which any later phase's preconditions (including Phase R3's) could even begin to be evaluated.
 
 ### Phase R2 — Validation statistical-defaults research design (U-04, U-05, U-06, robustness-family thresholds)
 
@@ -269,9 +287,9 @@ thresholds and incubation-stage durations below explicitly depend on the same re
 least one `StrategyArtifact` must exist (Portfolio/Deployment §2's own stated precondition — this document
 does not relax it) — meaning this phase cannot begin in earnest before the P0 vertical slice (§2 above) has
 actually produced a promoted `StrategyArtifact`. (Note: the widened U-12 item's `AuditActor.actorId`/
-`orchestrationSessionId` sub-items are *not* part of this phase's scope — they are sequenced in Phase R1
-above, precisely because that first `StrategyArtifact`'s promotion depends on them; only U-12's narrower
-`HumanAuthorizationRecord` sub-item is sequenced here.)
+`orchestrationSessionId` sub-items, including the human-actorId-distinctness sub-question, are *not* part of
+this phase's scope — they are sequenced in Phase R1 above, precisely because that first `StrategyArtifact`'s
+promotion depends on them; only U-12's narrower `HumanAuthorizationRecord` sub-item is sequenced here.)
 
 1. **Behavioral-diversification "sufficiently diversified" threshold and contribution-testing
    "non-redundant" threshold** (Portfolio/Deployment §16) resolve together via "a dedicated
@@ -297,10 +315,11 @@ above, precisely because that first `StrategyArtifact`'s promotion depends on th
    (Portfolio/Deployment §16) — same dependency shape as U-07a/b: sequenced after a target-platform/
    deployment-model decision this Roadmap defers (§4 below), and it cannot resolve before that selection
    happens for the same reason U-07a/b cannot. The same widened U-12 item's `AuditActor.actorId`
-   authenticity and `orchestrationSessionId` minting/verification sub-items are *not* resolved here — they
-   are resolved earlier, in Phase R1 above (§3 Phase R1, item 8), since they gate the first `StrategyArtifact`
-   promotion rather than live-risk deployment authorization, and this phase's own precondition (≥1
-   `StrategyArtifact` already exists) makes Phase R3 structurally incapable of hosting them.
+   authenticity and `orchestrationSessionId` minting/verification sub-items (including the
+   human-actorId-distinctness sub-question) are *not* resolved here — they are resolved earlier, in Phase R1
+   above (§3 Phase R1, item 8), since they gate the first `StrategyArtifact` promotion rather than live-risk
+   deployment authorization, and this phase's own precondition (≥1 `StrategyArtifact` already exists) makes
+   Phase R3 structurally incapable of hosting them.
 
 ### Phase R4 — Agent & Orchestration activation gate (U-11)
 
@@ -327,7 +346,7 @@ equal priority. See §5 below for the fuller statement of this sequencing rule.
 
 | Phase | PROVISIONAL items resolved | Precondition | Resolution mechanism (already named in source doc) |
 |---|---|---|---|
-| R1 | U-01a, U-01b, U-01c, U-02a, U-02b, U-02c, U-03, `StrategyArtifactPassport.complexity` schema, independent-reproduction match tolerance, U-12's `AuditActor.actorId` authenticity / `orchestrationSessionId` minting-and-verification sub-items | None (earliest) | Dedicated schema/execution-semantics design sessions and ADR (Data Architecture §8; Portfolio/Deployment §16; Validation §14) |
+| R1 | U-01a, U-01b, U-01c, U-02a, U-02b, U-02c, U-03, `StrategyArtifactPassport.complexity` schema, independent-reproduction match tolerance, U-12's `AuditActor.actorId` authenticity / `orchestrationSessionId` minting-and-verification sub-items (including the human-actorId-distinctness judgment call, Validation §14) | None (earliest) | Dedicated schema/execution-semantics design sessions and ADR (Data Architecture §8; Portfolio/Deployment §16; Validation §14) |
 | R2 | U-04, U-05, U-06, robustness-family thresholds | R1 complete | Dedicated statistical/research-design passes (Validation §14) |
 | R3 | U-07a, U-07b, U-12's `HumanAuthorizationRecord` identity-provider/protocol sub-item, diversification/contribution thresholds, incubation-stage durations | R2 substantially complete + ≥1 StrategyArtifact exists + (for U-07a/b and U-12's `HumanAuthorizationRecord` sub-item) a target platform selected (§4) | Dedicated portfolio-qualification/incubation-design passes and target-platform parity/auth ADRs (Portfolio/Deployment §16) |
 | R4 | U-11 (activation checklist + permission matrix) | R1-R3's underlying contracts implementation-stable and gate-enforced for non-agent callers | Post-P0/P1 readiness evaluation (Agent-Orchestration §12) |
@@ -492,6 +511,14 @@ In particular:
   Portfolio/Deployment §4.2's shared "not this sprint's scope" framing;
 - this document does not authorize implementation to begin — Frank's binding gate and Danny's approval
   remain required (§7), per the Reconciliation Matrix's own Freeze Rule (§9), unchanged.
+
+**Fix-pass history (re-run note, Frank spec-gate attempt-6):** re-checked specifically against Validation
+§14's human-actorId-distinctness row after Frank's spec-gate attempt-6 Carried Condition 1 flagged that §1,
+§3 Phase R1 item 8, and the R1-R4 summary table's R1 row all claimed to collect every PROVISIONAL item from
+documents 04/05/06/07 without actually naming that row. The row is now named explicitly in all three
+locations (§1, §3 Phase R1 item 8, R1-R4 summary table) as a sub-question of the same Phase R1 U-12
+sub-resolution already sequenced there — no new phase, no new precondition, and no other document
+(01/02/03/04/05/06/07) required amendment as a result of this pass.
 
 No HALT condition applies.
 
