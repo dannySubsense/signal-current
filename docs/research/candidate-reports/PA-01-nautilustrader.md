@@ -72,14 +72,14 @@ Rust core + `mimalloc` allocator + `tokio` async runtime (README; `Cargo.toml` p
 
 LGPL-3.0 permits dynamic linking/use as a library without copyleft propagating to Signal Current's own code. **Any modification to NautilusTrader source itself, or static linking under some interpretations, would require review of LGPL §3-6 obligations — this needs a human/legal read, not an agent's determination**, before any FORK or ADAPT disposition is finalized. The project is v1→v2 mid-migration; anything adapted today should be treated as unstable upstream.
 
-## 15. Required parity / golden tests if used as a parity oracle
+## 15. Required parity / golden tests if used as a conformance comparator
 
 - Deterministic-replay tests using NautilusTrader's own DST seed contract (`docs/concepts/dst.md`) as the reference procedure.
 - Golden backtest output comparison on a fixed instrument/bar dataset between NautilusTrader's engine and Signal Current's own engine, carrying explicit truncation/parse-status columns as first-class per this project's data-integrity rule (never silently discard bytes).
 
 ## 16. Proposed disposition
 
-**REFERENCE** (architecture and DST pattern) + **PARITY ORACLE candidate** for backtest-correctness checks, **pending license review**.
+**REFERENCE** (architecture and DST pattern) + **CONFORMANCE COMPARATOR candidate** for backtest-correctness checks, **pending license review**.
 
 **Do NOT adopt, fork, or wrap as the core engine now** — v2 is pre-release (`rc4`) and Signal Current's own spec should not couple to an unstable upstream mid-migration.
 

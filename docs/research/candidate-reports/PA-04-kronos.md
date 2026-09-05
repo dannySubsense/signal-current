@@ -76,7 +76,7 @@ Re-run `tests/test_kronos_regression.py` in Signal Current's own environment at 
 
 ## 16. Proposed disposition
 
-**REFERENCE**, with PARITY ORACLE potential (its pinned regression test as an external checkpoint if Signal Current ever builds a comparable tokenizer). Not ADOPT/FORK/ADAPT — the finetuning pipeline is explicitly non-production per its own authors, and Signal Current's architecture should not be built directly on a self-described "simplified example." Not REJECT — this is a real, actively maintained, peer-reviewed (AAAI-26), genuinely open-weight project with real tests, worth studying as prior art for tokenization design.
+**REFERENCE**, with EXTERNAL REGRESSION FIXTURE potential (its pinned regression test as an external checkpoint if Signal Current ever builds a comparable tokenizer). Not ADOPT/FORK/ADAPT — the finetuning pipeline is explicitly non-production per its own authors, and Signal Current's architecture should not be built directly on a self-described "simplified example." Not REJECT — this is a real, actively maintained, peer-reviewed (AAAI-26), genuinely open-weight project with real tests, worth studying as prior art for tokenization design.
 
 ## 17. Confidence level
 

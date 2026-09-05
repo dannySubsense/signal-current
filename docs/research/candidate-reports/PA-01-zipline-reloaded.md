@@ -68,7 +68,7 @@ The bcolz-based daily/minute bar storage format; the `minutes_per_day=390`/NYSE-
 
 ## 15. Required parity / golden tests if used as reference
 
-Golden-output comparison against zipline-reloaded's own `tests/finance` and `tests/history` fixtures for equity daily/minute backtests only (its area of actual strength). **Do not use it as a parity oracle for any non-US-equity asset class** given the open, unfixed crypto ingestion bug.
+Golden-output comparison against zipline-reloaded's own `tests/finance` and `tests/history` fixtures for equity daily/minute backtests only (its area of actual strength). **Do not use it as a conformance comparator for any non-US-equity asset class** given the open, unfixed crypto ingestion bug.
 
 ## 16. Proposed disposition
 

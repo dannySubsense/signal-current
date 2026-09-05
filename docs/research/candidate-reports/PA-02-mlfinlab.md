@@ -53,7 +53,7 @@ HIGH if anyone imports the stale pip package (`0.4.1`, 2019) — pre-dates the l
 
 ## 15. Required parity / golden tests if used as reference
 
-If used as a parity oracle at all, Signal Current would need to independently re-derive formulas from the original book itself (not from this repo) to avoid the "shared well" problem this project's global rules explicitly warn against — this repo cannot certify itself against a source it may not even faithfully implement anymore, and its current state (license-gated, real tests possibly hidden) means it can't be independently audited as a ground truth.
+If used as a conformance comparator at all, Signal Current would need to independently re-derive formulas from the original book itself (not from this repo) to avoid the "shared well" problem this project's global rules explicitly warn against — this repo cannot certify itself against a source it may not even faithfully implement anymore, and its current state (license-gated, real tests possibly hidden) means it can't be independently audited as a ground truth.
 
 ## 16. Proposed disposition
 

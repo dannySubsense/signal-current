@@ -72,7 +72,7 @@ Not applicable as a code dependency — treat this purely as a naming/vocabulary
 
 ## 16. Proposed disposition
 
-**REFERENCE** (read for the three-word framing/naming inspiration only), bordering on **REJECT** as prior art of substance. Do not ADOPT, FORK, ADAPT, WRAP, or PARITY-ORACLE — no rigorous methodology, no license to build on, no tests, no ongoing maintenance. If Signal Current wants a real "RBI"-labeled academic/institutional precedent, this is not it.
+**REFERENCE** (read for the three-word framing/naming inspiration only), bordering on **REJECT** as prior art of substance. Do not ADOPT, FORK, ADAPT, WRAP, or use as a CONFORMANCE COMPARATOR / EXTERNAL REGRESSION FIXTURE — no rigorous methodology, no license to build on, no tests, no ongoing maintenance. If Signal Current wants a real "RBI"-labeled academic/institutional precedent, this is not it.
 
 ## 17. Confidence level
 

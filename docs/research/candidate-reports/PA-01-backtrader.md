@@ -36,7 +36,7 @@ Cerebro is the central orchestrator (owns data feeds, strategies, brokers, obser
 
 ## 7. Tests and test quality — unresolved, known weak point
 
-Not independently verified this pass. Needs a follow-up that actually opens `tests/` and runs it before any ADOPT/PARITY-ORACLE decision — do not assume coverage from README claims. Given the abandonment finding, this is lower-priority to chase further.
+Not independently verified this pass. Needs a follow-up that actually opens `tests/` and runs it before any ADOPT/CONFORMANCE-COMPARATOR decision — do not assume coverage from README claims. Given the abandonment finding, this is lower-priority to chase further.
 
 ## 8. Deterministic / reproducibility properties — unresolved
 
@@ -68,7 +68,7 @@ GPL-3.0 copyleft plus zero commits since 2023-04-19, a disabled issue tracker, a
 
 ## 15. Required parity / golden tests if used as reference
 
-Not applicable — not proposed as a parity oracle given the abandonment finding.
+Not applicable — not proposed as a conformance comparator given the abandonment finding.
 
 ## 16. Proposed disposition
 

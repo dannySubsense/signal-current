@@ -39,7 +39,7 @@ Examples commonly include GPL-family licenses.
 
 Distribution and derivative-work obligations can materially affect product architecture.
 
-**Signal Current posture:** usually REFERENCE / PARITY ORACLE unless deliberate product licensing decisions are made.
+**Signal Current posture:** usually REFERENCE / CONFORMANCE COMPARATOR unless deliberate product licensing decisions are made.
 
 ### Source-available / commercial / custom licenses
 Public source code does not automatically mean open source.

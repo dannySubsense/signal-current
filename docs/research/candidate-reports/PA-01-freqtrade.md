@@ -49,7 +49,7 @@ So: adapter isolation exists for exchange *connectivity*, but pair/quote-currenc
 
 ## 10. Hidden defaults or semantic coupling
 
-Incomplete/forming candles are **silently dropped by default** (`docs/exchanges.md`) — a runtime default with real backtest-vs-live implications, discovered here as a risk, not assumed benign. Backtest fill assumes open-price execution unless a custom-price callback is defined — documented, not a bug, but any parity-oracle work must instrument around it explicitly.
+Incomplete/forming candles are **silently dropped by default** (`docs/exchanges.md`) — a runtime default with real backtest-vs-live implications, discovered here as a risk, not assumed benign. Backtest fill assumes open-price execution unless a custom-price callback is defined — documented, not a bug, but any conformance-comparator work must instrument around it explicitly.
 
 ## 11. Performance characteristics
 

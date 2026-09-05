@@ -24,7 +24,7 @@ BSD-3-Clause, verified across `LICENSE.txt`, `pyproject.toml`, GitHub's SPDX fie
 
 ## 4. Maintenance / activity — real codebase, currently dormant
 
-Not an issue-tracker front-end like mlfinlab: 35,619 KB repo size, 16 tags from `0.1.0` (pre-2021) to `1.0.0` (2024), 15 GitHub Releases, a full `arbitragelab/` package with 12 submodules and a matching `tests/` directory (45 test files). But **activity has stalled**: no commits since 2024-05-19 — over 16 months as of this research (2026-09-05). Only 7 open issues, 692 stars/228 forks. **Verdict: a genuine prior open-source codebase, currently dormant/unmaintained, not a paywall front-end.**
+Not an issue-tracker front-end like mlfinlab: 35,619 KB repo size, 16 tags from `0.1.0` (pre-2021) to `1.0.0` (2024), 15 GitHub Releases, a full `arbitragelab/` package with 12 submodules and a matching `tests/` directory (45 test files). But **activity has stalled**: no commits since 2024-05-19 — approximately 27.5 months as of this research (2024-05-19 to 2026-09-05). Only 7 open issues, 692 stars/228 forks. **Verdict: a genuine prior open-source codebase, currently dormant/unmaintained, not a paywall front-end.**
 
 ## 5. Architecture summary
 
@@ -61,7 +61,7 @@ No benchmarks found this pass; none claimed anywhere reviewed.
 
 ## 12. What Signal Current could reuse
 
-The conceptual architecture/module taxonomy (cointegration vs. distance vs. copula vs. stochastic-control vs. ML pairs-selection, citing Krauss' taxonomy per README) is a useful reference for organizing Signal Current's own strategy library. Specific OU-model closed-form threshold formulas (Bertram, Zeng) are citable academic implementations worth using as a **parity oracle** to validate any from-scratch Kalman/OU implementation.
+The conceptual architecture/module taxonomy (cointegration vs. distance vs. copula vs. stochastic-control vs. ML pairs-selection, citing Krauss' taxonomy per README) is a useful reference for organizing Signal Current's own strategy library. Specific OU-model closed-form threshold formulas (Bertram, Zeng) are citable academic implementations worth using as a **conformance comparator** to validate any from-scratch Kalman/OU implementation.
 
 ## 13. What Signal Current should not inherit
 
@@ -77,7 +77,7 @@ Golden-value tests against the OU-model closed-form threshold papers (Bertram 20
 
 ## 16. Proposed disposition
 
-**REFERENCE**, with elements as **PARITY ORACLE** for specific closed-form OU/threshold formulas. License permits reuse (BSD-3-Clause, confirmed) and the codebase is real and substantive, but it is unmaintained (16+ months stale), dependency-pinned to an aging stack, and its paid layer (docs/support) means Signal Current can't lean on ongoing vendor support. Not ADOPT/FORK — too stale to take on as a live dependency. Use as documentation/design reference and as a checked-against oracle for a small number of well-cited closed-form formulas, not as installed infrastructure.
+**REFERENCE**, with elements as **CONFORMANCE COMPARATOR** for specific closed-form OU/threshold formulas. License permits reuse (BSD-3-Clause, confirmed) and the codebase is real and substantive, but it is unmaintained (~27.5 months stale as of 2026-09-05), dependency-pinned to an aging stack, and its paid layer (docs/support) means Signal Current can't lean on ongoing vendor support. Not ADOPT/FORK — too stale to take on as a live dependency. Use as documentation/design reference and as a checked-against conformance comparator for a small number of well-cited closed-form formulas, not as installed infrastructure.
 
 ## 17. Confidence level
 

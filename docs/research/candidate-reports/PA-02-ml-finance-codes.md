@@ -44,7 +44,7 @@ None — not a candidate for integration.
 
 ## 15. Required parity / golden tests
 
-Not applicable. **This repo provides no parity-oracle value for Reconciliation Matrix rows 27 (purging/embargo), 28 (CPCV), 33 (multiple-testing/PBO), or 40 (HRP)** — it does not implement those methods.
+Not applicable. **This repo provides no conformance-comparator value for Reconciliation Matrix rows 27 (purging/embargo), 28 (CPCV), 33 (multiple-testing/PBO), or 40 (HRP)** — it does not implement those methods.
 
 ## 16. Proposed disposition
 
@@ -59,7 +59,7 @@ Not applicable. **This repo provides no parity-oracle value for Reconciliation M
 - Exact current HEAD commit SHA/date for `mfrdixon/ML_Finance_Codes` — not needed further given REJECT, but noted for completeness.
 - Raw LICENSE file text/history — not needed further given REJECT.
 - **Whether the local capture's chapter/technique table was hallucinated, copy-pasted from a different resource, or describes some other repo entirely** — worth checking the capture's timestamp (2026-03-12 per the file) for how this error entered the collection. This is a data-hygiene question for Danny's broader homelab collection, not a signal-current research question, but worth flagging.
-- **What repo is actually López de Prado's canonical code for HRP/NCO/CPCV/PBO** — not established in this pass. The likely candidate is `hudson-and-thames/mlfinlab`, which needs its own primary-source candidate report before Signal Current's Validation & Statistical Controls spec cites any "original implementation" as a parity oracle for skfolio.
+- **What repo is actually López de Prado's canonical code for HRP/NCO/CPCV/PBO** — not established in this pass. The likely candidate is `hudson-and-thames/mlfinlab`, which needs its own primary-source candidate report before Signal Current's Validation & Statistical Controls spec cites any "original implementation" as a conformance comparator for skfolio.
 
 ## Sources
 

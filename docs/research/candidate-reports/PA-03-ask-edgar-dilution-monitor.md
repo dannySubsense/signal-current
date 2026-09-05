@@ -68,11 +68,11 @@ If Signal Current ever considered *calling* the Ask Edgar API directly (rather t
 
 ## 15. Required parity / golden tests if used as reference
 
-Not applicable — there is no algorithm here to build a parity oracle against. If Signal Current later wants a parity oracle for "what would Ask Edgar say about this ticker," it would need to be built against the hosted API's live JSON responses (with its own rate-limit/cost/determinism problems), not against this repo's code.
+Not applicable — there is no algorithm here to build a conformance comparator against. If Signal Current later wants a conformance comparator for "what would Ask Edgar say about this ticker," it would need to be built against the hosted API's live JSON responses (with its own rate-limit/cost/determinism problems), not against this repo's code.
 
 ## 16. Proposed disposition
 
-**REJECT** as an architecture/ingestion reference. Optionally **REFERENCE** at the taxonomy-naming level only (the six risk-category names) — a documentation convenience, not code reuse. Fails ADOPT/FORK/ADAPT/WRAP because there is no ingestion or scoring logic to take; fails PARITY ORACLE because the only oracle available would be a live paid third-party API with an already-flagged credential-hygiene problem, no license backing, and a black-box methodology — exactly the "unsourced number" anti-pattern this project's global rules warn against building on.
+**REJECT** as an architecture/ingestion reference. Optionally **REFERENCE** at the taxonomy-naming level only (the six risk-category names) — a documentation convenience, not code reuse. Fails ADOPT/FORK/ADAPT/WRAP because there is no ingestion or scoring logic to take; fails CONFORMANCE COMPARATOR because the only comparator available would be a live paid third-party API with an already-flagged credential-hygiene problem, no license backing, and a black-box methodology — exactly the "unsourced number" anti-pattern this project's global rules warn against building on.
 
 ## 17. Confidence level
 

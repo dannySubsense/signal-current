@@ -71,7 +71,7 @@ Adopting Qlib's data layer wholesale imports its region-default assumptions tran
 
 ## 16. Proposed disposition
 
-**REFERENCE** (architecture/pattern reference only) — not ADOPT/WRAP. Qlib is real, actively maintained, MIT-licensed, non-abandoned — the maintenance check comes back clean, a genuine counter-example to the other six candidates. But its data layer, defaults, and on-disk format are structurally CN/US-equity-daily-centric (explicit CN default config, CN trading-hour default), and its dependency footprint (PyTorch/LightGBM/XGBoost, proprietary binary data store) is heavy for a "wrap and reuse" strategy. Best use: a studied architecture/pattern reference for the workflow-config and expression-engine ideas, and a PARITY-ORACLE candidate specifically for point-in-time-correctness testing methodology — not infrastructure Signal Current runs directly.
+**REFERENCE** (architecture/pattern reference only) — not ADOPT/WRAP. Qlib is real, actively maintained, MIT-licensed, non-abandoned — the maintenance check comes back clean, a genuine counter-example to the other six candidates. But its data layer, defaults, and on-disk format are structurally CN/US-equity-daily-centric (explicit CN default config, CN trading-hour default), and its dependency footprint (PyTorch/LightGBM/XGBoost, proprietary binary data store) is heavy for a "wrap and reuse" strategy. Best use: a studied architecture/pattern reference for the workflow-config and expression-engine ideas, and a CONFORMANCE COMPARATOR candidate specifically for point-in-time-correctness testing methodology — not infrastructure Signal Current runs directly.
 
 ## 17. Confidence level
 

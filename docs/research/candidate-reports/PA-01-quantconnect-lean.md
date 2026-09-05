@@ -67,13 +67,13 @@ Cannot be stated definitively yet — asset-class/venue assumptions and cloud-se
 
 Apache-2.0 is permissive and low-risk for adaptation/reference use (attribution + NOTICE preservation only) — the one claim in this report at full confidence. Absence of semver releases since 2017 means any dependency must pin a commit SHA and periodically re-verify against `master`.
 
-## 15. Required parity / golden tests if used as a parity oracle
+## 15. Required parity / golden tests if used as a conformance comparator
 
 Cannot be specified responsibly yet — would require first reading `Engine/`'s event-loop and `Data/`'s subscription/consolidator code to know what to hold as ground truth.
 
 ## 16. Proposed disposition
 
-**REFERENCE only, pending deeper source-level investigation.** Not ADOPT/FORK/ADAPT/WRAP/PARITY ORACLE yet — those all require verifying §5, §8, §9, §10 against actual source, which this pass did not do.
+**REFERENCE only, pending deeper source-level investigation.** Not ADOPT/FORK/ADAPT/WRAP/CONFORMANCE COMPARATOR yet — those all require verifying §5, §8, §9, §10 against actual source, which this pass did not do.
 
 ## 17. Confidence level
 

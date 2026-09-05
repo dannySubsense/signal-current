@@ -56,7 +56,7 @@ README claims the Cython/NumPy binding is "2-4x faster than the SWIG interface" 
 
 ## 12. What Signal Current could reuse
 
-The C core's battle-tested numeric kernels (especially the Wilder-family and overlap studies) as a computation backend or as a golden-reference oracle; the Abstract API's per-function metadata model as a pattern for a versioned indicator-definition schema.
+The C core's battle-tested numeric kernels (especially the Wilder-family and overlap studies) as a computation backend or as a conformance comparator; the Abstract API's per-function metadata model as a pattern for a versioned indicator-definition schema.
 
 ## 13. What Signal Current should not inherit
 
@@ -74,7 +74,7 @@ Native C compilation dependency (a separate install step per OS) is an operation
 
 ## 16. Proposed disposition
 
-**PARITY ORACLE** (primary) + **WRAP** (secondary, if operationally acceptable). Use pinned-version TA-Lib C output as the versioned reference/ground-truth oracle for Wilder-family indicators specifically because its convention is explicit, documented, and widely deployed — but do not adopt it as Signal Current's sole runtime indicator engine without isolating the native-dependency risk, and **do not conflate "matches TA-Lib" with "matches the original published formula"** — test against both.
+**CONFORMANCE COMPARATOR** (primary) + **WRAP** (secondary, if operationally acceptable). Use pinned-version TA-Lib C output as the versioned external regression fixture for Wilder-family indicators specifically because its convention is explicit, documented, and widely deployed — but do not adopt it as Signal Current's sole runtime indicator engine without isolating the native-dependency risk, and **do not conflate "matches TA-Lib" with "matches the original published formula"** — test against both.
 
 ## 17. Confidence level
 

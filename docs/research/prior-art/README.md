@@ -59,10 +59,11 @@ Every serious candidate receives:
 - **ADAPT** — reuse substantial implementation while translating semantics through Signal Current interfaces.
 - **WRAP** — preserve upstream behavior but isolate it behind an adapter.
 - **REFERENCE** — learn from architecture/code/tests but independently implement.
-- **PARITY ORACLE** — use as an independent comparator, not production dependency.
+- **CONFORMANCE COMPARATOR** — run a full external engine/library and diff its output against ours to surface disagreement; not a production dependency. Disagreement sends us back to the primary source; it is not evidence the external side is right.
+- **EXTERNAL REGRESSION FIXTURE** — freeze a pinned-version/single-test external output as a change-detection fixture. Proves our behaviour did not drift; proves nothing about correctness.
 - **REJECT** — do not depend on or model Signal Current after it.
 
-A project may receive more than one role. Example: a package can be both **REFERENCE** and **PARITY ORACLE**.
+A project may receive more than one role. Example: a package can be both **REFERENCE** and **CONFORMANCE COMPARATOR**.
 
 ## Freeze Relationship
 

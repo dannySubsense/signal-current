@@ -1,6 +1,6 @@
 # Candidate Report — je-suis-tm/quant-trading
 
-**Stream:** PA-01 (Systems & Engine Survey), narrowly as a fixture/formula-oracle source, not an engine.
+**Stream:** PA-01 (Systems & Engine Survey), narrowly as an external-regression-fixture source, not an engine.
 **Status:** Eleventh PA-01-area candidate report. Confirms the homelab survey's original "fixture source, not infrastructure" framing.
 **Researched:** 2026-09-05, via primary-source fetches (GitHub API/`gh api`, LICENSE file, README, direct read of `MACD Oscillator backtest.py`) — not general knowledge recall.
 
@@ -62,11 +62,11 @@ Apache-2.0 is permissive and compatible with reuse (attribution + NOTICE-carry r
 
 ## 15. Required parity / golden tests if used as reference
 
-For each strategy pulled in as a fixture: (a) freeze a fixed OHLC input series (not live-fetched) and assert signal-generation output matches the reference script's output bit-for-bit or within float tolerance; (b) explicitly do **not** parity-test P&L/backtest numbers, only signal/indicator values, given the admitted frictionless assumption; (c) pin the exact commit SHA of the reference file used as the oracle, since the repo has no version tags.
+For each strategy pulled in as a fixture: (a) freeze a fixed OHLC input series (not live-fetched) and assert signal-generation output matches the reference script's output bit-for-bit or within float tolerance; (b) explicitly do **not** parity-test P&L/backtest numbers, only signal/indicator values, given the admitted frictionless assumption; (c) pin the exact commit SHA of the reference file used as the external regression fixture, since the repo has no version tags.
 
 ## 16. Proposed disposition
 
-**REFERENCE, narrowly, as a per-indicator formula oracle for the signal-generation math only. REJECT as infrastructure or as a source of backtest-methodology precedent.** This confirms the homelab survey's original framing: useful as named individual fixtures, not as production or even architectural precedent, given zero tests, no CI, frictionless-only economics, and an interactive/non-deterministic execution model.
+**REFERENCE, narrowly, as a per-indicator external regression fixture for the signal-generation math only. REJECT as infrastructure or as a source of backtest-methodology precedent.** This confirms the homelab survey's original framing: useful as named individual fixtures, not as production or even architectural precedent, given zero tests, no CI, frictionless-only economics, and an interactive/non-deterministic execution model.
 
 ## 17. Confidence level
 
