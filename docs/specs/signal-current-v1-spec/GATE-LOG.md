@@ -684,4 +684,35 @@ this attempt). Attempt counter: 9, PASS. The Carried Condition (stale Constituti
 deferred to the freeze commit, per Frank's own routing — not a blocker to presenting this set to
 Danny now.
 
+**Post-verification correction, added 2026-09-05 per Sol's cold independent review (target SHA
+`99d3673`):** this attempt-9 verdict text above is left unedited, per this log's own convention that
+a verdict, once issued, is corrected alongside rather than rewritten. Two of its claims did not
+survive Sol's independent check:
+
+1. **Numeric sweep was not exhaustive.** The "only hits are..." sentence above omits "roughly 90
+   peer venue-adapter repositories" — present in `docs/specs/02-system-architecture.md:326`,
+   `docs/specs/04-data-architecture-strategy-ir.md:231`, and
+   `docs/specs/08-implementation-roadmap.md:134`. This value is in the same external/not-adopted
+   citation category as the `390` value the sweep did list (both cited from prior-art research,
+   both explicitly not adopted as Signal Current settings) — there is no basis on which `390`
+   qualified for the sweep and `90` did not. The sweep's claim to completeness was false.
+2. **Spec-content axis was not actually closed.** Sol's cold review found a real, verified BLOCKER
+   in doc 05 §2.1's "distinct identity" definition (items 1 and 3): two `AuditActor` entries with
+   `actorType: 'human'` and different `actorId`s are always treated as distinct, and human/agent
+   pairs are always treated as distinct, with no check for whether the same natural person controls
+   both sides (a different account, or a human directing their own agent's reproduction). Doc 04
+   §5.4's session-initiation-authority rule only applies where an agent is on one side — it defines
+   no mechanism at all for the human-side equivalent of the agent-side "one orchestrator, one
+   session = one well" loophole that items 1-2 already close. Nine Frank spec-gate attempts (six
+   briefed, three Cold) traced the agent-side session-gaming loophole in detail and never surfaced
+   this adjacent gap on the human side. **The "SHRINKING to zero on both axes" and "Convergence
+   classification: CLOSED, both axes" statements above do not hold.** The spec-content axis is
+   reopened by this finding; it was not closed as claimed.
+
+**This PASS is withdrawn as evidence that the spec set is ready for Danny's approval.** Fix routed
+to `@architect` (docs 04/05/06 — widen the distinct-identity definition and U-12's resolution
+condition to cover controller/natural-person equivalence, not just session/agent identity; per this
+project's PROVISIONAL discipline, not a fabricated identity-verification mechanism). A further
+genuinely Cold Frank re-gate follows once that fix lands and is verified.
+
 ---
