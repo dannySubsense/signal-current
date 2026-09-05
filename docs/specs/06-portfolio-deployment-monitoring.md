@@ -92,7 +92,10 @@ interface StrategyArtifactPassport {
   validationPlanRef: string;
   /** Structural complexity descriptor (e.g., primitive count, dimension count) — exact schema is a
    *  future amendment; this document fixes only that complexity is a recorded, inspectable field, not
-   *  an unrecorded property of the IR. */
+   *  an unrecorded property of the IR. Exact schema is **PROVISIONAL — unvalidated, owner Danny** (§16),
+   *  resolution condition tied to whichever schema-design session addresses `StrategyArtifactPassport`'s
+   *  `complexity` field — most naturally the same U-01a schema-design session document 08 §3 Phase R1
+   *  sequences for `StrategyIR`, since complexity descriptors are read off the same IR shape. */
   complexity: Record<string, unknown>;
   /** Regime coverage this artifact's validation evidence actually spans, per Validation §9's regime-stress
    *  robustness family where applicable. */
@@ -644,6 +647,7 @@ No HALT condition applies.
 | Behavioral-diversification "sufficiently diversified" threshold (§4.1) | PROVISIONAL — unvalidated | Danny | Dedicated portfolio-qualification research-design pass, informed by whichever allocator/diversification reference implementation (e.g., skfolio, pending its own PA-10 acceptance gates) is used for comparison |
 | Contribution-testing "non-redundant" threshold (§4.4) | PROVISIONAL — unvalidated | Danny | Resolved alongside the behavioral-diversification threshold above, since both depend on the same portfolio-qualification research design |
 | Incubation-stage durations, evidence-sufficiency criteria, and capital thresholds distinguishing `small-risk` from `graduated` (§8) | PROVISIONAL — unvalidated | Danny | Dedicated incubation/risk-graduation design pass, informed by whichever concrete deployment target and capital model the Roadmap selects |
+| `StrategyArtifactPassport.complexity` (§3) — exact schema for the structural complexity descriptor (which fields, what "primitive count"/"dimension count" concretely means) | PROVISIONAL — unvalidated | Danny | Resolved in whichever schema-design session addresses `StrategyArtifactPassport` — most naturally the same U-01a `StrategyIR` schema-design session document 08 §3 Phase R1 sequences, since `complexity` is read off the same IR shape those golden examples fix |
 
 No numeric constant (tolerance percentage, diversification threshold, redundancy threshold, incubation
 duration, capital threshold, auth protocol specifics) is introduced anywhere in this document. Every
@@ -657,6 +661,7 @@ listed here only for completeness, not as an open item.
 
 This document may be revised before v1.0 freeze as contradictions are discovered during Agent
 specification work (document 07) and Roadmap sequencing work (document 08) (Constitution §11), and MUST be
-revised once the dedicated design work named in §16 resolves U-07/U-12 — at that point this document is
-amended (not silently superseded) to replace the PROVISIONAL tags with cited, versioned tolerance
-values/protocol decisions. After freeze, amendment requires an explicit ADR and version change.
+revised once the dedicated design work named in §16 resolves U-07/U-12/the `complexity` field schema — at
+that point this document is amended (not silently superseded) to replace the PROVISIONAL tags with cited,
+versioned tolerance values/protocol decisions/schema fields. After freeze, amendment requires an explicit
+ADR and version change.
