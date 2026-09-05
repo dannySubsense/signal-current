@@ -6,7 +6,9 @@ Matrix), `docs/specs/01-constitution.md`, `docs/specs/02-system-architecture.md`
 eight-document set clears Frank's binding spec-gate.
 
 **Provenance:** @architect.
-**Editorial corrections:** @architect, 2026-09-05, per `05-REVIEW.md` gap G8.
+**Editorial corrections:** @architect, 2026-09-05, per `05-REVIEW.md` gap G8. @architect, 2026-09-05, per Frank's spec-gate attempt-2 finding F1/F2 — added the audit/lineage event
+principal contract (§5.4), so `IndependentReproductionRecord.originalAuthor`/`reproducedBy` (document 05 §2)
+have a real, bound actor reference instead of free strings.
 
 **Primary question this document answers:** What are the canonical data, artifact, schema, lineage and
 executable strategy contracts?
@@ -267,6 +269,65 @@ remain implementation decisions where not semantically important."
    document 08 in Architecture §14 — this document does not re-decide it. This document fixes only the
    store's required properties: immutability of market/feature data, separation of analytical-scan access
    from transactional lineage access, and content-addressed identity for every artifact class named above.
+
+### 5.4 Audit/lineage event actor contract
+
+Per Architecture §4.2's naming of this document as the audit-log schema owner ("the exact audit-log schema
+is also document 04's job") and Constitution §9.1 / Matrix row 53 ("state transitions and consequential
+actions produce versioned audit events with actor, correlation/causation ID, and artifact references"): the
+transactional-metadata/lineage store (§5 item 2) MUST carry a principal/actor field on every audit/lineage
+event it records. This document fixes the actor contract itself was previously absent from this document
+despite being the schema owner named for it — grep of this document prior to this fix pass confirms zero
+occurrences of "actor" anywhere in its text.
+
+```typescript
+/**
+ * A distinct, resolvable identity — a human account or a specific, individually-identified agent
+ * invocation/session — never an unbound free-text label. Per Constitution §9.1/Matrix row 53, every
+ * audit/lineage event MUST reference one of these, not a string an emitter is free to author.
+ */
+interface AuditActor {
+  /** Content-addressed or otherwise stable, unique identifier for this principal. */
+  actorId: string;
+  /** 'human' or 'agent' — never conflated; an agent invocation is not a human account. */
+  actorType: 'human' | 'agent';
+  /**
+   * For actorType 'agent': the specific orchestration-session/invocation identity that produced this
+   * event — not merely a role name. Two agent role labels (e.g. "validator" and "reproducer") driven by
+   * the same orchestration session MUST share the same orchestrationSessionId, per document 05 §2.1's
+   * "distinct identity" definition (which this field exists to make checkable, not merely asserted).
+   */
+  orchestrationSessionId?: string;
+}
+
+/**
+ * The audit/lineage event envelope this document owns, per Architecture §4.2. Every event in the
+ * transactional-metadata/lineage store (§5 item 2) is shaped as at least this envelope; specific event
+ * kinds (promotion-gate transitions, lockbox access, independent-reproduction runs, etc.) extend it with
+ * kind-specific fields, per Architecture §3.2 and document 05 §11.2.
+ */
+interface AuditLineageEvent {
+  /** Content-addressed identity of this event itself. */
+  id: string;
+  /** The principal responsible for this event — see AuditActor above. Never a free string. */
+  actor: AuditActor;
+  /** Correlation/causation IDs per Constitution §9.1 / Matrix row 53. */
+  correlationId: string;
+  causationId?: string;
+  /** Content-addressed references to the artifact(s) this event concerns. */
+  artifactRefs: string[];
+  timestamp: string;
+  /** Event-kind-specific payload; exact per-kind shapes are this document's and document 05's job as
+   *  specific event kinds are defined (e.g. document 05 §11.2's lockbox-access event, §2's
+   *  reproduction-record event). */
+  eventKind: string;
+}
+```
+
+This is the binding target for document 05 §2's `IndependentReproductionRecord.originalAuthor` and
+`reproducedBy` fields: both are references to `AuditActor.actorId` values drawn from `AuditLineageEvent`
+entries this store already requires to exist, per Constitution §9.1 and Matrix row 53 — not independently
+authored strings a `ValidationPlan` emitter is free to populate.
 
 ## 6. No privileged market dimension, applied at the data layer
 

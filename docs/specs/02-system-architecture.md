@@ -5,7 +5,7 @@ Matrix) and `docs/specs/01-constitution.md`. Not yet independently reviewed. Fro
 eight-document set clears Frank's binding spec-gate.
 
 **Provenance:** @architect.
-**Editorial corrections:** @architect, 2026-09-05, per `05-REVIEW.md` gaps G8/G11; @architect, 2026-09-05, per Frank's spec-gate attempt-1 finding F3 (§12 "zero remaining occurrences" rescoped).
+**Editorial corrections:** @architect, 2026-09-05, per `05-REVIEW.md` gaps G8/G11; @architect, 2026-09-05, per Frank's spec-gate attempt-1 finding F3 (§12 "zero remaining occurrences" rescoped). @architect, 2026-09-05, per Frank's spec-gate attempt-2 findings F2 (§3.1/§3.2/§5 amended to include independent reproduction) and F3-minor (§12 overshot sentence removed, kickoff doc added to historical-reference list).
 
 **Primary question this document answers:** What are the bounded domains, components, interfaces, states
 and invariants of Signal Current?
@@ -101,7 +101,7 @@ schema is document 04's job (U-01 for `StrategyIR` specifically).
 | `ExperimentDefinition` / `CampaignSpec` | A typed, replayable definition of a search/experiment: search space, budget, seeds, generator config. Selects and constrains a region of the compositional research space. | Immutable once an experiment run references it | Quant Laboratory | Matrix rows 3 (thesis), 17, 19 |
 | `StrategyIR Candidate` | A fully resolved, executable strategy composition emitted by a generator (manual, GA, Bayesian, agent-proposed) against a `CampaignSpec`. Executable and semantically complete — no ambiguity permitted. | Immutable once created; a candidate is never mutated after creation, only superseded by a new candidate | Quant Laboratory | Constitution §3.2; Matrix rows 9, 11, 17 |
 | `SimulationRun` | The deterministic (or seedable-stochastic, per Constitution §7) execution of one `StrategyIR Candidate` against one versioned input tuple, producing an event ledger and metrics. | Immutable | Quant Laboratory | Constitution §7; Matrix row 22 |
-| `ValidationArtifact` | The output of the Validation & Statistical Controls process against one or more `SimulationRun`s: purge/embargo application, CPCV (where applicable), OOS evaluation, multiple-testing diagnostics, cost stress. Records applicability decisions, not just pass/fail. | Immutable | Quant Laboratory | Constitution §5; Matrix rows 27-35 |
+| `ValidationArtifact` | The output of the Validation & Statistical Controls process against one or more `SimulationRun`s: purge/embargo application, CPCV (where applicable), OOS evaluation, multiple-testing diagnostics, cost stress, and an independent-reproduction record (Constitution §3 item 7; Matrix row 59). Records applicability decisions, not just pass/fail. | Immutable | Quant Laboratory | Constitution §5, §3 item 7; Matrix rows 27-35, 59 |
 | `StrategyArtifact` | An immutable, promoted strategy "passport": IR, provenance, campaign/search budget, cost model, validation evidence, complexity, regime coverage, decision history. Only exists after required gates pass. | Immutable; retraining creates a new lineage child, never a mutation | Quant Laboratory | Constitution §3.3, §3.6; Matrix rows 37, 38, 48 |
 | `PortfolioArtifact` | A promoted combination of `StrategyArtifact`s under shared-capital/shared-account simulation with behavioral-diversification and contribution evidence. | Immutable | Portfolio | Constitution §5.9; Matrix rows 39-42 |
 | `BuildArtifact` | A compiled/generated target-platform representation of a `StrategyArtifact`/`PortfolioArtifact`, with build metadata. | Immutable | Deployment & Monitoring | Constitution §3.4; Matrix row 43 |
@@ -118,7 +118,10 @@ and §9.1, every gate transition:
 1. is a versioned audit event with actor, correlation/causation ID, and artifact references (Matrix row 53);
 2. is one-directional — no gate silently reverses an upstream artifact;
 3. requires the specific evidence named for that gate (e.g., `ValidationArtifact` requires purge/embargo
-   application record, OOS evaluation, multiple-testing diagnostics per Constitution §5);
+   application record, OOS evaluation, multiple-testing diagnostics per Constitution §5, and — additional to
+   and never a substitute for those method-level checks — an independent-reproduction record showing someone
+   other than the original author/authoring agent reran the validation against the same content-addressed
+   inputs and obtained the same result, per Constitution §3 item 7 and Matrix row 59);
 4. for gates promoting a material-risk-bearing artifact (`DeploymentArtifact` risk-tier promotion, per
    Constitution §6 and Matrix row 49), requires explicit human authorization that no agent may serve as,
    substitute for, or impersonate, regardless of agent confidence.
@@ -181,8 +184,8 @@ at the service layer.
 | **Campaign/Generator Service** | Accepts a `CampaignSpec`, invokes one or more pluggable generators (manual, GA, evolutionary, Bayesian/surrogate, agent-proposed), emits `StrategyIR Candidate`s. All generators emit the same IR shape and use the same downstream simulation/validation path. | Quant Laboratory | Matrix row 17 |
 | **Data Access Gateway** | Sole mediated path to market/feature data; enforces Exploration/Validation/Lockbox zone boundary; audits lockbox access. | Quant Laboratory (cross-cutting) | Constitution §4; Matrix rows 26, 36 |
 | **Deterministic Simulation Engine** | Executes a `StrategyIR Candidate` against a versioned input tuple; produces a `SimulationRun` (event ledger + metrics). Supports tiered fidelity, selected via explicit contract, never a hardcoded default resolution. Sole source of numerical research truth (Constitution §1, §8). | Quant Laboratory | Constitution §1, §8; Matrix rows 1, 20-22 |
-| **Validation & Statistical Controls Service** | Applies purge/embargo, CPCV where applicable, OOS/walk-forward evaluation, multiple-testing diagnostics, cost-model stress; produces `ValidationArtifact`. Records applicability decisions machine-readably, not just outcomes. | Quant Laboratory | Constitution §5; Matrix rows 27-34 |
-| **Promotion/Gate Service** | Owns the audited state-transition machine of §3.2; the only component authorized to mint an immutable `StrategyArtifact`, `PortfolioArtifact`, `BuildArtifact`, or `DeploymentArtifact`. Enforces the human-authorization gate for material-risk promotions. | Cross-cutting (Quant Laboratory / Portfolio / Deployment) | Constitution §6; Matrix row 49 |
+| **Validation & Statistical Controls Service** | Applies purge/embargo, CPCV where applicable, OOS/walk-forward evaluation, multiple-testing diagnostics, cost-model stress; produces `ValidationArtifact`. Records applicability decisions machine-readably, not just outcomes. Also the sole component authorized to compute and populate `IndependentReproductionRecord.matched` — by comparing the original run's content-addressed output against a distinct actor's reproduction run — never a directly-asserted boolean. | Quant Laboratory | Constitution §5, §3 item 7; Matrix rows 27-34, 59 |
+| **Promotion/Gate Service** | Owns the audited state-transition machine of §3.2; the only component authorized to mint an immutable `StrategyArtifact`, `PortfolioArtifact`, `BuildArtifact`, or `DeploymentArtifact`. Enforces the human-authorization gate for material-risk promotions. Also enforces the independent-reproduction gate (Constitution §3 item 7; Matrix row 59): refuses `StrategyArtifact` promotion unless the candidate's `ValidationArtifact` carries a resolved `IndependentReproductionRecord` (per document 05 §2/§2.1). | Cross-cutting (Quant Laboratory / Portfolio / Deployment) | Constitution §6, §3 item 7; Matrix rows 49, 59 |
 | **Portfolio Service** | Combines `StrategyArtifact`s under shared-capital simulation; runs behavioral-diversification, HRP/alternative-allocator comparison, leave-one-out contribution testing. | Portfolio | Matrix rows 39-42 |
 | **Build/Conformance Service** | Compiles a promoted artifact toward a target platform; runs conformance checks within an explicit tolerance policy (U-07, deferred). | Deployment & Monitoring | Matrix rows 43-45 |
 | **Incubation/Risk-Graduation Service** | Manages paper → shadow → small-risk progression; enforces human authorization before material risk (Constitution §6; Matrix row 49). | Deployment & Monitoring | Matrix row 46 |
@@ -374,9 +377,13 @@ This document fixes the boundary that decision must respect, without pre-decidin
   evidence ("PARITY ORACLE"-style conflation) — rejected per Constitution §8; any such label previously
   found in PA-10 was already corrected against Matrix rows 1/16. No PARITY ORACLE label survives as an
   active disposition in `docs/research/prior-art/PA-10-reuse-decision-register.md` or any candidate
-  report — the term is fully retired from research-program vocabulary. References to it remaining in
-  this sprint's own scaffolding (`NORTH-STAR.md`, `INTAKE.md`, `01-REQUIREMENTS.md`) are historical
-  descriptions of that correction, not live labels, and were not carried into this architecture.
+  report — that specific claim is verified true (zero occurrences in the PA-10 register and in
+  `docs/research/candidate-reports/`). References to it remaining in this sprint's own scaffolding
+  (`NORTH-STAR.md`, `INTAKE.md`, `01-REQUIREMENTS.md`) and in
+  `Signal_Current_Specification_Set/CLAUDE_CODE_GREENFIELD_KICKOFF.md` (a historical research-input
+  document, not authority, which as of this writing still lists PARITY ORACLE as an allowed disposition
+  at line ~183) are historical references to a prior state, not live labels, and were not carried into
+  this architecture.
 - Autonomous agent-driven promotion of any material-risk-bearing artifact — rejected per Constitution §6
   and Matrix row 49; see TradingAgents' Portfolio-Manager-as-LLM-approval pattern
   (`docs/research/candidate-reports/PA-08-tradingagents.md`), cited here as a concrete negative precedent
