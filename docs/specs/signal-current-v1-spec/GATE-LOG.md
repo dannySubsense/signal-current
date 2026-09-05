@@ -55,13 +55,16 @@ re-verified against live files, commit c690132 confirmed to close N1/N2/N4.
 5. 02 §12 "zero remaining occurrences" rescoping — route to @architect.
 6. 01-constitution Status line staleness — route to @architect.
 7. Record vacuous-benchmark disposition durably in this log — done, above.
-8. Snapshot before re-delegation — **correction, added 2026-09-05 per Frank's Cold Frank attempt-7
-   finding F1:** no `.gate-snapshots/` directory was ever actually created or committed for this
-   sprint (`git log --all -- docs/specs/signal-current-v1-spec/.gate-snapshots/` returns nothing).
-   This line originally asserted the snapshot existed; it did not. The convergence classifications
-   below (attempts 2-4's "SHRINKING, re-derived from snapshot diffs") were in fact derived from
-   comparing the attempt SHAs' actual file diffs (`git diff` between each attempt's commit and the
-   prior one), not from a snapshot directory — see the corrected wording at those entries.
+8. Snapshot before re-delegation — done, `.gate-snapshots/spec/attempt-1/`. **Correction withdrawn,
+   added 2026-09-05 per Cold Frank attempt-8 finding F1:** attempt-7's Cold Frank finding that this
+   directory "does not exist" was itself wrong — it ran `git log --all -- .gate-snapshots` from
+   repo root; the directory lives at `docs/specs/signal-current-v1-spec/.gate-snapshots/spec/`, per
+   `docs/CADENCE.md:35`. Attempt 8 verified all five `attempt-{1..5}/` snapshots are git-tracked (74
+   files, committed in the five attempt commits `4f01dc5`/`27bbd13`/`b951563`/`4027fa1`/`8a63daa`)
+   and byte-identical to their commit parents. The orchestrator authored the withdrawn correction
+   above without re-opening the directory it was about — adopting attempt-7's finding rather than
+   verifying it, the same doer/checker shared-well failure this repo's own CLAUDE.md names. This
+   line's original wording was correct all along; the intervening "correction" was not.
 
 Attempt counter: 1 of 3 (uncapped per Danny's "keep going" ruling on this sprint — the loop
 continues past 3 rather than auto-halting; see docs/specs/signal-current-v1-spec/INTERVIEW.md).
@@ -151,9 +154,10 @@ iteration index") with no mapping to "orchestration session," and doc 07's own c
 doesn't cover doc 04. If the orchestrator can self-declare the session id, the "two agent roles,
 one session = one well" loophole is back.
 
-**Loop classification: SHRINKING**, per Frank's own re-derivation from the two attempt commit
-diffs (`git diff` between the attempt-1 and attempt-2 fix commits; no `.gate-snapshots/` directory
-exists — corrected 2026-09-05 per Cold Frank attempt-7 finding F1) —
+**Loop classification: SHRINKING**, per Frank's own re-derivation from the two snapshot diffs
+(**correction withdrawn, 2026-09-05, per Cold Frank attempt-8 finding F1** — attempt 7 wrongly
+claimed `.gate-snapshots/` doesn't exist; it does, at `docs/specs/signal-current-v1-spec/.gate-snapshots/spec/`,
+git-tracked and byte-verified against its commit parent) —
 attempt 1 touched 5 files fixing "Thesis absent from the well," attempt 2 touched 3 files fixing
 "record assertion-shaped, doc 02 unamended, two things unspecified," attempt 3's remaining findings
 are each a single missing sentence. No new territory opened at any attempt.
@@ -213,9 +217,10 @@ satisfying distinctness on paper while remaining one well in fact.
 rubber-stamp entry" — true only once F1 above closes; a claim ahead of its mechanism, same failure
 shape as attempt 1's "zero remaining occurrences" overreach.
 
-**Convergence classification: SHRINKING**, re-derived from all 4 attempt commit diffs (no
-`.gate-snapshots/` directory exists — corrected 2026-09-05 per Cold Frank attempt-7 finding F1).
-Frank explicitly
+**Convergence classification: SHRINKING**, re-derived from all 4 snapshot diffs (**correction
+withdrawn, 2026-09-05, per Cold Frank attempt-8 finding F1** — attempt 7 wrongly claimed
+`.gate-snapshots/` doesn't exist; it does, all 5 attempt directories git-tracked and byte-verified
+against their commit parents). Frank explicitly
 named this the terminal notch: the next layer down is authentication itself (which identity
 provider, which token mechanism) — already correctly PROVISIONAL under U-12, owner Danny. The spec
 cannot and should not pick the auth product; it must only (a) name the enforcement point for the
@@ -464,5 +469,16 @@ never surfaced this axis because none of them was genuinely unbriefed; a Cold Fr
 required to find it. Attempt counter: 7. Next step per Cold Frank's own verdict: re-run a genuine
 Cold Frank once the gate-record fixes above are committed, to confirm this axis is closed before
 treating the sprint as ready for Danny's approval.
+
+**Post-verification, added 2026-09-05 per Cold Frank attempt-8:** this attempt-7 verdict's F2 and
+F3 findings did not change and are correct — Carried Condition 2 really was omitted from the
+original attempt-6 entry, and the orchestrator's independent review really was missing. **F1 did
+not survive verification against the live repo tree** — `.gate-snapshots/` exists at
+`docs/specs/signal-current-v1-spec/.gate-snapshots/spec/`, git-tracked, byte-identical to its
+commit parents; attempt 7's citation ran the wrong path from repo root. The orchestrator adopted
+F1 without independently checking it and wrote a false "never existed" correction into three places
+in this log as a result — see attempt-8 below and the withdrawn corrections at attempt-1 item 8 and
+the attempt-3/attempt-4 convergence paragraphs above. This verbatim verdict text itself is left
+unedited, per Frank's own instruction that a verdict, once issued, is not rewritten — only checked.
 
 ---
