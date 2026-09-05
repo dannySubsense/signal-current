@@ -368,8 +368,9 @@ This document fixes the boundary that decision must respect, without pre-decidin
 - Region/venue/timeframe silent defaults anywhere in core engine code — rejected per Constitution §2 and
   the Qlib CN-region and Zipline-reloaded NYSE-session precedents cited in §7.2.
 - Treating an external engine's parity/regression pass as equivalent to Signal Current's own numerical
-  evidence ("PARITY ORACLE"-style conflation) — rejected per Constitution §8; any such label found in PA-10
-  is corrected against Matrix rows 1/16, not carried into this architecture.
+  evidence ("PARITY ORACLE"-style conflation) — rejected per Constitution §8; any such label previously
+  found in PA-10 was already corrected against Matrix rows 1/16 (repo-wide grep confirms zero remaining
+  occurrences) and was not carried into this architecture.
 - Autonomous agent-driven promotion of any material-risk-bearing artifact — rejected per Constitution §6
   and Matrix row 49; see TradingAgents' Portfolio-Manager-as-LLM-approval pattern
   (`docs/research/candidate-reports/PA-08-tradingagents.md`), cited here as a concrete negative precedent
@@ -402,8 +403,10 @@ architecture document.
 | U-11: agent harness activation gate and exact permission matrix | Deferred, not PROVISIONAL — explicitly out of P0 scope | Document 07 owner | Resolved when document 07 (Agent & Orchestration Layer) is drafted, per Matrix row 56's stated criterion: "activate after core APIs/artifacts/gates are stable enough to constrain agents" |
 | U-01/U-02/U-03 (StrategyIR schema, execution semantics, broker/venue normalization) | Deferred, not PROVISIONAL — explicitly document 04's scope | Document 04 owner | Resolved when document 04 (Data Architecture & Strategy IR) is drafted; this document fixes only the boundary contracts in §3.1, §9, §10 |
 
-No numeric constant (threshold, budget, tolerance, sample-size minimum) is introduced anywhere in this
-document. Every deferred decision above is either a product/technology choice explicitly out of scope per
+No numeric constant is adopted as a Signal Current setting anywhere in this document. The only numeric
+literals present (threshold, budget, tolerance, sample-size minimum) are external values quoted from cited
+candidate reports (e.g. §7.2's `minutes_per_day=390`, §10's "roughly 90 peer venue-adapter repositories")
+and explicitly rejected as settings, not adopted defaults. Every deferred decision above is either a product/technology choice explicitly out of scope per
 the Reconciliation Matrix (U-08/U-09/U-10/U-11) or a schema/semantics decision explicitly scoped to a later
 document (U-01/U-02/U-03) — none is guessed here.
 

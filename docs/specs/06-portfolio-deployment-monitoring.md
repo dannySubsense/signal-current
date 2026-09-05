@@ -31,7 +31,7 @@ satisfy once dedicated design work produces them. It does NOT invent:**
 - specific incubation-stage durations, capital thresholds, or graduation criteria numbers.
 
 Each of the above is tagged **PROVISIONAL — unvalidated**, owner **Danny**, with a named resolution
-condition, in §10. Per this repo's `CLAUDE.md` Research Data Integrity rules, an unsourced number in a
+condition, in §16. Per this repo's `CLAUDE.md` Research Data Integrity rules, an unsourced number in a
 research/data/deployment path is a hypothesis, not a setting; none is smuggled in here as a setting.
 
 This document also does NOT re-decide:
@@ -163,7 +163,7 @@ interface BehavioralDiversificationDecision {
    *  decision — fixed now, per Matrix row 39 and Constitution §5 item 9. */
   parameterTimeframeDiversityContext?: Record<string, unknown>;
   /** Whether the candidate set is judged sufficiently diversified given the measures above. Exact
-   *  thresholds are PROVISIONAL — §10. */
+   *  thresholds are PROVISIONAL — §16. */
   sufficientlyDiversified: boolean;
   justification: string;
 }
@@ -171,7 +171,7 @@ interface BehavioralDiversificationDecision {
 
 This document fixes the decision structure — six named overlap dimensions must each be measured and
 recorded, and parameter/timeframe diversity is explicitly insufficient on its own — without fixing the
-numeric threshold that separates "sufficiently diversified" from "not," which is PROVISIONAL (§10),
+numeric threshold that separates "sufficiently diversified" from "not," which is PROVISIONAL (§16),
 consistent with this program's no-fabricated-constants discipline.
 
 ### 4.2 HRP as first-class, not-only allocator (Matrix row 40)
@@ -251,7 +251,7 @@ interface ContributionTestingDecision {
   regimeCoverage: unknown;
   capitalUtilization: unknown;
   /** Whether the full member set, after all measures above, is judged non-redundant. Exact thresholds
-   *  PROVISIONAL — §10. */
+   *  PROVISIONAL — §16. */
   nonRedundant: boolean;
   justification: string;
 }
@@ -345,7 +345,7 @@ interface HumanAuthorizationRecord {
   /** The DeploymentArtifact (or incubation-stage graduation event, per §8) this authorization concerns. */
   deploymentArtifactRef: string;
   /** Identity of the specific named human who authorized this promotion — never a role placeholder, never
-   *  an agent identity, never a service account. Exact identity/auth mechanism is PROVISIONAL (§10, U-12);
+   *  an agent identity, never a service account. Exact identity/auth mechanism is PROVISIONAL (§16, U-12);
    *  the requirement that it resolve to one accountable, named human is fixed now. */
   authorizingHumanId: string;
   /** The evidence this human reviewed before authorizing — required, non-optional. At minimum: the
@@ -366,7 +366,7 @@ Operationally, this document fixes:
 
 1. **Who:** a specific, named, accountable human — never a role placeholder, a committee alias without an
    individual attestor, or any agent/service identity. The exact identity/access-control mechanism that
-   verifies this human's identity is PROVISIONAL (§10, U-12).
+   verifies this human's identity is PROVISIONAL (§16, U-12).
 2. **What they review:** the full evidence chain named in `evidenceReviewedRefs` above — the human
    authorization is not valid if it references an incomplete evidence set (e.g., a `DeploymentArtifact`
    whose `BuildArtifact.conformanceResult` is missing from `evidenceReviewedRefs`).
@@ -414,7 +414,7 @@ interface GraduationEvent {
   toStage: IncubationStage;
   /** Evidence supporting this graduation — e.g., a LiveObservationSet/HealthAssessment reference (§9)
    *  showing the prior stage's behavior matched expectations. Exact evidence-sufficiency criteria and
-   *  stage durations are PROVISIONAL — §10. */
+   *  stage durations are PROVISIONAL — §16. */
   evidenceRefs: string[];
   /** Required whenever toStage represents material risk exposure (i.e., 'small-risk' or 'graduated') —
    *  per Constitution §6 and §7 above, this MUST be a HumanAuthorizationRecord reference, never absent,
@@ -428,7 +428,7 @@ This document fixes the mandatory three-stage-minimum progression (`paper` → `
 `DeploymentArtifact` may skip on the way to material risk, and that any transition into a
 material-risk-bearing stage requires a `HumanAuthorizationRecord` per §7. Exact stage durations, exact
 evidence-sufficiency thresholds, and exact capital thresholds distinguishing "small-risk" from "graduated"
-are **PROVISIONAL — unvalidated, owner Danny** (§10).
+are **PROVISIONAL — unvalidated, owner Danny** (§16).
 
 ## 9. Target-platform parity contract (Matrix row 45, U-07)
 
@@ -459,7 +459,7 @@ interface DiscrepancyRecord {
   /** The specific observed magnitude/instance of this discrepancy — units are class-specific. */
   observedMagnitude: unknown;
   /** Whether the observed magnitude falls within this class's tolerance. Exact tolerance values are
-   *  PROVISIONAL — §10, U-07. */
+   *  PROVISIONAL — §16, U-07. */
   withinTolerance: boolean;
   /** Human-readable explanation of the discrepancy's mechanism — required whenever withinTolerance is
    *  false, and encouraged even when true, per Matrix row 45's "explainable difference classes." An
@@ -471,7 +471,7 @@ interface ConformanceResult {
   buildArtifactRef: string;
   discrepancies: DiscrepancyRecord[];
   /** Whether every discrepancy above is both within its class's tolerance AND explained. Exact
-   *  per-class tolerance thresholds and the exhaustive taxonomy are PROVISIONAL — §10, U-07. */
+   *  per-class tolerance thresholds and the exhaustive taxonomy are PROVISIONAL — §16, U-07. */
   overallConformant: boolean;
   /** Distinguishes reference-simulation-only conformance checking from target-platform real-tick
    *  verification, per Matrix row 45's "finalist evidence, not a replacement" framing — a BuildArtifact
@@ -604,7 +604,7 @@ No new third-party runtime dependency is promoted by this document. Per Architec
 library — that decision belongs to PA-10's own register acceptance gates (out of this sprint's scope). Where
 this document names external systems, it does so only as REFERENCE-only design precedent (skfolio §4.2,
 Freqtrade §9.2, TradingAgents anti-pattern §7.3, je-suis-tm/quant-trading cautionary reference §12, NVIDIA
-cuOpt below) — none of these are adopted as dependencies by this architecture document.
+cuOpt below) — none of these are adopted as dependencies by this portfolio/deployment document.
 
 **NVIDIA cuOpt / Quant Portfolio Optimization blueprint** (`docs/research/candidate-reports/PA-05-nvidia-cuopt-portfolio.md`):
 cited REFERENCE-only for the Mean-CVaR scenario-LP formulation *concept* as one possible allocator method a

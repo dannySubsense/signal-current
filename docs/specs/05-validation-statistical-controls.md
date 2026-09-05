@@ -30,7 +30,7 @@ statistical/research design work produces them. It does NOT invent:**
 - a specific cost-stress percentage or adverse-cost scenario magnitude.
 
 Each of the above is tagged **PROVISIONAL — unvalidated**, owner **Danny**, with a named resolution
-condition, in §9. This is the correct and required output for U-04/U-05/U-06 at this stage — an honest,
+condition, in §14. This is the correct and required output for U-04/U-05/U-06 at this stage — an honest,
 well-scoped PROVISIONAL section, not a defect to be patched by inventing plausible-sounding specifics. Per
 this repo's `CLAUDE.md` Research Data Integrity rules, an unsourced number in a research/data path is a
 hypothesis, not a setting; none is smuggled in here as a setting.
@@ -92,7 +92,7 @@ interface PurgeEmbargoDecision {
   applicable: boolean;
   /** Required whenever applicable is false but overlapRisk is not 'none-identified'. */
   exceptionJustification?: string;
-  /** Purge window and embargo period, if applied. Exact sizing rule is PROVISIONAL — see §9 U-04/U-06. */
+  /** Purge window and embargo period, if applied. Exact sizing rule is PROVISIONAL — see §14 U-04/U-06. */
   purgeWindow?: unknown;
   embargoPeriod?: unknown;
 }
@@ -102,7 +102,7 @@ This document fixes the DECISION STRUCTURE: applicability is derived from the ca
 structure (does a label span an interval that could overlap a neighboring observation's evaluation window;
 does a feature use a rolling window that could leak future information into a nominally-past evaluation
 point), not asserted as a blanket "always on" or "always off" rule. The exact purge-window/embargo-period
-sizing formula is PROVISIONAL (§9).
+sizing formula is PROVISIONAL (§14).
 
 ## 4. CPCV applicability (Matrix row 28, U-06)
 
@@ -124,7 +124,7 @@ interface CPCVDecision {
   /** Required whenever samplingStructure suggests overlap/path-dependence but applicable is false,
    *  or vice-versa when a simple non-overlapping fixed-interval structure is nonetheless run through CPCV. */
   justification: string;
-  /** Number of groups/folds and purge/embargo parameters used, if applicable. PROVISIONAL sizing — §9. */
+  /** Number of groups/folds and purge/embargo parameters used, if applicable. PROVISIONAL sizing — §14. */
   foldConfig?: unknown;
 }
 ```
@@ -135,7 +135,7 @@ fixed-interval, whether observations can overlap in time, and whether position s
 (so that split-order matters, which is exactly what CPCV's combinatorial grouping is designed to test).
 These are the input dimensions the eventual applicability matrix (U-06) must be built against. This
 document does not fix the decision function itself, the exact fold count, or the exact purge/embargo
-parameters CPCV uses when applicable — those require the dedicated research design work named in §9.
+parameters CPCV uses when applicable — those require the dedicated research design work named in §14.
 
 **skfolio reference implementation, not adopted default:** `docs/research/candidate-reports/PA-05-skfolio.md`
 documents `CombinatorialPurgedCV` as a real, citable purge/embargo/CPCV implementation, citing López de
@@ -159,7 +159,7 @@ interface TemporalEvaluationDecision {
   /** Required whenever method is 'alternative' — walk-forward is the default and must be affirmatively
    *  displaced, not silently skipped. */
   alternativeJustification?: string;
-  /** Window sizing (train/test split lengths, step size, number of folds). PROVISIONAL — §9 (U-04). */
+  /** Window sizing (train/test split lengths, step size, number of folds). PROVISIONAL — §14 (U-04). */
   windowConfig?: unknown;
 }
 ```
@@ -168,7 +168,7 @@ This document fixes the default-and-displace structure: walk-forward is presumed
 temporal design (e.g., a genuinely one-shot historical strategy per Matrix row 32's own carve-out) requires
 an explicit, recorded justification on the `ValidationPlan`, not an implicit omission. Exact window sizing
 (train length, test length, step size, number of folds) is a minimum-sample-adequacy question — PROVISIONAL,
-deferred to §9's U-04 resolution alongside §7 below.
+deferred to §14's U-04 resolution alongside §7 below.
 
 ## 6. Multiple-testing diagnostics (Matrix row 33, U-05)
 
@@ -192,7 +192,7 @@ interface MultipleTestingDecision {
    *  required, not optional, because applicability differs by method (per U-05's own stated reason). */
   applicabilityJustification: string;
   /** Numeric outcome of each applied method (e.g., a DSR value, a reality-check p-value). The
-   *  PASS/FAIL cutoff each numeric outcome is compared against is PROVISIONAL — §9. */
+   *  PASS/FAIL cutoff each numeric outcome is compared against is PROVISIONAL — §14. */
   results: Record<string, unknown>;
   /** Raw Sharpe, reported for context only — never itself a pass criterion (Matrix row 33). */
   rawSharpeContext?: number;
@@ -208,7 +208,7 @@ reality-check/bootstrap methods have different applicability" — is itself the 
 a `methodsApplied` array plus a required `applicabilityJustification`, rather than picking one method as a
 universal default. A future resolution of U-05 may still conclude one method is the practical default for
 most trial structures encountered in this program; that conclusion requires the dedicated statistical
-design work named in §9, not invention here.
+design work named in §14, not invention here.
 
 **Motivating case (cited per this sprint's explicit instruction):** the Time Series Momentum critique
 (`docs/research/candidate-reports/PA-02-time-series-momentum.md`) — Huang, Li, Wang & Zhou (2020) found the
@@ -237,7 +237,7 @@ interface SampleAdequacyDecision {
    *  non-overlapping trades, number of independent walk-forward folds). */
   observedSampleCounts: Record<string, number>;
   /** Whether the observed counts meet the minimum required for this context. The minimum itself is
-   *  PROVISIONAL — §9. */
+   *  PROVISIONAL — §14. */
   adequate: boolean;
   inadequacyJustification?: string;
 }
@@ -252,7 +252,7 @@ would itself be exactly the kind of silently-promoted engineering default this p
 Integrity discipline (this repo's `CLAUDE.md`) and the Qlib/Zipline-reloaded cautionary precedents already
 cited in documents 02 and 04 (§7.2, §4.2/§6) warn against. This document therefore fixes only that
 `SampleAdequacyDecision.context` must be recorded per candidate, and that the minimum threshold is a
-function of that context, not a constant. The function itself is PROVISIONAL (§9, U-04).
+function of that context, not a constant. The function itself is PROVISIONAL (§14, U-04).
 
 ## 8. Cost realism (Matrix row 34)
 
@@ -270,7 +270,7 @@ interface CostRealismDecision {
   /** Required whenever zeroCostComponents is non-empty, per Constitution §5 item 6. */
   zeroCostJustification?: string;
   /** Baseline-cost result plus at least one adverse-cost-stress scenario result. The exact stress
-   *  magnitude/percentage is PROVISIONAL — see §9. */
+   *  magnitude/percentage is PROVISIONAL — see §14. */
   baselineResult: unknown;
   adverseStressResults: unknown[];
 }
@@ -279,7 +279,7 @@ interface CostRealismDecision {
 This document fixes that baseline-cost evaluation is never sufficient alone — at least one adverse-cost
 stress scenario must also be recorded — and that any zero-cost component requires explicit justification.
 The exact adverse-cost stress magnitude (e.g., what multiple of baseline slippage/fees constitutes
-"adverse") is PROVISIONAL (§9), consistent with Data Architecture §3.2/§8's own deferral of exact
+"adverse") is PROVISIONAL (§14), consistent with Data Architecture §3.2/§8's own deferral of exact
 cost-model default values (U-02c) to a dedicated execution-semantics ADR — this document does not
 re-invent that number either.
 
@@ -317,7 +317,7 @@ interface RobustnessDecision {
 `ValidationPlan.robustness` is an array because more than one family may apply to a single candidate. This
 document fixes the requirement that each entry names its specific family and method; it does not fix which
 families are mandatory for which candidate types, nor any pass/fail threshold for a given family's result —
-those are PROVISIONAL alongside U-04/U-05 (§9), because family applicability depends on the same
+those are PROVISIONAL alongside U-04/U-05 (§14), because family applicability depends on the same
 asset/timeframe/event-structure context §7 already established cannot be universally defaulted.
 
 **Motivating case (self-admitted instability, cited per this sprint's instruction):** Valeyre (2022)

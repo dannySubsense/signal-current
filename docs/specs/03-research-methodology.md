@@ -165,7 +165,7 @@ same evidence boundary and leakage rules as strategies themselves. *(Matrix row 
 Concretely:
 
 1. A regime definition (e.g., a volatility-state classifier, a session-based regime split) cannot be
-   discovered or fit using confirmation-zone or lockbox-zone data (Architecture §4). A regime model
+   discovered or fit using confirmation-zone or lockbox-zone data (Matrix row 26; Architecture §4). A regime model
    developed by inspecting data that a `StrategyIR Candidate` will later be validated or sealed against is
    leaked evidence, exactly as if the strategy's parameters themselves had been fit on that data.
 2. A regime definition, once used as a conditioning input to a `CampaignSpec` or `ValidationPlan`, is

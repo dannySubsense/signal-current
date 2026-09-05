@@ -323,8 +323,10 @@ as requiring dedicated design work this drafting pass must not substitute for.
 | **U-02c** — Exact default cost-model values (slippage model class defaults, fee schedule defaults) | PROVISIONAL — unvalidated | Danny | Resolved in the execution-semantics ADR; per Constitution §5 item 6, any zero-cost default requires explicit justification, not silent adoption |
 | **U-03** — Exact broker/venue normalization field schema (calendar representation format, roll-adjustment method taxonomy, currency-conversion policy fields) | PROVISIONAL — unvalidated | Danny | Dedicated StrategyIR/data-schema design session with golden-example worked strategies spanning at least two materially different venues/asset classes, per Architecture §7.2's heterogeneity requirement (may be combined with U-01a's design session) |
 
-No numeric constant (threshold, budget, tolerance, sample-size minimum, cost-model default value) is
-introduced anywhere in this document. Every PROVISIONAL item above is a schema/semantics/algorithm design
+No numeric constant is adopted as a Signal Current setting anywhere in this document. The only numeric
+literals present (threshold, budget, tolerance, sample-size minimum, cost-model default value), including
+those in §4.2, are external values quoted from cited candidate reports and explicitly rejected as settings,
+not adopted defaults. Every PROVISIONAL item above is a schema/semantics/algorithm design
 decision explicitly flagged by the Reconciliation Matrix as requiring dedicated design work (U-01/U-02/U-03),
 not a number this document declines to source — none is guessed here.
 

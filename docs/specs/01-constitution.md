@@ -59,7 +59,7 @@ LLM output is always an unvalidated proposal artifact. It receives no evidentiar
 
 Numerical evidence divides into three categories with different evidentiary treatment. Conflating them — in particular, treating a recorded seed as sufficient to make inherently non-replayable output count as evidence — is prohibited.
 
-1. **Deterministic replay.** Under the supported determinism contract, deterministic modes must reproduce an identical event ledger and metrics for an identical versioned input tuple. This is the default evidentiary standard for the numerical core. *(Reconciliation §6 item 6 cross-reference; Matrix row 22.)*
+1. **Deterministic replay.** Under the supported determinism contract, deterministic modes must reproduce an identical event ledger and metrics for an identical versioned input tuple. This is the default evidentiary standard for the numerical core. *(Reconciliation §7.1; Matrix row 22.)*
 2. **Seedable stochastic computation.** Non-deterministic but seedable algorithms (e.g. randomized search, bootstrap resampling) must record seeds and environment, but a single run is never sufficient trust. They additionally require an immutable input snapshot plus replicated or statistical evidence across runs before promotion. *(Matrix row 22, read together with Matrix row 1's requirement that results be attributable to versioned inputs and environment.)*
 3. **Inherently non-replayable output.** Live LLM inference and live market-data feeds cannot be made replayable by recording a seed or environment metadata — there is no fixed input tuple to replay against. Such output MUST be classified as proposal material only and MUST NOT be certified as numerical evidence, regardless of seed-recording. *(Matrix row 18, extended to the live-data case by Matrix row 1's sole-numerical-authority principle.)*
 
@@ -72,7 +72,7 @@ This applies to every adopted third-party library without exception, present or 
 ## 9. Reproducibility and lineage
 
 1. State transitions and consequential actions produce versioned audit events with actor, correlation/causation ID, and artifact references. *(Matrix row 53.)*
-2. Every acquired source produces an immutable SourceSnapshot or equivalent evidence reference with capture metadata and hash where possible. *(Reconciliation §6 item — SourceSnapshot requirement; Matrix row 5.)*
+2. Every acquired source produces an immutable SourceSnapshot or equivalent evidence reference with capture metadata and hash where possible. *(Matrix row 5.)*
 3. No implementation decision may silently override a frozen specification. Post-freeze changes require an explicit amendment/ADR and a version change. *(Reconciliation §§1 and 9.)*
 
 ## 10. Authority model

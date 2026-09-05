@@ -35,8 +35,8 @@ component interacting with Signal Current. It does NOT define:
   a contract this document fixes;
 - a specific token/cost/compute budget number for agent operations — any such number is an unsourced
   constant per this repo's `CLAUDE.md` Research Data Integrity rules and is not fabricated here;
-- an exact agent-activation readiness scorecard or checklist — PROVISIONAL, §5;
-- an exact per-role permission matrix (which named role gets which named tool) — PROVISIONAL, §5;
+- an exact agent-activation readiness scorecard or checklist — PROVISIONAL, §7.3/§12;
+- an exact per-role permission matrix (which named role gets which named tool) — PROVISIONAL, §7.3/§12;
 - educational/copilot agent UX design — noted only as a separate future capability, §6.
 
 Where this document must reference an undecided item, it states the contract the eventual decision must
@@ -231,14 +231,14 @@ categories a future permission matrix (§7, PROVISIONAL) must assign roles into:
 | Evidence-comparison / explanation | Promotion/Gate Service (read), Portfolio Service (read), Telemetry/Health Service (read) | Compare `ValidationArtifact`s, `StrategyArtifact` passports, `PortfolioPlan`s, `HealthAssessment`s and narrate differences |
 | **Never granted to any agent role** | Promotion/Gate Service (write path that mints `StrategyArtifact`/`PortfolioArtifact`/`BuildArtifact`/`DeploymentArtifact`), any tool that could populate `HumanAuthorizationRecord.authorizingHumanId` | N/A — structurally excluded, per §2.3 item 5 and Portfolio/Deployment §7.3 |
 
-2. A given agent role is granted one or more of the first four categories, scoped to the minimum needed for
+1. A given agent role is granted one or more of the first four categories, scoped to the minimum needed for
    its function — a research-proposing agent role gets discovery and proposal-authoring access; it never
    also gets a tool that can directly mint or promote a `StrategyArtifact`, `PortfolioArtifact`, or
    `DeploymentArtifact`, and it never gets any tool capable of writing a `HumanAuthorizationRecord`. This is
    the concept this document fixes: **no agent role's tool grant may span from a proposal-authoring category
    into the promotion/authorization category** — that boundary is structural, not a configuration choice a
    future permission matrix could relax.
-3. The exact technical mechanism enforcing this scoping (capability tokens, per-tool ACL, a broker service
+2. The exact technical mechanism enforcing this scoping (capability tokens, per-tool ACL, a broker service
    checking role membership, etc.) is an implementation decision, not fixed here.
 
 ## 6. Educational/copilot agent modes are a separate, non-privileged future capability (Matrix row 52)
@@ -284,7 +284,7 @@ precondition any future activation decision must verify:
    exercised by non-agent callers, not be built concurrently with, or after, agent access being granted.
 3. This is a structural readiness contract, not a scorecard with named numeric thresholds (e.g., "N months of
    stable operation" or "N successful human-authorized promotions") — any such specific number is
-   PROVISIONAL and explicitly not invented here (§7.4).
+   PROVISIONAL and explicitly not invented here (§7.3).
 
 ### 7.3 Exact activation criteria and permission matrix: PROVISIONAL
 
