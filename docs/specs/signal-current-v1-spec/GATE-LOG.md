@@ -123,3 +123,57 @@ commit 9890e58.
    reference list.
 
 Attempt counter: 2 of 3 (uncapped, continuing).
+
+### Attempt 3 — 2026-09-05 — FAIL (SHRINKING — explicit convergence classification)
+
+**Layer 1: PASS** (unchanged, re-verified). **Layer 2: FAIL**, narrowly.
+
+Attempt 2's F2 (doc 02 unamended), F3 (lockbox inclusion), and the minor (02 §12 overshoot) are
+**all CLOSED**, verified substantive not passing mentions. Attempt 2's F1 and F4 are each reduced
+to a single unstated binding sentence — not new findings, strict residue of the same two.
+
+**F1 (residual of attempt-2 F1):** `reproducedBy` is bound to a real actor but nothing requires it
+equal THE actor who actually produced the reproduction run. `originalAuthor`'s doc-comment states
+it's derived from the AuditLineageEvent that recorded the original artifact's production;
+`reproducedBy`'s doc-comment has no equivalent derivation sentence — it's just "reference to
+whoever reran it," leaving a caller-supplied path one notch narrower than attempt 2 caught.
+
+**F2 (residual of attempt-2 F4):** `orchestrationSessionId` is optional and has no assignment
+authority stated — doc 04 §5.4 never says who mints it or that it's required for agent actors;
+doc 07 (which owns agent identity) uses different vocabulary entirely ("agent-run identity and
+iteration index") with no mapping to "orchestration session," and doc 07's own consistency check
+doesn't cover doc 04. If the orchestrator can self-declare the session id, the "two agent roles,
+one session = one well" loophole is back.
+
+**Loop classification: SHRINKING**, per Frank's own re-derivation from the two snapshot diffs —
+attempt 1 touched 5 files fixing "Thesis absent from the well," attempt 2 touched 3 files fixing
+"record assertion-shaped, doc 02 unamended, two things unspecified," attempt 3's remaining findings
+are each a single missing sentence. No new territory opened at any attempt.
+
+**Minor findings, same pass:** doc 04 §5.4 has a broken sentence (process narration, not spec
+content) and a phantom "§5.4" sub-numbering (§5 has no §5.1-5.3 siblings) — same pointer-defect
+class as G1/G2, not yet bitten but flagged before it recurs. Gate-log/Frank-attempt narration is
+embedded in canonical doc-comments and body text across 04/05 — wrong artifact for it, GATE-LOG.md
+already carries this record.
+
+**Fix routing (all to @architect, now spanning docs 02/04/05/07):**
+1. 05 §2: add the missing derivation sentence for `reproducedBy` (mirror `originalAuthor`'s) —
+   resolved by the Validation Service from the AuditLineageEvent whose artifactRefs contain
+   `reproductionRunRefs`, never caller-supplied; a record where it doesn't match is malformed and
+   rejected. Apply the same tightening to `originalAuthor`'s wording.
+2. 04 §5.4: name the specific events in the closing paragraph rather than "AuditLineageEvent
+   entries" generically.
+3. 04 §5.4: make `orchestrationSessionId` required (not optional) when `actorType === 'agent'`;
+   state it's assigned by the Agent Tool Layer/harness at session start, never self-declared.
+4. 07 §3.1 item 3 / §3.2: reconcile "agent-run identity" with doc 04's `orchestrationSessionId` —
+   every agent run carries the session id of whatever spawned it; runs from one orchestrator in
+   one session share it. Add doc 04 to §11's consistency-check list, re-run it.
+5. 05 §2.1 item 3: once 1-4 land, tighten the human-rubber-stamp clause to the now-mechanical rule,
+   dropping the hedge that this can't be fully policed at the schema level.
+6. 05 §13: re-run against the re-amended 04 and 07, rewrite.
+7. Minor: repair 04 §5.4's broken sentence and phantom sub-numbering; drop 02 §12's "at line ~183"
+   in favor of the section-name reference; move Frank-attempt narration out of interface
+   doc-comments/body text into Editorial-corrections header lines across 04/05.
+
+Attempt counter: 3 of 3 nominal (uncapped per Danny's ruling — continuing past this rather than
+halting; SHRINKING classification independently supports continuing rather than escalating).
