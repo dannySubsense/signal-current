@@ -10,7 +10,7 @@ independently reviewed. Frozen only after the full eight-document set clears Fra
 Frank's spec-gate attempt-3 finding F2 — reconciled §3.1 item 3/§3.2's "agent-run identity and iteration
 index" vocabulary with document 04 §5.4's `orchestrationSessionId` (every agent run carries the session id
 of whatever spawned it; runs from one orchestrator in one session share it), added document 04 to §11's
-consistency-check list, and re-ran that check. @architect, 2026-09-05, per Frank's spec-gate attempt-4 fix 3 — stated session-initiation authority precisely (human-only initiation, no nested/fresh minting mid-session) in §3.1 item 3/§3.2, consistent with document 04 §5.4's amended wording, fixed the "within one session" phrasing so it no longer implies an orchestrator can legitimately span several sessions, added a cross-referenced PROVISIONAL row (§12) pointing to document 06 §16's widened U-12 entry, and re-ran the §11 consistency check.
+consistency-check list, and re-ran that check. @architect, 2026-09-05, per Frank's spec-gate attempt-4 fix 3 — stated session-initiation authority precisely (human-only initiation, no nested/fresh minting mid-session) in §3.1 item 3/§3.2, consistent with document 04 §5.4's amended wording, fixed the "within one session" phrasing so it no longer implies an orchestrator can legitimately span several sessions, added a cross-referenced PROVISIONAL row (§12) pointing to document 06 §16's widened U-12 entry, and re-ran the §11 consistency check. @architect, 2026-09-05, per Frank's spec-gate attempt-5 fixes 2/4/5 — split the §12 U-12 (extended) row's resolution condition so the actor/session-verification sub-item resolves in Phase R1 (matching document 04 §8 and document 06 §16's identical wording), deleted a stray blank line that split the §12 PROVISIONAL table into two, added `08-implementation-roadmap.md` to §11's consistency-check list, and re-ran that check.
 
 **Primary question this document answers:** What may agents do, with which tools, under which permissions
 and gates?
@@ -371,15 +371,16 @@ document, per this sprint's explicit constraint. TradingAgents
 structural pattern (§4 item 1) and as the concrete negative precedent for the approval-gate anti-pattern
 (§2.3 item 5, §9) — its code is not adopted. No new runtime dependency is introduced by this document.
 
-## 11. Consistency check against Constitution, Architecture, Data Architecture, Research Methodology, and
-Portfolio/Deployment
+## 11. Consistency check against Constitution, Architecture, Data Architecture, Research Methodology,
+Portfolio/Deployment, and Implementation Roadmap
 
 This document was checked for contradiction against `01-constitution.md`, `02-system-architecture.md`,
-`03-research-methodology.md`, `04-data-architecture-strategy-ir.md`, and
-`06-portfolio-deployment-monitoring.md` in full. No conflict was found: every clause above operationalizes a
-boundary those five documents already establish (Constitution §6, §7; Architecture §2, §5, §6, §8; Data
-Architecture §5.4; Research Methodology §8.2, §9, §10; Portfolio/Deployment §7, §11) at the agent-permission
-level, without contradicting or silently re-deciding any of their fixed clauses. In particular:
+`03-research-methodology.md`, `04-data-architecture-strategy-ir.md`,
+`06-portfolio-deployment-monitoring.md`, and `08-implementation-roadmap.md` in full. No conflict was found:
+every clause above operationalizes a boundary those six documents already establish (Constitution §6, §7;
+Architecture §2, §5, §6, §8; Data Architecture §5.4; Research Methodology §8.2, §9, §10;
+Portfolio/Deployment §7, §11; Implementation Roadmap §3) at the agent-permission level, without
+contradicting or silently re-deciding any of their fixed clauses. In particular:
 
 - this document does not relax or create an exception to Portfolio/Deployment §7.1's Constitution-locked
   principle that a human, never an agent, authorizes material-risk promotion (§2.3 item 5, §5.1 restate it
@@ -408,6 +409,12 @@ level, without contradicting or silently re-deciding any of their fixed clauses.
   event to use the same Audit/Event Log component and actor contract every other actor's events use, and that
   clause is unaffected by, and remains consistent with, document 04's newly-stated enforcement point.
 
+- **Re-run 2026-09-05, Frank spec-gate attempt-5 fix 5:** this section's §12 PROVISIONAL row's Phase R1
+  sequencing (added this fix pass) is checked against document 08's Phase R1 sequencing and found consistent
+  — document 08 §3's Phase R1 is the same phase this section's U-12 row now names as the resolution point for
+  the actor/session-verification sub-items, matching document 06 §16's and document 04 §8's identically-worded
+  cross-references. No further sequencing inconsistency was found in document 08 as a result of this check.
+
 No HALT condition applies.
 
 ## 12. PROVISIONAL items and resolution paths
@@ -415,8 +422,7 @@ No HALT condition applies.
 | Item | Tag | Owner | Concrete resolution condition |
 |---|---|---|---|
 | Exact agent-activation readiness checklist/scorecard satisfying §7.2's structural contract | PROVISIONAL — unvalidated | Danny | Defined once documents 04/05/06's typed contracts are implementation-stable enough to constrain against, per Matrix row 56's own sequencing logic — a post-P0 decision, not a spec-time one |
-| **U-12 (extended)** — exact mechanism verifying `AuditActor.actorId` authenticity and minting/verifying `orchestrationSessionId` referenced by §3.1 item 3/§3.2 | PROVISIONAL — unvalidated | Danny | Cross-referenced, not duplicated: this is the same PROVISIONAL item as document 06 §16's widened U-12 row (also cross-referenced from document 04 §8) — resolved in the same auth/authz design pass, since all three depend on the same identity-provider/token-mechanism choice. Terminal boundary: below it, the spec set correctly stops. |
-
+| **U-12 (extended)** — exact mechanism verifying `AuditActor.actorId` authenticity and minting/verifying `orchestrationSessionId` referenced by §3.1 item 3/§3.2 | PROVISIONAL — unvalidated | Danny | Cross-referenced, not duplicated: this is the same PROVISIONAL item as document 06 §16's widened U-12 row (also cross-referenced from document 04 §8). **Sequencing (Frank spec-gate attempt-5 fix 2):** this sub-item — `AuditActor.actorId` authenticity and `orchestrationSessionId` minting/verification — resolves in Phase R1, alongside the independent-reproduction match tolerance (document 05 §14), since both gate the same first `StrategyArtifact` promotion (document 05 §2.1) and a `StrategyArtifact` cannot be promoted before they resolve; this does NOT depend on a deployment target or user model being chosen. (The separate `HumanAuthorizationRecord` identity-provider/protocol sub-item resolves in Phase R3 once a deployment target/user model are chosen — see document 06 §16.) Terminal boundary: below it, the spec set correctly stops. |
 | Exact per-role permission matrix populating §5.1's tool-access categories with named agent roles | PROVISIONAL — unvalidated | Danny | Resolved alongside the activation readiness checklist above, once concrete agent roles are proposed against stable typed contracts |
 | Agent-run budget ceiling numeric value(s) (§3.1) | Not a global constant — per-run operational parameter, consistent with Research Methodology §9's treatment of per-campaign budgets | Whoever authorizes a given agent run | Set at run-authorization time; no global default is fixed by this document |
 | Specific agent framework/SDK/orchestration product choice | Deferred, not PROVISIONAL — implementation decision, out of this document's scope | Document 08 / implementation owner | Resolved during Implementation Roadmap or build-phase tooling selection, not spec-time |

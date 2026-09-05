@@ -26,7 +26,7 @@ the now-further-amended documents 02/04/07. **HALT-flagged, not blocking:** whet
 the same human principal should, by themselves, count as non-distinct for row 59's purposes is a genuine
 open question about what "distinct" means at the human level (a legitimately different validator and
 reproducer could share one human-operated account) — flagged to Danny in this pass rather than silently
-resolved; see §2.1 item 2's closing note.
+resolved; see §2.1 item 2's closing note. @architect, 2026-09-05, per Frank's spec-gate attempt-5 fixes 3/5 — added a sentence to §2.1 stating an `IndependentReproductionRecord` cannot satisfy the gate until document 06 §16's widened U-12 item's actor/session-verification sub-items resolve, mirroring the match-tolerance item's existing treatment; added a real §14 table row for the human-actorId-distinctness judgment call §2.1 item 2 raises (previously an orphaned §13 cross-reference); added `08-implementation-roadmap.md` to §13's consistency-check list and re-ran that check against document 08 §3's Phase R1 sequencing.
 
 **Primary question this document answers:** What evidence is required before promotion, and how is
 self-deception constrained?
@@ -260,7 +260,12 @@ included is not a reproduction of "the same test" and MUST NOT be accepted as sa
 §11.3 for how this is distinguished from lockbox contamination.
 
 The exact tolerance for "matched" (exact byte-for-byte event-ledger match vs. some numeric tolerance
-band on derived metrics) is a new PROVISIONAL item — see §14.
+band on derived metrics) is a new PROVISIONAL item — see §14. Mirroring that same treatment
+(Frank spec-gate attempt-5 fix 3): until document 06 §16's widened U-12 item's actor/session-verification
+sub-items (`AuditActor.actorId` authenticity, `orchestrationSessionId` minting/verification) resolve, an
+`IndependentReproductionRecord` cannot satisfy this gate either — the same Phase R1 dependency that blocks
+the match-tolerance item above also blocks this one, since both are load-bearing for the first
+`StrategyArtifact` promotion.
 
 ## 3. Purge and embargo applicability (Matrix row 27)
 
@@ -643,18 +648,20 @@ above:
    on skfolio's test suite actually being executed (per Sol's finding) — out of this sprint's scope, per the
    Requirements document's "Out of Scope" section.
 
-## 13. Consistency check against Constitution, Architecture, Research Methodology, Data Architecture, and Agent & Orchestration Layer
+## 13. Consistency check against Constitution, Architecture, Research Methodology, Data Architecture, Agent
+& Orchestration Layer, and Implementation Roadmap
 
-**Re-run 2026-09-05, Frank spec-gate attempt-4 fix 6** — the prior version of this section predated documents
-04 §5.4's enforcement-point/session-initiation-authority paragraphs and 07 §3.1/§3.2/§12's matching amendments
-(this fix pass) and was stale. This document was re-checked for contradiction against the current text of
+**Re-run 2026-09-05, Frank spec-gate attempt-5 fix 5** — added `08-implementation-roadmap.md` to this
+section's consistency-check list (it was not previously covered, which is how attempt-5's U-12 sequencing
+finding went uncaught). This document was re-checked for contradiction against the current text of
 `01-constitution.md`, `02-system-architecture.md`, `03-research-methodology.md`,
 `04-data-architecture-strategy-ir.md` (as amended by this fix pass), `06-portfolio-deployment-monitoring.md`
-§16 (as amended by this fix pass), and `07-agent-orchestration-layer.md` (as amended by this fix pass), in
-full. No conflict was found: every clause above elaborates a boundary or contract those six documents already
-establish (Constitution §5, §4, §9, §3 item 7; Architecture §3, §4, §5, §11; Research Methodology §9; Data
-Architecture §2.4, §3, §5, §5.4; Portfolio/Deployment §16; Agent & Orchestration §3.1, §3.2, §11, §12) at the
-validation-decision level, without contradicting or silently re-deciding any of their fixed clauses. In
+§16 (as amended by this fix pass), `07-agent-orchestration-layer.md` (as amended by this fix pass), and
+`08-implementation-roadmap.md` §3, in full. No conflict was found: every clause above elaborates a boundary or
+contract those seven documents already establish (Constitution §5, §4, §9, §3 item 7; Architecture §3, §4,
+§5, §11; Research Methodology §9; Data Architecture §2.4, §3, §5, §5.4; Portfolio/Deployment §16; Agent &
+Orchestration §3.1, §3.2, §11, §12; Implementation Roadmap §3) at the validation-decision level, without
+contradicting or silently re-deciding any of their fixed clauses. In
 particular:
 
 - this document does not re-decide the Exploration/Validation/Lockbox zone mechanism itself (Architecture
@@ -689,6 +696,14 @@ particular:
 - this document's new PROVISIONAL cross-reference (§2.1 item 2's flagged open question, pointing to document
   06 §16's widened U-12 item) is consistent with, and does not duplicate, the identical cross-references
   added this fix pass to document 04 §8 and document 07 §12 — all three name the same resolution condition.
+- this document's §14 PROVISIONAL table now carries a real row for the human-actorId-distinctness judgment
+  call §2.1 item 2 raises (Frank spec-gate attempt-5 fix 3) — previously this section claimed a "new
+  PROVISIONAL cross-reference" that pointed at nothing in §14; that gap is closed;
+- this document's §2.1 (both the match-tolerance and the newly-added actor/session-verification sentence)
+  and §14's PROVISIONAL rows now name Phase R1 as the resolution point for the actor/session-verification
+  sub-items, checked against document 08 §3's Phase R1 sequencing and found consistent — this is the same
+  Phase R1 sequencing document 06 §16, document 04 §8, and document 07 §12 all name identically. No further
+  sequencing inconsistency was found in document 08 as a result of this check.
 
 ## 14. PROVISIONAL items and resolution paths
 
@@ -700,6 +715,7 @@ particular:
 | Adverse-cost-stress magnitude/percentage (§8) | PROVISIONAL — unvalidated | Danny | Resolved in the same execution-semantics ADR Data Architecture §8 already names for U-02c's cost-model default values — not a separate, second-guessed number |
 | Robustness-family (§9) applicability-by-candidate-type rules and pass/fail thresholds per family | PROVISIONAL — unvalidated | Danny | Resolved alongside U-04, since family applicability depends on the same asset/timeframe/event-structure context U-04's research design must characterize |
 | **Independent-reproduction match tolerance** (§2.1) — whether `IndependentReproductionRecord.matched` requires exact event-ledger match or some numeric tolerance band on derived metrics, and if the latter, the tolerance value itself | PROVISIONAL — unvalidated | Danny | Resolved alongside U-01's schema design session (Roadmap §3 Phase R1), since the exact reproduction bar depends on the same content-addressing/hashing mechanism (Data Architecture §2.4/§5, U-01c) that determines what "same content-addressed inputs" precisely means |
+| **Human-actorId-distinctness judgment call** (§2.1 item 2) — whether the same human `AuditActor.actorId` across two distinct `orchestrationSessionId`s can ever count as a distinct identity (e.g., two individuals sharing one team service account), or never counts as distinct while an agent is on either side | PROVISIONAL — unvalidated | Danny | Interim disposition already implemented in §2.1 item 2: the stricter reading (same human `actorId` never satisfies distinctness when either side is an agent). Resolved once document 06 §16's widened U-12 item's identity model (per-person vs. per-shared-account `actorId` assignment) is chosen — the same Phase R1 sub-resolution the match-tolerance item above depends on. |
 
 No numeric constant (p-value, DSR cutoff, minimum sample size, CPCV fold count, cost-stress percentage,
 purge-window/embargo-period length, independent-reproduction match tolerance) is introduced anywhere in
