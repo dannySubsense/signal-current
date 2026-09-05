@@ -37,6 +37,21 @@ This sprint exists to redo document 01 properly through the spec-agent framework
 - Numeric constants entering any document in this sprint go through the benchmark agent before QC, per Danny's standing directive — no exception without explicit justification.
 - PROVISIONAL tags on any constant are not acceptable as a final state in a locked document — they must carry a concrete path to resolution (a named owner and what they're waiting on), per Danny's sharpened standard.
 
+## Sprint-structure decision record (added 2026-09-05, addresses 05-REVIEW.md G12)
+
+This sprint has no `docs/specs/signal-current-v1-spec/02-ARCHITECTURE.md` or `04-ROADMAP.md` —
+the repo's generic per-sprint Directory Structure names both. Decision, made mid-sprint per
+Danny's "decide" instruction (see the "one dispatch per canonical doc" AskUserQuestion resolution):
+Signal Current's own canonical `docs/specs/02-system-architecture.md` and
+`docs/specs/08-implementation-roadmap.md` stand in for those two generic sprint artifacts, written
+directly to their real top-level canonical paths rather than duplicated into throwaway
+sprint-folder equivalents. Rationale (full decision-matrix reasoning given at the time): most
+correct (produces the real deliverable directly, no plan-then-execute translation risk),
+risk-averse (each canonical doc gated/correctable independently), best-practices-aligned (a second
+planning document about a plan we already have — the Reconciliation Matrix — is redundant),
+YAGNI-compliant, and doesn't trade care for speed. This note makes that substitution an explicit,
+recorded decision rather than one a future reader has to infer.
+
 ## Open Questions — resolved by Danny 2026-09-05
 
 - **Constitution draft disposition: KEEP as input, not discarded.** Handed to `@architect` alongside Sol's findings as the fix list. Sol's blocking finding was the false traceability claim, not the substance — most clauses map to real matrix rows, just uncited/under-anchored. The major findings (dropped human-authorization gate, determinism/nondeterminism conflation) are additive fixes, not grounds for a rewrite.
