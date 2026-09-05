@@ -26,7 +26,14 @@ the now-further-amended documents 02/04/07. **HALT-flagged, not blocking:** whet
 the same human principal should, by themselves, count as non-distinct for row 59's purposes is a genuine
 open question about what "distinct" means at the human level (a legitimately different validator and
 reproducer could share one human-operated account) — flagged to Danny in this pass rather than silently
-resolved; see §2.1 item 2's closing note. @architect, 2026-09-05, per Frank's spec-gate attempt-5 fixes 3/5 — added a sentence to §2.1 stating an `IndependentReproductionRecord` cannot satisfy the gate until document 06 §16's widened U-12 item's actor/session-verification sub-items resolve, mirroring the match-tolerance item's existing treatment; added a real §14 table row for the human-actorId-distinctness judgment call §2.1 item 2 raises (previously an orphaned §13 cross-reference); added `08-implementation-roadmap.md` to §13's consistency-check list and re-ran that check against document 08 §3's Phase R1 sequencing. @architect, 2026-09-05, per Frank's spec-gate attempt-6 Carried Condition 2 — added a "see §14" cross-reference to §2.1 item 2's closing note, so the sentence that raises the human-actorId-distinctness judgment call now points directly at the §14 table row tracking it, instead of that pointer existing only in this header line and in §13.
+resolved; see §2.1 item 2's closing note. @architect, 2026-09-05, per Frank's spec-gate attempt-5 fixes 3/5 — added a sentence to §2.1 stating an `IndependentReproductionRecord` cannot satisfy the gate until document 06 §16's widened U-12 item's actor/session-verification sub-items resolve, mirroring the match-tolerance item's existing treatment; added a real §14 table row for the human-actorId-distinctness judgment call §2.1 item 2 raises (previously an orphaned §13 cross-reference); added `08-implementation-roadmap.md` to §13's consistency-check list and re-ran that check against document 08 §3's Phase R1 sequencing. @architect, 2026-09-05, per Frank's spec-gate attempt-6 Carried Condition 2 — added a "see §14" cross-reference to §2.1 item 2's closing note, so the sentence that raises the human-actorId-distinctness judgment call now points directly at the §14 table row tracking it, instead of that pointer existing only in this header line and in §13. @architect,
+2026-09-05, per Sol's cold review (target SHA 99d3673) — closed a gap items 1-2 left open: item 1 (two
+human `AuditActor`s) treated different `actorId`s as *always* distinct with no check for one natural person
+operating under two accounts, and item 3 (human/agent pair) checked only the rubber-stamp case, not whether
+the human is the same person who controls the agent's session. Rewrote items 1 and 3 to require distinct
+`controllingPrincipalId` (document 04 §5.4, added this pass), widened the §2.1 "Flagged open question"
+paragraph and the §14 human-distinctness table row to cover all three items (not item 2 alone), and re-ran
+§13 against the now-further-amended documents 04/06/07/08.
 
 **Primary question this document answers:** What evidence is required before promotion, and how is
 self-deception constrained?
@@ -194,7 +201,15 @@ checks a result, not *how* the method is applied.
 `reproducedBy` and `originalAuthor` MUST resolve to a different `AuditActor.actorId` (document 04 §5.4) —
 not merely a different string, and not merely a different role label. Concretely:
 
-1. Two `AuditActor` entries with `actorType: 'human'` and different `actorId`s are always distinct.
+1. Two `AuditActor` entries with `actorType: 'human'` and different `actorId`s are distinct only if they
+   also resolve to different `controllingPrincipalId`s (document 04 §5.4, added per Sol's cold review,
+   target SHA 99d3673). Different `actorId` alone is not sufficient: the same natural person operating
+   under two different accounts or sets of credentials — for example, filing an original validation under
+   one login and its own reproduction under another — has one `controllingPrincipalId` and therefore does
+   **NOT** satisfy Matrix row 59, regardless of the two `actorId`s being lexically different. This closes
+   the human-side analog of item 2's "one orchestrator, one session" loophole: account-label inequality is
+   not identity inequality. Exactly how `controllingPrincipalId` is resolved for a human `actorId` is
+   PROVISIONAL — see item 2's closing note and §14.
 2. Two `AuditActor` entries with `actorType: 'agent'` are distinct **only if** they carry different
    `orchestrationSessionId`s. An agent rerun of an agent-authored validation **within the same
    orchestration session** as the original — even when driven by a different tool/role name (e.g. a
@@ -230,9 +245,23 @@ not merely a different string, and not merely a different role label. Concretely
    resolves, this document adopts the stricter reading above (same human `actorId` never satisfies
    distinctness when either side is an agent) as the safer default, and flags it to Danny as requiring
    confirmation once U-12's identity model is chosen — not as a settled design decision; see §14.
-3. A human actor and an agent actor are always distinct, subject to items 1-2 still applying if the
-   "human" side is itself a human merely rubber-stamping the same agent session's own output without
-   independently driving a separate `orchestrationSessionId`'s reproduction run. With `reproducedBy`'s
+
+   **Widened, not a new question (Sol's cold review, target SHA 99d3673):** the same open judgment call
+   applies identically to item 1's pure human-vs-human comparison and item 3's human/agent-controller
+   comparison, not only to this item's agent-vs-agent case — all three items now resolve `controllingPrincipalId`
+   the same way, and all three inherit the same interim stricter reading (a shared `controllingPrincipalId`
+   never satisfies distinctness) pending the same U-12 identity-model resolution. This document does not
+   introduce a second, differently-scoped judgment call for items 1 or 3; §14's table row is widened to name
+   all three items rather than item 2 alone.
+3. A human actor and an agent actor are distinct only if the human's `controllingPrincipalId`
+   (ordinarily its own `actorId`) differs from the agent's `controllingPrincipalId` — the `actorId` of the
+   human who holds session-initiation authority for its `orchestrationSessionId` (document 04 §5.4, added
+   per Sol's cold review, target SHA 99d3673). This is in addition to, not a replacement for, the existing
+   rubber-stamp caveat below: a human who is the same natural person who initiated the orchestration session
+   driving an agent-authored original (or its reproduction) is not a distinct identity merely because
+   `actorType` differs across the two sides — that human controls both. Subject also to items 1-2 still
+   applying if the "human" side is itself a human merely rubber-stamping the same agent session's own output
+   without independently driving a separate `orchestrationSessionId`'s reproduction run. With `reproducedBy`'s
    derivation now mechanical (§2 above), a human-authorization entry recorded as `reproducedBy` must
    itself be a real `AuditActor.actorId` resolved the same way — from the `AuditLineageEvent` that
    actually recorded production of the reproduction's own `SimulationRun`/`ValidationArtifact`.
@@ -651,6 +680,14 @@ above:
 ## 13. Consistency check against Constitution, Architecture, Research Methodology, Data Architecture, Agent
 & Orchestration Layer, and Implementation Roadmap
 
+**Re-run 2026-09-05, per Sol's cold review (target SHA 99d3673)** — this document's amended §2.1 items 1
+and 3 (now consuming `controllingPrincipalId`), the widened §2.1 "Flagged open question" paragraph, and the
+widened §14 human/controller-distinctness row were checked against document 04 §5.4 (source of
+`controllingPrincipalId` and its "Controller/natural-person equivalence" paragraph, amended the same pass),
+document 06 §16, document 07 §3.1/§12, and document 08 §3's Phase R1 sequencing (all amended in the same
+pass with matching wording). No conflict was found; item 2's existing agent-side rules are unchanged by
+this pass, per this sprint's explicit instruction not to weaken them. No HALT condition applies.
+
 **Re-run 2026-09-05, Frank spec-gate attempt-5 fix 5** — added `08-implementation-roadmap.md` to this
 section's consistency-check list (it was not previously covered, which is how attempt-5's U-12 sequencing
 finding went uncaught). This document was re-checked for contradiction against the current text of
@@ -715,7 +752,7 @@ particular:
 | Adverse-cost-stress magnitude/percentage (§8) | PROVISIONAL — unvalidated | Danny | Resolved in the same execution-semantics ADR Data Architecture §8 already names for U-02c's cost-model default values — not a separate, second-guessed number |
 | Robustness-family (§9) applicability-by-candidate-type rules and pass/fail thresholds per family | PROVISIONAL — unvalidated | Danny | Resolved alongside U-04, since family applicability depends on the same asset/timeframe/event-structure context U-04's research design must characterize |
 | **Independent-reproduction match tolerance** (§2.1) — whether `IndependentReproductionRecord.matched` requires exact event-ledger match or some numeric tolerance band on derived metrics, and if the latter, the tolerance value itself | PROVISIONAL — unvalidated | Danny | Resolved alongside U-01's schema design session (Roadmap §3 Phase R1), since the exact reproduction bar depends on the same content-addressing/hashing mechanism (Data Architecture §2.4/§5, U-01c) that determines what "same content-addressed inputs" precisely means |
-| **Human-actorId-distinctness judgment call** (§2.1 item 2) — whether the same human `AuditActor.actorId` across two distinct `orchestrationSessionId`s can ever count as a distinct identity (e.g., two individuals sharing one team service account), or never counts as distinct while an agent is on either side | PROVISIONAL — unvalidated | Danny | Interim disposition already implemented in §2.1 item 2: the stricter reading (same human `actorId` never satisfies distinctness when either side is an agent). Resolved once document 06 §16's widened U-12 item's identity model (per-person vs. per-shared-account `actorId` assignment) is chosen — the same Phase R1 sub-resolution the match-tolerance item above depends on. |
+| **Human/controller-distinctness judgment call** (§2.1 items 1-3, widened from item 2 alone per Sol's cold review, target SHA 99d3673) — whether the same human `AuditActor.actorId`, or the same natural person behind two different human `actorId`s, or the same natural person behind a human `actorId` and an agent's session-initiating `actorId`, can ever count as a distinct identity (e.g., two individuals sharing one team service account), or never counts as distinct once `controllingPrincipalId` (document 04 §5.4) resolves to the same person | PROVISIONAL — unvalidated | Danny | Interim disposition already implemented in §2.1 items 1-3: the stricter reading (same `controllingPrincipalId` never satisfies distinctness, whether both sides are human, both are agents, or one is human and one is an agent). Resolved once document 06 §16's widened U-12 item's identity model (per-person vs. per-shared-account `actorId`/`controllingPrincipalId` assignment) is chosen — the same Phase R1 sub-resolution the match-tolerance item above depends on. |
 
 No numeric constant (p-value, DSR cutoff, minimum sample size, CPCV fold count, cost-stress percentage,
 purge-window/embargo-period length, independent-reproduction match tolerance) is introduced anywhere in

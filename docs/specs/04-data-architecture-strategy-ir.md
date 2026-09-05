@@ -21,7 +21,14 @@ a cross-referenced PROVISIONAL row for actor/session authenticity to `06-portfol
 §16's widened U-12 entry (§8). @architect, 2026-09-05, per Frank's spec-gate
 attempt-5 fix 2 — split the U-12 (extended) row's resolution condition (§8) so the actor/session-
 verification sub-item resolves in Phase R1 rather than being lumped with the deployment-target-dependent
-sub-item; matched the identical wording into document 06 §16 and document 07 §12.
+sub-item; matched the identical wording into document 06 §16 and document 07 §12. @architect, 2026-09-05,
+per Sol's cold review (target SHA 99d3673) — closed a distinct-identity gap in the human-side and
+human/agent-pair comparisons: §5.4's session-initiation-authority rule supplied a distinctness hook only
+where an agent was on one side of a comparison; it defined no equivalent hook for a human `actorId` operating
+under multiple accounts, or for the human who controls both an original run and its own agent-driven
+reproduction. Added `AuditActor.controllingPrincipalId` and the "Controller/natural-person equivalence"
+paragraph (§5.4), widened the U-12 (extended) PROVISIONAL row (§8) to cover controller/natural-person
+resolution alongside the existing actor/session-authenticity sub-item, and re-ran §9's consistency check.
 
 **Primary question this document answers:** What are the canonical data, artifact, schema, lineage and
 executable strategy contracts?
@@ -328,6 +335,17 @@ interface AuditActor {
    * session that spawned it).
    */
   orchestrationSessionId?: string;
+  /**
+   * The natural person deemed to control this action, independent of which account or session
+   * produced it. For `actorType: 'human'`, this is the natural-person identity `actorId` resolves to
+   * under the identity-provider's account model — which may differ from `actorId` itself if that model
+   * permits one person to hold multiple accounts/credentials. For `actorType: 'agent'`, this is the
+   * `actorId` of the human who holds session-initiation authority for `orchestrationSessionId` (per the
+   * session-initiation-authority paragraph below). Document 05 §2.1's distinctness test operates on
+   * `controllingPrincipalId`, not on `actorId`/`orchestrationSessionId` alone, per the "Controller/
+   * natural-person equivalence" paragraph below (added per Sol's cold review, target SHA 99d3673).
+   */
+  controllingPrincipalId?: string;
 }
 
 /**
@@ -380,6 +398,26 @@ between driving a validator and driving a reproducer, satisfying document 05 §2
 check on paper while remaining one well in fact. Document 07 §3.1 item 3/§3.2 restate this same rule from the
 agent-permission side and must not be read as permitting one orchestrator to legitimately span several
 sessions.
+
+**Controller/natural-person equivalence (Sol's cold review, target SHA 99d3673):** the session-initiation-
+authority rule above supplies a distinctness hook only where an agent is on one side of a comparison — via
+`orchestrationSessionId` resolving back to its session-initiating human. It supplies no equivalent hook for
+a pure human-vs-human comparison, and by itself does not prevent one natural person from appearing distinct
+merely by holding two different human `actorId`s (e.g., two accounts or sets of credentials), nor does it
+check whether the human `actorId` recording a reproduction is the same natural person who, as session
+initiator, controls an agent-authored original (or vice versa). To close this, `AuditActor` carries an
+optional `controllingPrincipalId` (defined above): for `actorType: 'human'`, the natural-person identity
+`actorId` resolves to under the identity-provider's account model; for `actorType: 'agent'`, the `actorId`
+of the human who holds session-initiation authority for its `orchestrationSessionId`. Document 05 §2.1's
+distinctness test (items 1 and 3) operates on `controllingPrincipalId`, not `actorId`/`orchestrationSessionId`
+alone, whenever `controllingPrincipalId` is populated. Exactly how a human `actorId` resolves to
+`controllingPrincipalId` — one `actorId` per natural person by construction, versus an identity-provider
+lookup that distinguishes shared or delegated accounts from the person actually operating them — is not
+fixed here. **PROVISIONAL — unvalidated; owner Danny.** This is the same identity-provider/account-model
+question §8's widened U-12 item already names for agent-side actor/session authenticity, now further
+widened to cover human-side controller resolution; resolved in Phase R1 alongside U-12's other
+actor/session-verification sub-items (§8), since this equally gates the first `StrategyArtifact` promotion
+(document 05 §2.1).
 
 This is the binding target for document 05 §2's `IndependentReproductionRecord.originalAuthor` and
 `reproducedBy` fields, and both are derived by the Validation Service, never supplied by the caller.
@@ -448,7 +486,7 @@ as requiring dedicated design work this drafting pass must not substitute for.
 | **U-02b** — Exact stop/target intrabar collision-resolution rule | PROVISIONAL — unvalidated | Danny | Resolved in the same execution-semantics ADR as U-02a; must be justified against at least one documented worst-case gap/collision scenario, not asserted without example |
 | **U-02c** — Exact default cost-model values (slippage model class defaults, fee schedule defaults) | PROVISIONAL — unvalidated | Danny | Resolved in the execution-semantics ADR; per Constitution §5 item 6, any zero-cost default requires explicit justification, not silent adoption |
 | **U-03** — Exact broker/venue normalization field schema (calendar representation format, roll-adjustment method taxonomy, currency-conversion policy fields) | PROVISIONAL — unvalidated | Danny | Dedicated StrategyIR/data-schema design session with golden-example worked strategies spanning at least two materially different venues/asset classes, per Architecture §7.2's heterogeneity requirement (may be combined with U-01a's design session) |
-| **U-12 (extended)** — exact mechanism verifying `AuditActor.actorId` authenticity and minting/verifying `orchestrationSessionId` (§5.4) | PROVISIONAL — unvalidated | Danny | Cross-referenced, not duplicated: this is the same PROVISIONAL item as document 06 §16's widened U-12 row. **Sequencing (Frank spec-gate attempt-5 fix 2):** this sub-item — `AuditActor.actorId` authenticity and `orchestrationSessionId` minting/verification — resolves in Phase R1, alongside the independent-reproduction match tolerance (document 05 §14), since both gate the same first `StrategyArtifact` promotion (document 05 §2.1) and a `StrategyArtifact` cannot be promoted before they resolve; this does NOT depend on a deployment target or user model being chosen. (The separate `HumanAuthorizationRecord` identity-provider/protocol sub-item resolves in Phase R3 once a deployment target/user model are chosen — see document 06 §16.) This is the terminal boundary: below it, the spec set correctly stops (authentication mechanism selection is not a spec-time decision, per U-12's existing treatment). |
+| **U-12 (extended, further widened per Sol's cold review, target SHA 99d3673)** — exact mechanism verifying `AuditActor.actorId` authenticity, minting/verifying `orchestrationSessionId` (§5.4), and resolving `AuditActor.controllingPrincipalId` — i.e., whether two human `actorId`s (or a human and an agent's session-initiating human) resolve to the same natural person (§5.4's "Controller/natural-person equivalence" paragraph) | PROVISIONAL — unvalidated | Danny | Cross-referenced, not duplicated: this is the same PROVISIONAL item as document 06 §16's widened U-12 row. **Sequencing (Frank spec-gate attempt-5 fix 2; widened per Sol's cold review):** this sub-item — `AuditActor.actorId` authenticity, `orchestrationSessionId` minting/verification, and `controllingPrincipalId` resolution — resolves in Phase R1, alongside the independent-reproduction match tolerance (document 05 §14), since all three gate the same first `StrategyArtifact` promotion (document 05 §2.1) and a `StrategyArtifact` cannot be promoted before they resolve; this does NOT depend on a deployment target or user model being chosen. (The separate `HumanAuthorizationRecord` identity-provider/protocol sub-item resolves in Phase R3 once a deployment target/user model are chosen — see document 06 §16.) This is the terminal boundary: below it, the spec set correctly stops (authentication mechanism selection is not a spec-time decision, per U-12's existing treatment). |
 
 No numeric constant is adopted as a Signal Current setting anywhere in this document. The only numeric
 literals present are an external config-default value cited from prior-art research (§4.2's Zipline-reloaded
@@ -464,6 +502,13 @@ This document was checked for contradiction against `01-constitution.md`, `02-sy
 contract those three documents already establish (Constitution §§2-3, Architecture §§3, 7, 9, 10, 11,
 Research Methodology §§4-5, 9) at the data/schema level, without contradicting or silently re-deciding any
 of their fixed clauses. No HALT condition applies.
+
+**Re-run 2026-09-05, per Sol's cold review (target SHA 99d3673):** this document's new
+`controllingPrincipalId` field and "Controller/natural-person equivalence" paragraph (§5.4), and the widened
+U-12 (extended) row (§8), were checked against document 05 §2.1/§14 (which now consumes
+`controllingPrincipalId` in items 1 and 3), document 06 §16, document 07 §3.1/§12, and document 08 §3's
+Phase R1 sequencing — all amended in the same pass with matching, non-duplicated wording. No new
+contradiction was found; no HALT condition applies.
 
 ## 10. Amendment
 
