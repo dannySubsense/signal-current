@@ -11,3 +11,4 @@ if accessible from this project; otherwise this paragraph is the authoritative s
 
 | # | Title | Status |
 |---|-------|--------|
+| 001 | [Decision Matrix and Cold Frank Dispatch Protocol](DDR-001-decision-matrix-and-cold-frank.md) | ACCEPTED |

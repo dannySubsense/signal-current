@@ -13,6 +13,7 @@ These are inviolable engineering-process rules for this repo. They are distinct 
 7. No direct pushes to `main` without explicit exception; no force-push on shared/reviewed branches without explicit direction. Per this repo's push policy: manual-push-only — Danny reviews and pushes/merges explicitly.
 8. Every PR ties to an approved Intake, spec, milestone, or recorded decision — never opened speculatively.
 9. Capture every decision, deviation, and HALT to LORE immediately when it happens, per `CLAUDE.md`'s Capture Behaviour.
+10. When Danny says "decide," apply the 5-criterion decision matrix (most correct, risk-averse, best-practices-aligned, YAGNI-compliant, slow-and-safe) — give one ranked recommendation, not a menu, unless the call is genuinely an irreducible preference with no technically correct answer. If the matrix doesn't resolve it, escalate to Frank dispatched cold: repo path + SHA + verdict-required, nothing else — no file list, no objective, no framing, no map. See `docs/specs/signal-current-ddrs/DDR-001-decision-matrix-and-cold-frank.md`.
 
 ## Violation Response
 
