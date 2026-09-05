@@ -8,6 +8,9 @@ Matrix), `docs/specs/01-constitution.md`, `docs/specs/02-system-architecture.md`
 spec set. Not yet independently reviewed. Frozen only after the full eight-document set clears Frank's
 binding spec-gate.
 
+**Provenance:** @planner.
+**Editorial corrections:** @planner, 2026-09-05, per `05-REVIEW.md` gaps G3/G4.
+
 **Primary question this document answers:** In what sequence do we build and prove the system without
 violating the specification?
 

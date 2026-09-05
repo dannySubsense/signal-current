@@ -5,6 +5,9 @@ Matrix), `docs/specs/01-constitution.md`, `docs/specs/02-system-architecture.md`
 `docs/specs/03-research-methodology.md`. Not yet independently reviewed. Frozen only after the full
 eight-document set clears Frank's binding spec-gate.
 
+**Provenance:** @architect.
+**Editorial corrections:** @architect, 2026-09-05, per `05-REVIEW.md` gap G8.
+
 **Primary question this document answers:** What are the canonical data, artifact, schema, lineage and
 executable strategy contracts?
 

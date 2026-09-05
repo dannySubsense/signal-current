@@ -4,6 +4,9 @@
 Matrix) and `docs/specs/01-constitution.md`. Not yet independently reviewed. Frozen only after the full
 eight-document set clears Frank's binding spec-gate.
 
+**Provenance:** @architect.
+**Editorial corrections:** @architect, 2026-09-05, per `05-REVIEW.md` gaps G8/G11.
+
 **Primary question this document answers:** What are the bounded domains, components, interfaces, states
 and invariants of Signal Current?
 

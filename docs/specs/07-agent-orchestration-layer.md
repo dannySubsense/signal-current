@@ -5,6 +5,9 @@ Matrix), `docs/specs/01-constitution.md`, `docs/specs/02-system-architecture.md`
 `docs/specs/03-research-methodology.md`, and `docs/specs/06-portfolio-deployment-monitoring.md`. Not yet
 independently reviewed. Frozen only after the full eight-document set clears Frank's binding spec-gate.
 
+**Provenance:** @architect.
+**Editorial corrections:** @architect, 2026-09-05, per `05-REVIEW.md` gap G7.
+
 **Primary question this document answers:** What may agents do, with which tools, under which permissions
 and gates?
 

@@ -1,6 +1,8 @@
 # Signal Current Constitution
 
 **Status:** Draft — corrected per Sol's cold review 2026-09-05, not yet re-reviewed.
+**Provenance:** Initial draft: orchestrator (pre-dating this sprint's redispatch discipline); corrected: @architect, 2026-09-05, per Sol's cold-review findings.
+**Editorial corrections:** @architect, 2026-09-05, per `05-REVIEW.md` gaps G5/G6.
 **Authority:** This document states what can never be violated. It is not implementation guidance, not a library list, not a roadmap. It is sourced from `docs/specs/00-source-inventory-reconciliation.md` in full — not solely §6 or §7.1. Every substantive clause below carries an inline citation to a specific section or Reconciliation Matrix row so a reader can verify traceability without trusting this blanket statement.
 
 **Scope note (cross-reference):** `docs/INVARIANTS.md` states generic engineering-process hygiene for this repo (review discipline, delegation, push policy). This Constitution states Signal Current's domain-specific scientific/research invariants (no privileged market dimension, evidence boundaries, statistical discipline, agent authority over numerical evidence). Neither document covers the other's job — check both. `docs/INVARIANTS.md` §5 already cross-references this file; this note makes the reference bidirectional.

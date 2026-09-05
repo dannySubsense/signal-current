@@ -6,6 +6,9 @@ Matrix), `docs/specs/01-constitution.md`, `docs/specs/02-system-architecture.md`
 Not yet independently reviewed. Frozen only after the full eight-document set clears Frank's binding
 spec-gate.
 
+**Provenance:** @architect.
+**Editorial corrections:** @architect, 2026-09-05, per `05-REVIEW.md` gaps G2/G11.
+
 **Primary question this document answers:** How do validated strategies become portfolios, builds,
 deployments, and monitored live systems?
 
