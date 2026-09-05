@@ -6,7 +6,7 @@ This file records decisions produced by the Prior Art & Reuse Research Program.
 
 | ID | Candidate | Area | Version/Commit | License | Disposition | Signal Current Role | Blocking Questions | ADR / Spec Impact | Status |
 |---|---|---|---|---|---|---|---|---|---|
-| TBD | NautilusTrader | Engine/runtime | TBD | TBD-verify | REFERENCE / investigate ADAPT | Event/instrument/execution architecture study | License, semantic fit, coupling | Architecture | Research |
+| PA-01-01 | NautilusTrader | Engine/runtime | commit ac22d5c (develop, 2026-09-05); v2.0.0rc4 latest tag | LGPL-3.0 (was GPLv3 until 2020-06-10, commit 1b1aa12) | REFERENCE + PARITY ORACLE candidate (pending legal LGPL review); NOT adopt/fork/wrap while v2 is pre-release | DST (deterministic simulation testing) pattern as design reference; shared-kernel backtest/live parity pattern as architecture precedent | LGPL §3-6 obligations for dynamic-dependency vs adapted-code reuse (needs human legal read); v1→v2 migration instability | Architecture (DST pattern, parity-oracle design) | Research — see full report: `docs/research/candidate-reports/PA-01-nautilustrader.md` |
 | TBD | QuantConnect LEAN | Engine/runtime | TBD | TBD-verify | REFERENCE / investigate ADAPT | Instruments, data, brokerage, fills | Semantic fit, integration boundary | Architecture/Data | Research |
 | TBD | vectorbt | Exploration | TBD | TBD-verify | REFERENCE / benchmark | High-throughput exploration | License, event parity | Methodology/Architecture | Research |
 | TBD | Microsoft Qlib | ML/research | TBD | TBD-verify | REFERENCE / investigate ADAPT | ML pipeline and research workflow | Market assumptions, data semantics | Methodology/Agent | Research |
