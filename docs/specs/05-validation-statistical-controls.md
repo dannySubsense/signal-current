@@ -6,7 +6,9 @@ Matrix), `docs/specs/01-constitution.md`, `docs/specs/02-system-architecture.md`
 independently reviewed. Frozen only after the full eight-document set clears Frank's binding spec-gate.
 
 **Provenance:** @architect.
-**Editorial corrections:** @architect, 2026-09-05, per `05-REVIEW.md` gap G1.
+**Editorial corrections:** @architect, 2026-09-05, per `05-REVIEW.md` gap G1. @architect, 2026-09-05,
+per Frank's spec-gate attempt-1 fix item 3 — added `IndependentReproductionRecord` (§2, §2.1) and its
+match-tolerance PROVISIONAL item (§14), per Matrix row 59 / Reconciliation Matrix §6 item 14.
 
 **Primary question this document answers:** What evidence is required before promotion, and how is
 self-deception constrained?
@@ -69,9 +71,44 @@ interface ValidationPlan {
   robustness: RobustnessDecision[];
   labelingWorkflow: LabelingWorkflowDecision;
   sampleAdequacy: SampleAdequacyDecision;
+  /**
+   * Per Matrix row 59 / Reconciliation Matrix §6 item 14 and NORTHSTAR.md's Thesis: a strategy is
+   * not validated by its own author's rerun, however deterministic the replay. This record is the
+   * gate — it MUST resolve (rerun happened, matched) before `status` may become 'promotion-gated'.
+   */
+  independentReproduction: IndependentReproductionRecord;
 
   /** Every decision above must resolve before this plan is eligible to gate promotion. */
   status: 'draft' | 'complete' | 'promotion-gated';
+}
+
+/**
+ * Per Matrix row 59 / Reconciliation Matrix §6 item 14: "Promotion to StrategyArtifact requires that
+ * someone other than the original author (or authoring agent) independently reruns the validation
+ * against the same content-addressed inputs and obtains the same result." This is additional to, not
+ * a substitute for, the deterministic-replay and multiple-testing-diagnostics decisions above.
+ */
+interface IndependentReproductionRecord {
+  /** Identity of whoever ran the original validation this record reproduces. */
+  originalAuthor: string;
+  /**
+   * Identity of whoever reran it. MUST be distinct from `originalAuthor` — a record where
+   * `reproducedBy === originalAuthor` does not satisfy Matrix row 59 and MUST NOT be accepted by the
+   * promotion gate, regardless of how the two identity strings happen to be formatted.
+   */
+  reproducedBy: string;
+  /** Content-addressed input references the rerun was executed against — must match the original run's. */
+  contentAddressedInputRefs: string[];
+  /** When the independent rerun was executed. */
+  reproducedAt: string;
+  /**
+   * Whether the reproduced run's event ledger/metrics matched the original within whatever tolerance
+   * this field's companion PROVISIONAL item (§14) resolves. Until that item resolves, this field
+   * cannot be evaluated against a numeric bar and the record cannot satisfy the gate.
+   */
+  matched: boolean;
+  /** Free-text or structured note on what was compared and how (event ledger diff, metric-by-metric, etc.). */
+  comparisonMethod: string;
 }
 ```
 
@@ -81,6 +118,19 @@ determined applicability, the decision reached, and the justification — never 
 applicability decision that says only `applicable: true` with no recorded rationale does not satisfy
 Constitution §5 items 1-4 or Matrix rows 27/28/32/33's "applicability decision is machine-recorded"
 requirement.
+
+## 2.1 Independent reproduction gate (Matrix row 59; Reconciliation Matrix §6 item 14)
+
+Per NORTHSTAR.md's Thesis and Matrix row 59: reproducibility-in-principle (the deterministic replay
+this document already requires via §7.1's determinism controls, and the multiple-testing diagnostics
+of §6) is not the same claim as reproduction-in-fact by a distinct identity. `ValidationPlan.status`
+MUST NOT transition to `'promotion-gated'` unless `independentReproduction.matched === true` AND
+`independentReproduction.reproducedBy !== independentReproduction.originalAuthor`. This is a
+structural precondition on promotion to `StrategyArtifact` (Architecture §5), not a statistical
+decision like §§3-10 above — it constrains *who* checks a result, not *how* the method is applied.
+
+The exact tolerance for "matched" (exact byte-for-byte event-ledger match vs. some numeric tolerance
+band on derived metrics) is a new PROVISIONAL item — see §14.
 
 ## 3. Purge and embargo applicability (Matrix row 27)
 
@@ -480,11 +530,14 @@ No HALT condition applies.
 | **U-06** — CPCV applicability decision function (mapping `CPCVDecision.samplingStructure` to an applicable/not-applicable verdict) and CPCV fold count / purge-embargo sizing when applicable | PROVISIONAL — unvalidated | Danny | Dedicated research-design pass defining the applicability matrix, informed by whichever CPCV reference implementation (e.g., skfolio's `CombinatorialPurgedCV`, pending its own PA-10 acceptance gates) is used for comparison, per Matrix row 28's "applicability/default matrix" designation |
 | Adverse-cost-stress magnitude/percentage (§8) | PROVISIONAL — unvalidated | Danny | Resolved in the same execution-semantics ADR Data Architecture §8 already names for U-02c's cost-model default values — not a separate, second-guessed number |
 | Robustness-family (§9) applicability-by-candidate-type rules and pass/fail thresholds per family | PROVISIONAL — unvalidated | Danny | Resolved alongside U-04, since family applicability depends on the same asset/timeframe/event-structure context U-04's research design must characterize |
+| **Independent-reproduction match tolerance** (§2.1) — whether `IndependentReproductionRecord.matched` requires exact event-ledger match or some numeric tolerance band on derived metrics, and if the latter, the tolerance value itself | PROVISIONAL — unvalidated | Danny | Resolved alongside U-01's schema design session (Roadmap §3 Phase R1), since the exact reproduction bar depends on the same content-addressing/hashing mechanism (Data Architecture §2.4/§5, U-01c) that determines what "same content-addressed inputs" precisely means |
 
 No numeric constant (p-value, DSR cutoff, minimum sample size, CPCV fold count, cost-stress percentage,
-purge-window/embargo-period length) is introduced anywhere in this document. Every PROVISIONAL item above
-is a statistical/research-design decision explicitly flagged by the Reconciliation Matrix (U-04/U-05/U-06)
-or an execution-semantics decision already deferred by Data Architecture §8 — none is guessed here.
+purge-window/embargo-period length, independent-reproduction match tolerance) is introduced anywhere in
+this document. Every PROVISIONAL item above is a statistical/research-design decision explicitly flagged by
+the Reconciliation Matrix (U-04/U-05/U-06), an execution-semantics decision already deferred by Data
+Architecture §8, or the new independent-reproduction tolerance surfaced by Matrix row 59 — none is guessed
+here.
 
 ## 15. Amendment
 

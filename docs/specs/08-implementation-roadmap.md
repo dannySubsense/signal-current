@@ -9,7 +9,10 @@ spec set. Not yet independently reviewed. Frozen only after the full eight-docum
 binding spec-gate.
 
 **Provenance:** @planner.
-**Editorial corrections:** @planner, 2026-09-05, per `05-REVIEW.md` gaps G3/G4/G13.
+**Editorial corrections:** @planner, 2026-09-05, per `05-REVIEW.md` gaps G3/G4/G13. @planner,
+2026-09-05, per Frank's spec-gate attempt-1 fix item 3 — sequenced the new independent-reproduction
+match-tolerance PROVISIONAL item (Validation §14) into Phase R1 (§3) and the §1 roundup sentence, per
+Matrix row 59 / Reconciliation Matrix §6 item 14.
 
 **Primary question this document answers:** In what sequence do we build and prove the system without
 violating the specification?
@@ -38,7 +41,8 @@ own completion criteria require before U-13's thresholds can be set. It does NOT
 Each of the above is tagged **PROVISIONAL — unvalidated**, owner **Danny**, with a named resolution
 condition, in §8. This document also collects and sequences — without resolving — every PROVISIONAL item
 already tagged in documents 04, 05, 06, and 07 (U-01a/b/c, U-02a/b/c, U-03, U-04, U-05, U-06, the
-adverse-cost-stress magnitude, the robustness-family thresholds, U-07a/b, U-12, the diversification/
+adverse-cost-stress magnitude, the robustness-family thresholds, the independent-reproduction match
+tolerance (Validation §14, surfaced by Matrix row 59), U-07a/b, U-12, the diversification/
 contribution thresholds, the incubation-stage durations, the `StrategyArtifactPassport.complexity` field
 schema, and the agent-activation readiness checklist/permission matrix). §3 is the sequencing table for all
 of these; §8 restates only this document's own four new items (U-08/U-09/U-10/U-13) in the standard
@@ -184,12 +188,21 @@ ExecutionContext/CostModel-shaped object as its own input.
    without fixing its shape — resolves alongside U-01a in this same phase, since `complexity` is read off
    the same `StrategyIR` shape U-01a's golden examples fix; there is no reason to run this as a
    disconnected second schema-design effort once U-01a's session already has the worked examples in hand.
+7. **Independent-reproduction match tolerance (Validation §14, surfaced by Matrix row 59)** — whether
+   `IndependentReproductionRecord.matched` requires exact event-ledger match or a numeric tolerance band on
+   derived metrics — resolves alongside U-01a/b/c in this same phase, since the reproduction bar depends on
+   the same content-addressing/hashing mechanism (U-01c) that defines what "same content-addressed inputs"
+   means. This item gates promotion to `StrategyArtifact` structurally (Validation §2.1) regardless of when
+   its exact tolerance number is set; the gate's principle (a distinct-identity rerun must occur and match)
+   is not itself PROVISIONAL — only the numeric tolerance is.
 
 **Why this phase must complete before Phase R2:** Validation's `ValidationPlan` sub-decisions (Validation
 §§3-10) each reference a `SimulationRun`, a `CostModel`, or an `ExecutionContext` by ID — none of Validation's
 own PROVISIONAL items (U-04/U-05/U-06, adverse-cost-stress) can be meaningfully tested against real
 strategies until Phase R1 produces a `StrategyIR` shape and execution-semantics contract those
-`SimulationRun`s can actually be generated against.
+`SimulationRun`s can actually be generated against. The independent-reproduction match tolerance (item 7
+above) has the same dependency for a different reason: it is not tested against a `SimulationRun`'s content
+but against the content-addressing mechanism (U-01c) itself.
 
 ### Phase R2 — Validation statistical-defaults research design (U-04, U-05, U-06, robustness-family thresholds)
 
@@ -274,7 +287,7 @@ equal priority. See §5 below for the fuller statement of this sequencing rule.
 
 | Phase | PROVISIONAL items resolved | Precondition | Resolution mechanism (already named in source doc) |
 |---|---|---|---|
-| R1 | U-01a, U-01b, U-01c, U-02a, U-02b, U-02c, U-03, `StrategyArtifactPassport.complexity` schema | None (earliest) | Dedicated schema/execution-semantics design sessions and ADR (Data Architecture §8; Portfolio/Deployment §16) |
+| R1 | U-01a, U-01b, U-01c, U-02a, U-02b, U-02c, U-03, `StrategyArtifactPassport.complexity` schema, independent-reproduction match tolerance | None (earliest) | Dedicated schema/execution-semantics design sessions and ADR (Data Architecture §8; Portfolio/Deployment §16; Validation §14) |
 | R2 | U-04, U-05, U-06, robustness-family thresholds | R1 complete | Dedicated statistical/research-design passes (Validation §14) |
 | R3 | U-07a, U-07b, U-12, diversification/contribution thresholds, incubation-stage durations | R2 substantially complete + ≥1 StrategyArtifact exists + (for U-07a/b, U-12) a target platform selected (§4) | Dedicated portfolio-qualification/incubation-design passes and target-platform parity/auth ADRs (Portfolio/Deployment §16) |
 | R4 | U-11 (activation checklist + permission matrix) | R1-R3's underlying contracts implementation-stable and gate-enforced for non-agent callers | Post-P0/P1 readiness evaluation (Agent-Orchestration §12) |
