@@ -327,9 +327,9 @@ as requiring dedicated design work this drafting pass must not substitute for.
 | **U-03** — Exact broker/venue normalization field schema (calendar representation format, roll-adjustment method taxonomy, currency-conversion policy fields) | PROVISIONAL — unvalidated | Danny | Dedicated StrategyIR/data-schema design session with golden-example worked strategies spanning at least two materially different venues/asset classes, per Architecture §7.2's heterogeneity requirement (may be combined with U-01a's design session) |
 
 No numeric constant is adopted as a Signal Current setting anywhere in this document. The only numeric
-literals present (threshold, budget, tolerance, sample-size minimum, cost-model default value), including
-those in §4.2, are external values quoted from cited candidate reports and explicitly rejected as settings,
-not adopted defaults. Every PROVISIONAL item above is a schema/semantics/algorithm design
+literals present are an external config-default value cited from prior-art research (§4.2's Zipline-reloaded
+`minutes_per_day=390`) and a repo-count observation cited from prior-art research (§4.2's vn.py "roughly 90 peer
+venue-adapter repositories"); neither is adopted as a Signal Current setting. Every PROVISIONAL item above is a schema/semantics/algorithm design
 decision explicitly flagged by the Reconciliation Matrix as requiring dedicated design work (U-01/U-02/U-03),
 not a number this document declines to source — none is guessed here.
 

@@ -407,9 +407,9 @@ architecture document.
 | U-01/U-02/U-03 (StrategyIR schema, execution semantics, broker/venue normalization) | Deferred, not PROVISIONAL — explicitly document 04's scope | Document 04 owner | Resolved when document 04 (Data Architecture & Strategy IR) is drafted; this document fixes only the boundary contracts in §3.1, §9, §10 |
 
 No numeric constant is adopted as a Signal Current setting anywhere in this document. The only numeric
-literals present (threshold, budget, tolerance, sample-size minimum) are external values quoted from cited
-candidate reports (e.g. §7.2's `minutes_per_day=390`, §10's "roughly 90 peer venue-adapter repositories")
-and explicitly rejected as settings, not adopted defaults. Every deferred decision above is either a product/technology choice explicitly out of scope per
+literals present are an external config-default value cited from prior-art research (§7.2's Zipline-reloaded
+`minutes_per_day=390`) and a repo-count observation cited from prior-art research (§10's vn.py "roughly 90 peer
+venue-adapter repositories"); neither is adopted as a Signal Current setting. Every deferred decision above is either a product/technology choice explicitly out of scope per
 the Reconciliation Matrix (U-08/U-09/U-10/U-11) or a schema/semantics decision explicitly scoped to a later
 document (U-01/U-02/U-03) — none is guessed here.
 
