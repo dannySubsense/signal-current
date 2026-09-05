@@ -59,3 +59,67 @@ re-verified against live files, commit c690132 confirmed to close N1/N2/N4.
 
 Attempt counter: 1 of 3 (uncapped per Danny's "keep going" ruling on this sprint — the loop
 continues past 3 rather than auto-halting; see docs/specs/signal-current-v1-spec/INTERVIEW.md).
+
+### Attempt 2 — 2026-09-05 — FAIL (converging)
+
+**Layer 1: PASS** (unchanged from attempt 1, re-verified). **Layer 2: FAIL.**
+
+Attempt 1's blocking finding (the well omits NORTHSTAR's Thesis) is **closed** — Matrix row 59 /
+§6 item 14 exist, Constitution §3 item 7 cites them and quotes the Thesis verbatim, Validation
+§2/§2.1 add a structural gate, and that gate is genuinely load-bearing downstream (doc 06 §2
+refuses promotion without it, doc 07 §2.3 item 3 makes a promotion request without it a rejected
+malformed tool call). Frank confirmed this chain is real, not cosmetic.
+
+**New blocking finding (F1):** `IndependentReproductionRecord` is assertion-shaped. `matched:
+boolean` and free-text `comparisonMethod`, with no reference to the reproduction's own
+content-addressed `SimulationRun`/`ValidationArtifact`, and `originalAuthor`/`reproducedBy` as
+unbound free strings. Doc 04 (which doc 02 §4.2 names as owner of the audit-log schema) has no
+actor/identity field at all. Net effect: the gate can be satisfied by the same author writing
+`matched: true` and any different string into `reproducedBy` — exactly the self-certification
+failure this whole program exists to prevent, one layer deeper than attempt 1 caught it.
+
+**New blocking finding (F2):** doc 02 (System Architecture — the document that names the enforcing
+component) was never amended. §3.1/§3.2/§5 still enumerate five evidence checks, not six; no
+mention of independent reproduction anywhere in the document that defines what the Promotion/Gate
+Service enforces. Doc 05 §13's "checked against 02, no conflict" is now stale — it predates §2.1.
+
+**New required findings (non-blocking but must close before freeze):**
+- F3: whether the independent rerun includes Sealed Lockbox confirmation is unspecified (05 §2.1
+  vs §11) — if not, the most consequential evidence remains author-only; if so, §11.3's
+  contamination-voiding logic needs a sentence distinguishing legitimate rerun from "peek and
+  re-tune."
+- F4: "distinct identity" (row 59's "author or authoring agent") is undefined — two agent roles
+  driven by one orchestrator in one session are one well; string inequality doesn't capture that.
+
+**Attempt-1 minor findings, re-verified:** F2 (synthesis flags) CLOSED — specific, content-bearing
+citations at all four locations, not generic disclaimers. F4 (stale status line) CLOSED. F3 (02 §12
+grep claim) narrowed but overshot again — the PA-10/candidate-report claim is now true, but a new
+added sentence ("fully retired from research-program vocabulary") is contradicted by
+`Signal_Current_Specification_Set/CLAUDE_CODE_GREENFIELD_KICKOFF.md:183`, which still lists PARITY
+ORACLE as an allowed disposition (a research input, not authority, but still a literally-false
+sentence in the same paragraph).
+
+**Process finding:** `05-REVIEW.md` was discovered untracked (never committed) — fixed separately,
+commit 9890e58.
+
+**Fix routing (all to @architect, single focused pass on docs 02/04/05):**
+1. 05 §2: redefine `IndependentReproductionRecord` with content-addressed refs
+   (`reproductionRunRefs`, `reproductionValidationArtifactRef`); `matched` computed by the
+   Validation Service from comparing content-addressed outputs, never assertion-populated;
+   `originalAuthor`/`reproducedBy` bound to Audit/Event Log actor entries (Constitution §9.1,
+   Matrix row 53), not free strings.
+2. 04 §7: add an `actor`/principal field to the audit/lineage event contract, so `reproducedBy`
+   has something real to bind to.
+3. 02 §3.1/§3.2/§5: add independent reproduction (Constitution §3 item 7, Matrix row 59) to the
+   enumerated gate evidence and to what the Promotion/Gate Service enforces.
+4. 05 §13: re-run the consistency check against 02/04 after 1-3 land, rewrite accordingly.
+5. 05 §2.1/§11: state whether the rerun includes lockbox confirmation (recommend: yes, per the
+   Thesis's "the same test"); add a distinguishing sentence to §11.3.
+6. 05 §2.1: define "distinct identity" — different principal in the audit actor model; state
+   explicitly that an agent rerun within the same orchestration session as the original does not
+   satisfy row 59.
+7. 02 §12: delete the overshot "fully retired from research-program vocabulary" sentence; keep
+   the claim scoped to PA-10/candidate-reports (true), add the kickoff doc to the historical-
+   reference list.
+
+Attempt counter: 2 of 3 (uncapped, continuing).
