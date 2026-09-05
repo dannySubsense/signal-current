@@ -5,7 +5,7 @@ Matrix) and `docs/specs/01-constitution.md`. Not yet independently reviewed. Fro
 eight-document set clears Frank's binding spec-gate.
 
 **Provenance:** @architect.
-**Editorial corrections:** @architect, 2026-09-05, per `05-REVIEW.md` gaps G8/G11.
+**Editorial corrections:** @architect, 2026-09-05, per `05-REVIEW.md` gaps G8/G11; @architect, 2026-09-05, per Frank's spec-gate attempt-1 finding F3 (§12 "zero remaining occurrences" rescoped).
 
 **Primary question this document answers:** What are the bounded domains, components, interfaces, states
 and invariants of Signal Current?
@@ -372,8 +372,11 @@ This document fixes the boundary that decision must respect, without pre-decidin
   the Qlib CN-region and Zipline-reloaded NYSE-session precedents cited in §7.2.
 - Treating an external engine's parity/regression pass as equivalent to Signal Current's own numerical
   evidence ("PARITY ORACLE"-style conflation) — rejected per Constitution §8; any such label previously
-  found in PA-10 was already corrected against Matrix rows 1/16 (repo-wide grep confirms zero remaining
-  occurrences) and was not carried into this architecture.
+  found in PA-10 was already corrected against Matrix rows 1/16. No PARITY ORACLE label survives as an
+  active disposition in `docs/research/prior-art/PA-10-reuse-decision-register.md` or any candidate
+  report — the term is fully retired from research-program vocabulary. References to it remaining in
+  this sprint's own scaffolding (`NORTH-STAR.md`, `INTAKE.md`, `01-REQUIREMENTS.md`) are historical
+  descriptions of that correction, not live labels, and were not carried into this architecture.
 - Autonomous agent-driven promotion of any material-risk-bearing artifact — rejected per Constitution §6
   and Matrix row 49; see TradingAgents' Portfolio-Manager-as-LLM-approval pattern
   (`docs/research/candidate-reports/PA-08-tradingagents.md`), cited here as a concrete negative precedent
