@@ -234,9 +234,10 @@ prematurely abandoned set.
 - Must not: Treat a PARITY ORACLE-style label, or any external library's internal ontology, as
   Signal Current's domain model or ground truth, anywhere in the eight documents or the corrected
   PA-10 register.
-- Assumes: The Reconciliation Matrix (`00-source-inventory-reconciliation.md`, "Working draft
-  v0.2") remains the authoritative synthesis input for this sprint; if it is revised mid-sprint,
-  affected documents must be re-checked against the new version before Frank's gate.
+- Assumes: The Reconciliation Matrix (`00-source-inventory-reconciliation.md`, "Specification-phase
+  working baseline", dated 2026-09-04) remains the authoritative synthesis input for this sprint;
+  if it is revised mid-sprint, affected documents must be re-checked against the new version before
+  Frank's gate.
 - Assumes: `docs/NORTHSTAR.md` remains `Status: ACTIVE` for the duration of this sprint, so Frank's
   Layer 2 check needs no PROVISIONAL stamp; if that status changes, Frank's gate treatment changes
   accordingly and must be re-verified, not assumed.
