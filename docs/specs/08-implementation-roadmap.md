@@ -9,7 +9,7 @@ spec set. Not yet independently reviewed. Frozen only after the full eight-docum
 binding spec-gate.
 
 **Provenance:** @planner.
-**Editorial corrections:** @planner, 2026-09-05, per `05-REVIEW.md` gaps G3/G4.
+**Editorial corrections:** @planner, 2026-09-05, per `05-REVIEW.md` gaps G3/G4/G13.
 
 **Primary question this document answers:** In what sequence do we build and prove the system without
 violating the specification?
@@ -54,8 +54,8 @@ names Document 08 as owner and their resolution mechanism ("resolved during Impl
 build-phase tooling selection," "resolved during build-phase design of the Agent Tool Layer, once activation
 (§7) is authorized") is a sequencing question, not a re-decision of document 07's permission-matrix content.
 This document therefore picks up both items explicitly in §4 below, alongside Phase R4, rather than leaving
-them uncollected. §3's "collects and sequences... documents 04, 05, 06, and 07" claim is read as including
-these two 07 §12 items, sequenced in §4 rather than in the §3 phase table (because they are deferred
+them uncollected. §1's own "collects and sequences... documents 04, 05, 06, and 07" claim above is read as
+including these two 07 §12 items, sequenced in §4 rather than in the §3 phase table (because they are deferred
 build-phase technology choices, not research-design-dependent PROVISIONAL items of the same shape as U-01
 through U-13).
 
@@ -412,11 +412,11 @@ set, including this one, self-certifies its own readiness for implementation.
 | **U-10** — Artifact-store product (local filesystem vs. S3-compatible) | PROVISIONAL — unvalidated | Danny | A deployment-context decision (single-workstation vs. distributed-worker mode, per Matrix row 50) must be made first; this document does not make that decision, only notes that whichever product is chosen must present a content-addressed, immutable interface (Data Architecture §5) regardless of which mode is selected |
 | **U-13** — Exact P0/P1 acceptance thresholds and benchmark/conformance coverage (exact numeric pass/fail criteria, exact number and identity of heterogeneous combinations beyond "at least two, materially different") | PROVISIONAL — unvalidated | Danny | Set once §2's structural P0 scope and heterogeneity-coverage requirement (fixed by this document) are agreed, and informed by whichever numeric research-design outputs Phase R2 (U-04/U-05/U-06) produces for validation-specific thresholds; this document fixes the structure those thresholds must satisfy (§2.2), not the numbers themselves |
 
-No numeric constant (a specific benchmark result, a specific queue/store product name, a specific
-threshold number, a specific count of conformance combinations beyond "at least two") is introduced anywhere
-in this document. Each PROVISIONAL item above is a technology/threshold decision the Reconciliation Matrix
-itself flags (U-08/U-09/U-10/U-13) as requiring benchmark or research-design work this document does not
-substitute for — none is guessed here.
+No numeric constant is adopted as a Signal Current setting in this document — the only numeric literal
+present ("roughly 90 peer venue-adapter repositories," §2.1) is an external citation from prior-art research
+(vn.py), not an adopted value. Each PROVISIONAL item above is a technology/threshold decision the
+Reconciliation Matrix itself flags (U-08/U-09/U-10/U-13) as requiring benchmark or research-design work this
+document does not substitute for — none is guessed here.
 
 ## 9. Consistency check against Constitution, Architecture, Research Methodology, Data Architecture,
 Validation, Portfolio/Deployment, and Agent-Orchestration
