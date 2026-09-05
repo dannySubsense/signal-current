@@ -716,3 +716,114 @@ project's PROVISIONAL discipline, not a fabricated identity-verification mechani
 genuinely Cold Frank re-gate follows once that fix lands and is verified.
 
 ---
+
+### Attempt 10 — Cold Frank — 2026-09-05 — FAIL (fail-open field, backstop not widened)
+
+**Dispatch note:** repo + SHA `4d13d94` only (the `controllingPrincipalId` fix commit), no file
+list, no scope narration — fourth consecutive genuinely Cold dispatch.
+
+**Verdict (verbatim from Frank's report):**
+
+Findings:
+- Pre-checks: Premise [pass — `git show --stat 4d13d94` touches only docs 04/05/06/07/08; no
+  numeric constant enters. Sol's "roughly 90" is labeled an external, not-adopted prior-art citation
+  at `02:423`, `04:493`, `08:502`; `390` likewise. Every threshold remains a valued-later
+  PROVISIONAL row, owner Danny]. Input [pass — opened the live `04 §5.4` (lines 305-431) and
+  `05 §2.1` (lines 187-298) directly, not the diff summary; confirmed Sol's pre-fix defect was real
+  by reading the removed lines ("different `actorId`s are always distinct"; "human and agent are
+  always distinct"). `.gate-snapshots/spec/attempt-{1..5}/` present, five add-commits
+  `4f01dc5`..`8a63daa`]. Evidence independence [pass — repo+SHA only; Sol is a distinct reader from
+  the nine prior Frank attempts, and the chain was traced from `docs/NORTHSTAR.md` forward without
+  using the gate log as a route].
+- **F1 (blocking) — the new field is fail-open, and the two owning documents disagree about it.**
+  `04:348` declares `controllingPrincipalId?: string` — optional. `04:411-413` then says the
+  distinctness test operates on it "whenever `controllingPrincipalId` is populated." `05:204-205`
+  says two humans are distinct "only if they also resolve to different `controllingPrincipalId`s" —
+  an unconditional MUST. Under doc 04's wording, an `AuditActor` with the field absent drops
+  straight back to `actorId` inequality for item 1, which is the exact loophole Sol found. `05:257`
+  compounds it with a default in spec text: the human's `controllingPrincipalId` is "ordinarily its
+  own `actorId`." Contrast the pattern this set already established for the sibling field at
+  `04:327-328`: `orchestrationSessionId` "MUST be present whenever actorType is 'agent'; a record
+  ... with no orchestrationSessionId is malformed and MUST be rejected." The new field got no such
+  sentence, and no component is named as its populator.
+- **F2 (blocking, same root) — the Phase R1 backstop was not widened.** `05:293-294` is the
+  sentence that makes the whole gate inert until U-12 resolves: "until ... actor/session-
+  verification sub-items (`AuditActor.actorId` authenticity, `orchestrationSessionId`
+  minting/verification) resolve, an `IndependentReproductionRecord` cannot satisfy this gate." That
+  enumeration still omits `controllingPrincipalId` resolution. Doc 05's header claims items 1-3, the
+  flagged-question paragraph, and §14 were widened and §13 re-run — the one sentence that actually
+  blocks a premature promotion was missed.
+- F3 (minor) — `05:201` still states the definition as "MUST resolve to a different
+  `AuditActor.actorId`." After this change that is necessary, not sufficient; the sentence is now
+  stale relative to items 1-3 beneath it.
+- F4 (minor, process) — CADENCE §Recovery requires a snapshot before re-delegation on a failed
+  gate. Attempt 9's PASS was withdrawn and the set re-delegated to @architect; no `attempt-9/`
+  snapshot existed at the time. Pre-fix state was recoverable from `99d3673`, so nothing was lost,
+  but the record convention that attempts 7-8 fought over was skipped on the very next turn.
+- Verified sound: docs 06/07/08 widenings are consistent with each other and with 04 §8 (same
+  sub-item, same R1 phase, same owner, not a new PROVISIONAL row — correct call, and correctly not
+  a fabricated identity mechanism). Item 2's agent-side rules are untouched, as instructed. Docs
+  01/02/03 carry no reference to `AuditActor`/distinctness internals, so nothing there went stale.
+  Gate log at this SHA is honest: attempt-9 verdict left verbatim with a dated withdrawal, no false
+  repo-state claim.
+- Layer 1: pass — eight docs exist, provenance and row anchors intact, no regression. Layer 2:
+  FAIL — `docs/NORTHSTAR.md` `**Status**: ACTIVE`, binding, no PROVISIONAL stamp; the Thesis chain
+  now has a fail-open link (F1/F2) between "distinct identity" and the mechanism that checks it.
+- Convergence (attempt 10, uncapped per Danny): spec-content axis reopened by Sol at attempt 9 and
+  not yet closed; this finding is the strict residue of Sol's — the fix introduced the right field
+  and left it optional. SHRINKING, not STATIC: attempt 9's gap was a missing concept; this is two
+  missing sentences on that concept. Gate-record axis: clean this attempt.
+
+Why: The whole point of the nine-attempt identity line was to make "someone other than its author"
+mechanically checkable rather than asserted. The set learned this lesson once already, at attempt
+3, for `orchestrationSessionId`: an optional identity field is an identity field a caller can omit,
+and omission defaults to the permissive branch. This fix repeats the pre-attempt-3 shape for the
+human side. Doc 05 says the test is unconditional; doc 04, the schema owner, says it applies only
+when a field that nobody is required to populate is populated. When two binding documents disagree,
+an implementer picks the easier one, and here the easier one reopens Sol's loophole with a
+lexically different `actorId` and a blank field. The R1 backstop at `05:293` would have made this
+moot until U-12 resolves — except it was not widened, so a literal reading lets the gate open once
+the two *enumerated* sub-items resolve, with `controllingPrincipalId` still optional. Yes, in
+practice all three land in one U-12 sub-resolution; but the spec is the thing Danny is being asked
+to freeze, and the spec's own text is what binds.
+
+This is FAIL, not HALT: the defect is confined to two documents, the correct pattern already
+exists eleven lines up in the same section, and nothing about the spec set's intent is ambiguous.
+It is not PASS because the fix that closes Sol's blocker on paper does not close it in the schema.
+
+**Verdict: FAIL**
+
+**Fix/Next-step:**
+1. `04:348`/`:408-413`: make `controllingPrincipalId` fail-closed — either required for every
+   `AuditActor` with the same "absent → malformed, MUST be rejected" sentence
+   `orchestrationSessionId` has at `:327-328`, or, if it stays optional pending U-12, state
+   explicitly that an absent value is treated as *non-distinct* (gate fails), never as "fall back to
+   `actorId`." Delete "whenever `controllingPrincipalId` is populated." Name the populating
+   component (the recording component, from the identity-provider resolution, never
+   caller-supplied), same as `actor`. → @architect
+2. `05:257`: delete "(ordinarily its own `actorId`)" — a default in spec text is the
+   promoted-default pattern. → @architect
+3. `05:293-294`: add `controllingPrincipalId` resolution to the enumerated U-12 sub-items that
+   block the gate until resolved, so doc 05's backstop matches 04 §8 / 06 §16 / 07 §12 / 08 §3.
+   → @architect
+4. `05:201`: reword the definition sentence so `actorId` inequality is stated as necessary, with
+   items 1-3 as the sufficient conditions. → @architect
+5. `05` §13 and `04` §9: re-run after 1-4, rewrite the "Re-run per Sol" paragraphs to reflect what
+   actually changed. → @architect
+6. Snapshot the pre-fix state (`99d3673`) as `attempt-9/` and the current state as `attempt-10/`
+   before re-delegation, per CADENCE §Recovery; append this verdict verbatim to `GATE-LOG.md` in a
+   commit separate from the fix commit. → @vane
+7. Re-dispatch Cold Frank (repo + SHA only) after 1-6 land. → @vane
+Route to: @architect (items 1-5), @vane (items 6-7)
+
+**Resolution (this entry, 2026-09-05):** Item 6 done — `.gate-snapshots/spec/attempt-9/` (from
+`99d3673`) and `.gate-snapshots/spec/attempt-10/` (current tree at `4d13d94`) both created and
+committed alongside this entry, in a commit separate from the fix commit that follows. Items 1-5
+routed to `@architect` next. Item 7 follows once 1-5 land.
+
+**Convergence classification: SHRINKING**, spec-content axis — attempt 9 found a missing concept
+(no controller/natural-person check at all); attempt 10 finds the concept present but fail-open on
+two specific sentences. Not STATIC (this is a narrower residue of the same finding, not the same
+finding recurring unchanged) and not THRASHING (no new axis). Attempt counter: 10.
+
+---
