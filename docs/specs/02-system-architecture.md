@@ -5,7 +5,9 @@ Matrix) and `docs/specs/01-constitution.md`. Not yet independently reviewed. Fro
 eight-document set clears Frank's binding spec-gate.
 
 **Provenance:** @architect.
-**Editorial corrections:** @architect, 2026-09-05, per `05-REVIEW.md` gaps G8/G11; @architect, 2026-09-05, per Frank's spec-gate attempt-1 finding F3 (§12 "zero remaining occurrences" rescoped). @architect, 2026-09-05, per Frank's spec-gate attempt-2 findings F2 (§3.1/§3.2/§5 amended to include independent reproduction) and F3-minor (§12 overshot sentence removed, kickoff doc added to historical-reference list).
+**Editorial corrections:** @architect, 2026-09-05, per `05-REVIEW.md` gaps G8/G11; @architect, 2026-09-05, per Frank's spec-gate attempt-1 finding F3 (§12 "zero remaining occurrences" rescoped). @architect, 2026-09-05, per Frank's spec-gate attempt-2 findings F2 (§3.1/§3.2/§5 amended to include independent reproduction) and F3-minor (§12 overshot sentence removed, kickoff doc added to historical-reference list). @architect, 2026-09-05, per Frank's
+spec-gate attempt-3 minor finding — replaced §12's "at line ~183" reference with a section/heading-name
+reference (kickoff doc's "Prior-art research program" section), since line numbers drift.
 
 **Primary question this document answers:** What are the bounded domains, components, interfaces, states
 and invariants of Signal Current?
@@ -381,9 +383,9 @@ This document fixes the boundary that decision must respect, without pre-decidin
   `docs/research/candidate-reports/`). References to it remaining in this sprint's own scaffolding
   (`NORTH-STAR.md`, `INTAKE.md`, `01-REQUIREMENTS.md`) and in
   `Signal_Current_Specification_Set/CLAUDE_CODE_GREENFIELD_KICKOFF.md` (a historical research-input
-  document, not authority, which as of this writing still lists PARITY ORACLE as an allowed disposition
-  at line ~183) are historical references to a prior state, not live labels, and were not carried into
-  this architecture.
+  document, not authority, which as of this writing still lists PARITY ORACLE as an allowed disposition in
+  its "Prior-art research program" section's proposed-disposition list) are historical references to a prior state, not live labels,
+  and were not carried into this architecture.
 - Autonomous agent-driven promotion of any material-risk-bearing artifact — rejected per Constitution §6
   and Matrix row 49; see TradingAgents' Portfolio-Manager-as-LLM-approval pattern
   (`docs/research/candidate-reports/PA-08-tradingagents.md`), cited here as a concrete negative precedent

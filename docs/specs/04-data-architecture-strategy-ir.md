@@ -8,7 +8,13 @@ eight-document set clears Frank's binding spec-gate.
 **Provenance:** @architect.
 **Editorial corrections:** @architect, 2026-09-05, per `05-REVIEW.md` gap G8. @architect, 2026-09-05, per Frank's spec-gate attempt-2 finding F1/F2 — added the audit/lineage event
 principal contract (§5.4), so `IndependentReproductionRecord.originalAuthor`/`reproducedBy` (document 05 §2)
-have a real, bound actor reference instead of free strings.
+have a real, bound actor reference instead of free strings. @architect, 2026-09-05, per Frank's spec-gate
+attempt-3 findings F2/minor — named the specific `AuditLineageEvent`s `originalAuthor`/`reproducedBy` are
+each resolved from (§5.4 closing paragraph), made `orchestrationSessionId` required (non-undefined) for
+`actorType: 'agent'` and stated it is assigned by the Agent Tool Layer/harness at session start, never
+self-declared (§5.4), repaired the broken first-paragraph sentence and restructured §5 into proper
+§5.1-§5.3 subsections ahead of §5.4 rather than renumbering a cross-referenced anchor, and removed
+process-narration language from body text.
 
 **Primary question this document answers:** What are the canonical data, artifact, schema, lineage and
 executable strategy contracts?
@@ -246,39 +252,50 @@ two materially different venues/asset classes, per Architecture §7.2's heteroge
 
 Per Matrix row 23 (verbatim): "Canonical architecture: immutable columnar market/feature snapshots;
 analytical scans separate from transactional metadata/lineage; content-addressed artifacts. Exact products
-remain implementation decisions where not semantically important."
+remain implementation decisions where not semantically important." This section is organized into four
+subsections (§5.1-§5.4), each fixing one required property of the store per that Matrix row, followed by
+the product-choice deferral.
 
-1. **Market/feature data** is stored as immutable columnar snapshots. A `DataSnapshot` (§4.1), once
-   referenced by any `CampaignSpec` or `SimulationRun`, is never mutated in place — a corrected or updated
-   data source produces a new, separately-versioned `DataSnapshot`, never an in-place rewrite (Constitution
-   §9.1, Matrix row 5).
-2. **Analytical scans** (bulk read access for simulation/feature computation across a `DataSnapshot`) are
-   architecturally separate from **transactional metadata/lineage** (artifact identity, provenance,
-   promotion-gate audit events, correlation/causation IDs per Architecture §3.2 and Constitution §9.1) — the
-   two are not stored in, or served from, the same table/store role, because they have different access
-   patterns, different mutability profiles (lineage/audit is append-only event data; market data is
-   immutable bulk columnar data), and different consumers (Deterministic Simulation Engine vs.
-   Promotion/Gate Service and Audit/Event Log per Architecture §5).
-3. **Artifacts are content-addressed** (Matrix row 23; §2.4 above for StrategyIR specifically). This applies
-   uniformly to every immutable artifact in the spine (Architecture §3) that this document's contracts
-   touch: `SourceSnapshot`, `DataSnapshot`, `StrategyIR Candidate`, `SimulationRun` event ledgers, and
-   `ValidationArtifact` records are each identified by content-derived hash, not solely by a sequential or
-   externally-assigned ID.
-4. **Which specific database/object-store products** implement the above (e.g., a specific columnar
-   analytical engine, a specific object store, a specific metadata database) is U-10, already deferred to
-   document 08 in Architecture §14 — this document does not re-decide it. This document fixes only the
-   store's required properties: immutability of market/feature data, separation of analytical-scan access
-   from transactional lineage access, and content-addressed identity for every artifact class named above.
+### 5.1 Market/feature data is immutable columnar
+
+Market/feature data is stored as immutable columnar snapshots. A `DataSnapshot` (§4.1), once referenced by
+any `CampaignSpec` or `SimulationRun`, is never mutated in place — a corrected or updated data source
+produces a new, separately-versioned `DataSnapshot`, never an in-place rewrite (Constitution §9.1, Matrix
+row 5).
+
+### 5.2 Analytical scans are architecturally separate from transactional metadata/lineage
+
+Analytical scans (bulk read access for simulation/feature computation across a `DataSnapshot`) are
+architecturally separate from transactional metadata/lineage (artifact identity, provenance, promotion-gate
+audit events, correlation/causation IDs per Architecture §3.2 and Constitution §9.1) — the two are not
+stored in, or served from, the same table/store role, because they have different access patterns,
+different mutability profiles (lineage/audit is append-only event data; market data is immutable bulk
+columnar data), and different consumers (Deterministic Simulation Engine vs. Promotion/Gate Service and
+Audit/Event Log per Architecture §5).
+
+### 5.3 Artifacts are content-addressed
+
+Artifacts are content-addressed (Matrix row 23; §2.4 above for StrategyIR specifically). This applies
+uniformly to every immutable artifact in the spine (Architecture §3) that this document's contracts touch:
+`SourceSnapshot`, `DataSnapshot`, `StrategyIR Candidate`, `SimulationRun` event ledgers, and
+`ValidationArtifact` records are each identified by content-derived hash, not solely by a sequential or
+externally-assigned ID.
+
+**Which specific database/object-store products** implement §5.1-§5.3 above (e.g., a specific columnar
+analytical engine, a specific object store, a specific metadata database) is U-10, already deferred to
+document 08 in Architecture §14 — this document does not re-decide it. This document fixes only the store's
+required properties: immutability of market/feature data (§5.1), separation of analytical-scan access from
+transactional lineage access (§5.2), and content-addressed identity for every artifact class named above
+(§5.3).
 
 ### 5.4 Audit/lineage event actor contract
 
 Per Architecture §4.2's naming of this document as the audit-log schema owner ("the exact audit-log schema
 is also document 04's job") and Constitution §9.1 / Matrix row 53 ("state transitions and consequential
 actions produce versioned audit events with actor, correlation/causation ID, and artifact references"): the
-transactional-metadata/lineage store (§5 item 2) MUST carry a principal/actor field on every audit/lineage
-event it records. This document fixes the actor contract itself was previously absent from this document
-despite being the schema owner named for it — grep of this document prior to this fix pass confirms zero
-occurrences of "actor" anywhere in its text.
+transactional-metadata/lineage store (§5.2) MUST carry a principal/actor field on every audit/lineage
+event it records. This document fixes the actor contract itself, which was previously absent despite this
+document being the schema owner named for it.
 
 ```typescript
 /**
@@ -293,16 +310,22 @@ interface AuditActor {
   actorType: 'human' | 'agent';
   /**
    * For actorType 'agent': the specific orchestration-session/invocation identity that produced this
-   * event — not merely a role name. Two agent role labels (e.g. "validator" and "reproducer") driven by
-   * the same orchestration session MUST share the same orchestrationSessionId, per document 05 §2.1's
-   * "distinct identity" definition (which this field exists to make checkable, not merely asserted).
+   * event — not merely a role name. MUST be present (non-undefined) whenever actorType is 'agent'; a
+   * record with actorType 'agent' and no orchestrationSessionId is malformed and MUST be rejected. Absent
+   * only for actorType 'human', where no orchestration session exists. This ID is assigned by the Agent
+   * Tool Layer/harness at session start — never self-declared by the agent itself, nor by whatever
+   * orchestrates it. Two agent role labels (e.g. "validator" and "reproducer") driven by the same
+   * orchestration session MUST share the same orchestrationSessionId, per document 05 §2.1's "distinct
+   * identity" definition (which this field exists to make checkable, not merely asserted), and per
+   * document 07 §3.1 item 3/§3.2 (which states every agent run carries the orchestrationSessionId of the
+   * session that spawned it).
    */
   orchestrationSessionId?: string;
 }
 
 /**
  * The audit/lineage event envelope this document owns, per Architecture §4.2. Every event in the
- * transactional-metadata/lineage store (§5 item 2) is shaped as at least this envelope; specific event
+ * transactional-metadata/lineage store (§5.2) is shaped as at least this envelope; specific event
  * kinds (promotion-gate transitions, lockbox access, independent-reproduction runs, etc.) extend it with
  * kind-specific fields, per Architecture §3.2 and document 05 §11.2.
  */
@@ -325,9 +348,14 @@ interface AuditLineageEvent {
 ```
 
 This is the binding target for document 05 §2's `IndependentReproductionRecord.originalAuthor` and
-`reproducedBy` fields: both are references to `AuditActor.actorId` values drawn from `AuditLineageEvent`
-entries this store already requires to exist, per Constitution §9.1 and Matrix row 53 — not independently
-authored strings a `ValidationPlan` emitter is free to populate.
+`reproducedBy` fields, and both are derived by the Validation Service, never supplied by the caller.
+`originalAuthor` is resolved from the `AuditLineageEvent` recording production of the original
+`SimulationRun`/`ValidationArtifact` (the run/artifact referenced by `ValidationPlan.simulationRunRefs`);
+`reproducedBy` is resolved from the distinct `AuditLineageEvent` recording production of the reproduction's
+own `SimulationRun`/`ValidationArtifact` (the run/artifact referenced by
+`IndependentReproductionRecord.reproductionRunRefs`/`reproductionValidationArtifactRef`). Neither field is an
+independently authored string a `ValidationPlan` emitter is free to populate, per Constitution §9.1 and
+Matrix row 53.
 
 ## 6. No privileged market dimension, applied at the data layer
 

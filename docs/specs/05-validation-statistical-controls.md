@@ -13,7 +13,11 @@ findings F1 (required), F3 (required), F4 (required) — redefined `IndependentR
 to content-addressed reproduction outputs and audit-log actor references rather than free assertions
 (§2), defined "distinct identity" precisely and closed the one-session/one-orchestrator loophole (§2.1),
 resolved the lockbox-confirmation question (§2.1, §11.3), and re-ran the §13 consistency check against the
-now-amended documents 02/04.
+now-amended documents 02/04. @architect, 2026-09-05, per Frank's spec-gate attempt-3 findings F1/F2 —
+added the missing `reproducedBy` derivation sentence and tightened `originalAuthor`'s wording to match
+(§2), tightened §2.1 item 3's human-rubber-stamp clause now that derivation is mechanical, re-ran the §13
+consistency check against the now-further-amended documents 02/04/07, and moved gate-narration language out
+of body text/doc-comments into this header line.
 
 **Primary question this document answers:** What evidence is required before promotion, and how is
 self-deception constrained?
@@ -93,7 +97,7 @@ interface ValidationPlan {
  * against the same content-addressed inputs and obtains the same result." This is additional to, not
  * a substitute for, the deterministic-replay and multiple-testing-diagnostics decisions above.
  *
- * Fixed per Frank's spec-gate attempt-2 finding F1: this record is NOT an assertion a caller populates.
+ * This record is NOT an assertion a caller populates.
  * Every field below is either (a) a reference to an actor bound to the Audit/Event Log (document 04
  * §5.4's `AuditActor`, per Constitution §9.1 / Matrix row 53), or (b) a content-addressed reference to
  * the reproducer's own `SimulationRun`/`ValidationArtifact` outputs, or (c) `matched`, which is computed
@@ -104,15 +108,21 @@ interface ValidationPlan {
 interface IndependentReproductionRecord {
   /**
    * Reference to the `AuditActor.actorId` (document 04 §5.4) of whoever ran the original validation this
-   * record reproduces — not a free-text name. Resolved from the `AuditLineageEvent` that recorded the
-   * original `ValidationArtifact`'s production.
+   * record reproduces — not a free-text name. Resolved by the Validation Service from the
+   * `AuditLineageEvent` whose `artifactRefs` match `ValidationPlan.simulationRunRefs` (§2 above) or the
+   * equivalent original-run reference — i.e., the event that recorded production of the original
+   * `SimulationRun`/`ValidationArtifact` — never caller-supplied. A record whose `originalAuthor` does not
+   * equal that derived actor is malformed and MUST be rejected.
    */
   originalAuthor: string;
   /**
-   * Reference to the `AuditActor.actorId` (document 04 §5.4) of whoever reran it. MUST be a distinct
-   * principal from `originalAuthor` per §2.1's "distinct identity" definition below — not merely a
-   * different string, and not merely a different role name driven by the same orchestration session
-   * (see §2.1).
+   * Reference to the `AuditActor.actorId` (document 04 §5.4) of whoever reran it. Resolved by the
+   * Validation Service from the `AuditLineageEvent` whose `artifactRefs` contain `reproductionRunRefs`
+   * (below) — i.e., the event that recorded production of the reproduction's own
+   * `SimulationRun`/`ValidationArtifact` — never caller-supplied. A record whose `reproducedBy` does not
+   * equal that derived actor is malformed and MUST be rejected. MUST also be a distinct principal from
+   * `originalAuthor` per §2.1's "distinct identity" definition below — not merely a different string, and
+   * not merely a different role name driven by the same orchestration session (see §2.1).
    */
   reproducedBy: string;
   /** Content-addressed input references the rerun was executed against — must match the original run's. */
@@ -122,7 +132,7 @@ interface IndependentReproductionRecord {
    * produced independently of, the original author's `SimulationRun`(s) referenced by
    * `ValidationPlan.simulationRunRefs` (§2 above). Without this, there is nothing for the Validation
    * Service to compare `matched` against, and the gate degenerates to the self-certification failure
-   * Frank's attempt-2 review identified.
+   * identified in review.
    */
   reproductionRunRefs: string[];
   /**
@@ -170,7 +180,7 @@ from `independentReproduction.originalAuthor`. This is a structural precondition
 `StrategyArtifact` (Architecture §5), not a statistical decision like §§3-10 above — it constrains *who*
 checks a result, not *how* the method is applied.
 
-**Distinct identity, defined precisely (closes Frank's attempt-2 finding F4):** Matrix row 59 requires
+**Distinct identity, defined precisely:** Matrix row 59 requires
 "someone other than the original author (or authoring agent)." This document fixes that requirement as:
 `reproducedBy` and `originalAuthor` MUST resolve to a different `AuditActor.actorId` (document 04 §5.4) —
 not merely a different string, and not merely a different role label. Concretely:
@@ -182,16 +192,23 @@ not merely a different string, and not merely a different role label. Concretely
    "validator" role and a separately-named "reproducer" role both invoked by one orchestrator in one
    session) — shares the same `orchestrationSessionId` and therefore does **NOT** satisfy Matrix row 59,
    regardless of the two role names being lexically different. This closes the "two agent roles, one
-   orchestrator, one session = one well" loophole Frank identified: role-name inequality is not identity
+   orchestrator, one session = one well" loophole: role-name inequality is not identity
    inequality, and the promotion gate MUST check `orchestrationSessionId`, not role labels, when either
    actor is `actorType: 'agent'`.
 3. A human actor and an agent actor are always distinct, subject to items 1-2 still applying if the
    "human" side is itself a human merely rubber-stamping the same agent session's own output without
-   independently driving a separate `orchestrationSessionId`'s reproduction run — that scenario is a
-   process question for how lockbox/reproduction requests are authorized (§11.1), not a schema question
-   this field alone can fully police, and reviewers must treat it as such.
+   independently driving a separate `orchestrationSessionId`'s reproduction run. With `reproducedBy`'s
+   derivation now mechanical (§2 above), a human-authorization entry recorded as `reproducedBy` must
+   itself be a real `AuditActor.actorId` resolved the same way — from the `AuditLineageEvent` that
+   actually recorded production of the reproduction's own `SimulationRun`/`ValidationArtifact` — which
+   structurally rules out a rubber-stamp entry with no corresponding production event behind it. This
+   does not eliminate every residual risk: a human reviewer can still choose to authorize a reproduction
+   run without meaningfully scrutinizing its output before recording it, and no schema field can compel
+   genuine scrutiny. That residual is a process question for how lockbox/reproduction requests are
+   authorized (§11.1), not something this field alone can fully police, and reviewers must treat it as
+   such.
 
-**Lockbox confirmation (closes Frank's attempt-2 finding F3):** if the original validation this record
+**Lockbox confirmation:** if the original validation this record
 reproduces included Sealed Lockbox confirmation (§11), the independent rerun MUST also include lockbox
 confirmation, obtained through a separate, independently-audited lockbox access request per §11.1-§11.2 —
 per the Thesis's own wording, "the same test." A reproduction that omits lockbox confirmation the original
@@ -525,8 +542,8 @@ Per Constitution §4: lockbox access "may invalidate a research cycle." Operatio
 3. This mechanism does not, by itself, retroactively delete or mutate the prior `ValidationArtifact` or
    `StrategyArtifact` (Constitution §3.6's no-silent-mutation principle) — voiding is recorded as a new
    `DecisionRecord` (Architecture §3.1), never a silent rewrite of history.
-4. **Distinguishing a legitimate audited independent reproduction from "peek and re-tune" contamination
-   (per Frank's spec-gate attempt-2 finding F3):** a lockbox access request made to satisfy §2.1's
+4. **Distinguishing a legitimate audited independent reproduction from "peek and re-tune" contamination:**
+   a lockbox access request made to satisfy §2.1's
    independent-reproduction gate is a *repeat* request against the *same* content-addressed
    `StrategyIR Candidate`/`ValidationPlan` identity, by a *distinct* actor (§2.1), producing a *matching*
    result — this is structurally different from the contamination pattern above, which is a repeat request
@@ -582,16 +599,17 @@ above:
    on skfolio's test suite actually being executed (per Sol's finding) — out of this sprint's scope, per the
    Requirements document's "Out of Scope" section.
 
-## 13. Consistency check against Constitution, Architecture, Research Methodology, and Data Architecture
+## 13. Consistency check against Constitution, Architecture, Research Methodology, Data Architecture, and Agent & Orchestration Layer
 
-**Re-run 2026-09-05, per Frank's spec-gate attempt-2 finding F2/F4** — the prior version of this section
-predated documents 02 §3.1/§3.2/§5 and 04 §5.4's amendments (this fix pass) and was stale. This document
-was re-checked for contradiction against the current text of `01-constitution.md`, `02-system-architecture.md`
-(as amended by this fix pass), `03-research-methodology.md`, and `04-data-architecture-strategy-ir.md` (as
-amended by this fix pass), in full. No conflict was found: every clause above elaborates a boundary or
-contract those four documents already establish (Constitution §5, §4, §9, §3 item 7; Architecture §3, §4,
-§5, §11; Research Methodology §9; Data Architecture §2.4, §3, §5, §5.4) at the validation-decision level,
-without contradicting or silently re-deciding any of their fixed clauses. In particular:
+**Re-run 2026-09-05** — the prior version of this section predated documents 02 §3.1/§3.2/§5, 04 §5.4,
+and 07 §3.1/§3.2's further amendments (this fix pass) and was stale. This document was re-checked for
+contradiction against the current text of `01-constitution.md`, `02-system-architecture.md` (as amended by
+this fix pass), `03-research-methodology.md`, `04-data-architecture-strategy-ir.md` (as amended by this fix
+pass), and `07-agent-orchestration-layer.md` (as amended by this fix pass), in full. No conflict was found:
+every clause above elaborates a boundary or contract those five documents already establish (Constitution
+§5, §4, §9, §3 item 7; Architecture §3, §4, §5, §11; Research Methodology §9; Data Architecture §2.4, §3,
+§5, §5.4; Agent & Orchestration §3.1, §3.2, §11) at the validation-decision level, without contradicting or
+silently re-deciding any of their fixed clauses. In particular:
 
 - this document does not re-decide the Exploration/Validation/Lockbox zone mechanism itself (Architecture
   §4 already fixes the Data Access Gateway as the sole enforcement point) — it specifies the request/audit
@@ -602,19 +620,23 @@ without contradicting or silently re-deciding any of their fixed clauses. In par
 - this document does not re-decide search-budget/hypothesis-lineage recording mechanics (Research
   Methodology §9) — it consumes that bookkeeping as an input to `MultipleTestingDecision.trialContext`
   (§6);
-- this document's §2 `IndependentReproductionRecord` now binds `originalAuthor`/`reproducedBy` to
-  `AuditActor.actorId` references and `reproductionRunRefs`/`reproductionValidationArtifactRef` to
-  content-addressed outputs the Validation Service itself compares — this is now genuinely consistent with
-  document 02's amended §3.1/§3.2/§5 (which enumerate independent reproduction as required gate evidence and
-  name the Validation Service as the component that computes `matched`) and with document 04's new §5.4
-  `AuditActor`/`AuditLineageEvent` contract (which this section's actor references now resolve against),
-  where the prior version of this section could only claim consistency with the *pre-fix* state of those two
-  documents, which did not yet define either binding target;
-- §2.1's "distinct identity" definition (this fix pass) is consistent with, and does not re-decide, document
-  04 §5.4's `AuditActor.orchestrationSessionId` field — this section consumes that field as the mechanism by
-  which agent-actor distinctness is checked, it does not invent a second identity model.
-
-No HALT condition applies.
+- this document's §2 `originalAuthor`/`reproducedBy` derivation sentences (this fix pass) now name the
+  exact `AuditLineageEvent` each field is resolved from — the event recording production of the original
+  `SimulationRun`/`ValidationArtifact`, and the event recording production of the reproduction's own
+  `SimulationRun`/`ValidationArtifact`, respectively — which is consistent with, and consumes without
+  re-deciding, document 04 §5.4's `AuditLineageEvent.artifactRefs` field and its statement (also amended
+  this fix pass) that the Validation Service, not the caller, derives both actor fields;
+- this document's §2.1 item 2 "distinct identity" rule for agent actors is now consistent with document 04
+  §5.4's `orchestrationSessionId` being required (not optional) when `actorType === 'agent'`, and with
+  document 07 §3.1 item 3/§3.2's reconciling statement that every agent run carries the
+  `orchestrationSessionId` of the session that spawned it — this section consumes both as the mechanism by
+  which agent-actor distinctness is checked, it does not invent a second identity model, and the "two agent
+  roles, one orchestrator, one session" loophole closed at §2.1 item 2 is now closed at its source (document
+  07) as well as consumed here;
+- §2.1 item 3's human-rubber-stamp clause (tightened this fix pass) is consistent with document 04 §5.4's
+  actor-derivation rule: a human authorization recorded as `reproducedBy` must resolve to a real
+  `AuditActor.actorId` from the event that actually produced the reproduction, the same mechanical
+  derivation §2 now states for every `reproducedBy` value, agent or human.
 
 ## 14. PROVISIONAL items and resolution paths
 

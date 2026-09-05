@@ -6,7 +6,11 @@ Matrix), `docs/specs/01-constitution.md`, `docs/specs/02-system-architecture.md`
 independently reviewed. Frozen only after the full eight-document set clears Frank's binding spec-gate.
 
 **Provenance:** @architect.
-**Editorial corrections:** @architect, 2026-09-05, per `05-REVIEW.md` gap G7.
+**Editorial corrections:** @architect, 2026-09-05, per `05-REVIEW.md` gap G7. @architect, 2026-09-05, per
+Frank's spec-gate attempt-3 finding F2 — reconciled §3.1 item 3/§3.2's "agent-run identity and iteration
+index" vocabulary with document 04 §5.4's `orchestrationSessionId` (every agent run carries the session id
+of whatever spawned it; runs from one orchestrator in one session share it), added document 04 to §11's
+consistency-check list, and re-ran that check.
 
 **Primary question this document answers:** What may agents do, with which tools, under which permissions
 and gates?
@@ -164,7 +168,17 @@ record, in addition to Research Methodology §9's per-campaign requirements:
    Methodology §2.1/§9 already requires — so a reviewer can distinguish "this campaign was proposed by
    iteration 4 of autonomous run X" from "this campaign was manually authored," without that distinction
    changing which promotion-gate checklist applies (§2.2 above: the same checklist applies regardless of
-   proposer).
+   proposer). **Reconciliation with document 04 §5.4's `AuditActor.orchestrationSessionId`:** the "agent-run
+   identity" this item requires IS carried as that `orchestrationSessionId` — every agent run carries the
+   `orchestrationSessionId` of the orchestration session that spawned it, per document 04 §5.4. Multiple runs
+   spawned by one orchestrator within one session share the same `orchestrationSessionId`, regardless of how
+   many different agent roles/personas are invoked within that session. This is what closes the "two agent
+   roles, one orchestrator, one session = one well" loophole (Matrix row 59 / Constitution §3 item 7's
+   independent-reproduction requirement, document 05 §2.1): role-name inequality within one session is not
+   identity inequality, because both roles share one `orchestrationSessionId`. "Iteration index," by
+   contrast, is this section's own addition beyond `orchestrationSessionId` — it distinguishes individual
+   iterations within a single session/run, a finer grain than session identity, and is not itself part of
+   document 04 §5.4's contract.
 4. **Promotion-gated, never validation-outcome-producing.** Consistent with Matrix row 8's explicit
    limitation: an agent run's output is bounded to `ResearchHypothesis`/`CampaignSpec` drafts. It may request
    that an already-authorized `CampaignSpec` be executed (§2.2), but it may never itself produce a
@@ -177,7 +191,10 @@ record, in addition to Research Methodology §9's per-campaign requirements:
 Every iteration of an agent run, and every tool call it makes, is a versioned audit event with actor
 (the specific agent-run identity, not a generic "agent" label), correlation/causation ID, and artifact
 references, per Constitution §9.1 and Matrix row 53 — no exception for agent-originated events; they use the
-same Audit/Event Log component (Architecture §5) every other actor's events use.
+same Audit/Event Log component (Architecture §5) every other actor's events use. Per §3.1 item 3's
+reconciliation above, that actor's `orchestrationSessionId` (document 04 §5.4) is the session that spawned
+the run recording the event — never self-assigned by the agent run or its orchestrator, per document 04
+§5.4's assignment rule (Agent Tool Layer/harness, at session start).
 
 ## 4. LLM output classification (Matrix row 18, Constitution §7 tier 3)
 
@@ -343,14 +360,15 @@ document, per this sprint's explicit constraint. TradingAgents
 structural pattern (§4 item 1) and as the concrete negative precedent for the approval-gate anti-pattern
 (§2.3 item 5, §9) — its code is not adopted. No new runtime dependency is introduced by this document.
 
-## 11. Consistency check against Constitution, Architecture, Research Methodology, and Portfolio/Deployment
+## 11. Consistency check against Constitution, Architecture, Data Architecture, Research Methodology, and
+Portfolio/Deployment
 
 This document was checked for contradiction against `01-constitution.md`, `02-system-architecture.md`,
-`03-research-methodology.md`, and `06-portfolio-deployment-monitoring.md` in full. No conflict was found:
-every clause above operationalizes a boundary those four documents already establish (Constitution §6, §7;
-Architecture §2, §5, §6, §8; Research Methodology §8.2, §9, §10; Portfolio/Deployment §7, §11) at the
-agent-permission level, without contradicting or silently re-deciding any of their fixed clauses. In
-particular:
+`03-research-methodology.md`, `04-data-architecture-strategy-ir.md`, and
+`06-portfolio-deployment-monitoring.md` in full. No conflict was found: every clause above operationalizes a
+boundary those five documents already establish (Constitution §6, §7; Architecture §2, §5, §6, §8; Data
+Architecture §5.4; Research Methodology §8.2, §9, §10; Portfolio/Deployment §7, §11) at the agent-permission
+level, without contradicting or silently re-deciding any of their fixed clauses. In particular:
 
 - this document does not relax or create an exception to Portfolio/Deployment §7.1's Constitution-locked
   principle that a human, never an agent, authorizes material-risk promotion (§2.3 item 5, §5.1 restate it
@@ -358,7 +376,12 @@ particular:
 - this document does not re-decide `StrategyIR`/`CampaignSpec`/`ValidationPlan`/`PortfolioPlan`/
   `HumanAuthorizationRecord` schema (documents 04/05/06's scope) — it references those contracts by name;
 - this document does not accelerate or argue for earlier activation of the Agent & Orchestration layer,
-  consistent with Architecture §2's "Explicitly not P0" and §6's negative-constraint framing.
+  consistent with Architecture §2's "Explicitly not P0" and §6's negative-constraint framing;
+- §3.1 item 3/§3.2's "agent-run identity" vocabulary is now checked against, and reconciled with rather than
+  duplicating, document 04 §5.4's `AuditActor.orchestrationSessionId` — this document does not define a
+  second, competing session-identity model; it names document 04's field as the binding target and adds only
+  "iteration index" as a finer-grained addition within a session, per §3.1 item 3 above. This reconciliation
+  was checked this fix pass and found consistent, not merely asserted.
 
 No HALT condition applies.
 
