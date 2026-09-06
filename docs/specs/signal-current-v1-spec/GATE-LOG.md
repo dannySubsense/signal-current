@@ -1273,3 +1273,53 @@ parent, verdict required, explicit statement that nothing else is supplied. No a
 summary, no prior-verdict content, no scope boundaries.
 
 ---
+
+### Attempt 17 — Cold Frank, isolated checkout — 2026-09-06 — PASS
+
+**Dispatch note:** the first genuinely protocol-compliant Cold Frank dispatch this session.
+Repository path: an isolated detached worktree at exact SHA `c84c0e9` (parent `981e0d2`), created
+at `/tmp/claude-1000/signal-current-frank-checkout`, removed after this verdict was recorded.
+Minimal generated brief only, per `docs/development-workflow.md` §Judgment Gate Protocol item 2:
+repository path, SHA and parent, verdict required, explicit statement that nothing else is
+supplied. No artifact list, no summary, no prior-verdict content, no scope boundaries.
+
+**Verdict (verbatim from Frank's report):**
+
+Findings:
+- Pre-checks: all pass. Reproduced the `≥1` occurrence counts directly from the blobs: 5 at
+  `f1c4c07`, 6 at `981e0d2`, 6 at `c84c0e9`. Evidence independence explicitly noted: this dispatch
+  did not read Sol's review — the gate chain is Sol (advisory, cold) → this gate (binding, cold),
+  reading the same bytes by separate routes.
+- `08:514-515`'s "five precondition clauses, plus this audit-note occurrence" wording verified
+  exactly right — lines 22, 176, 239, 343, 373 are the five precondition clauses; line 514 is the
+  note itself. Six total, stated in a way that stays true even on recount.
+- GATE-LOG's correction of the `981e0d2` situation is honest and cites the actual rule
+  (`development-workflow.md` §Judgment Gate Protocol item 6) accurately — no gate entry existed
+  between `981e0d2` and this commit until now.
+- Carried Condition 2 (stale Status lines) confirmed untouched at this SHA, consistent with
+  "genuinely deferred."
+- Layer 1: pass — the commit does exactly what it declares, two files, no scope creep. Layer 2:
+  pass, binding.
+
+Why: The two prior fixes in this loop each miscounted their own evidence; this one did not. A gate
+record that admits its own gap is worth more than one that is merely green.
+
+**Verdict: PASS**
+
+**Fix/Next-step (Carried Conditions, non-blocking):**
+1. Append this verdict verbatim as the exact-SHA gate for `c84c0e9`; snapshot `c84c0e9`. → @vane
+2. Carried Condition 2 (stale Status lines, all eight per attempt-16's corrected enumeration)
+   remains open by design → @vane, freeze commit, when Danny approves.
+Route to: @vane
+
+**Resolution (this entry, 2026-09-06):** Item 1 done — `.gate-snapshots/spec/attempt-17/` created
+from the isolated worktree (not the live repo) and committed alongside this entry; worktree removed
+after copying. Orchestrator independently verified the `≥1` line counts and the
+`development-workflow.md` line citation before recording this entry.
+
+**Convergence classification: CLOSED, both axes, under the corrected protocol shape.** Attempt
+counter: 17, PASS — first attempt this session dispatched from a genuine isolated checkout. Carried
+Condition 2 (stale Status lines, all eight documents) remains the sole open item, deferred to the
+freeze commit by design.
+
+---
