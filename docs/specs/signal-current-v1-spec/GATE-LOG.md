@@ -1046,3 +1046,63 @@ call on the fix method. This is a deliberate stop, not a delay.
 13. Escalated to Danny in the orchestrator's own chat, this same turn.
 
 ---
+
+### Attempt 14 — Cold Frank — 2026-09-06 — FAIL (one uncited number in an audit note)
+
+**Dispatch note:** repo + SHA `91984f4` only, eighth consecutive genuinely Cold dispatch. Danny
+personally authorized proceeding with the corrected fix method (full end-to-end read, no pattern
+list) after the STATIC escalation at attempt 13.
+
+**Verdict (verbatim from Frank's report):**
+
+Findings:
+- Pre-checks: all pass. Read the live text of 05 §2.1, 04 §5.4, 08 Phase R1 item 8, and all four
+  U-12/§14 rows end to end. Evidence independence: this dispatch's own sweep used vocabulary-agnostic
+  terms ("same natural person," "shared account," "someone other than," "distinct identit," U-12)
+  across all nine spec docs plus NORTHSTAR/INVARIANTS/sprint NORTH-STAR/01-REQUIREMENTS — not any
+  prior verdict's search terms.
+- **Spec content: closed.** The identity mechanism states one rule in one namespace everywhere
+  checked. Every remaining live `actorId` use is one where `actorId` is the correct field. Docs
+  00-03 state the requirement only at the Constitution's "someone other than the original author"
+  level — no stale detail to find there.
+- **F1 (blocking, one sentence) — `08` §9's attempt-13 re-run note: "A full grep of this document
+  for `actorId` found 19 occurrences."** Does not reproduce. Against the pre-commit blob: 24 token
+  occurrences, 22 lines. No counting method yields 19.
+- Layer 1: pass. Layer 2: pass, not PROVISIONAL — `docs/NORTHSTAR.md` Status ACTIVE; 05 §2.1 is the
+  literal operationalization of the Thesis sentence.
+- Convergence: **SHRINKING, both axes.** Spec-content residue is zero for the first time since
+  attempt 9. The fix-discipline axis that was STATIC across 11-13 changed method (full read) and
+  the result held under an independently-worded sweep. F1 is a new, smaller class (audit-note
+  accuracy), not a recurrence of the design defect.
+
+Why: The attempt-13 fix worked because the method changed, not because the sweep list got longer —
+Frank's own independently-worded sweep found nothing the fixer missed. F1 is FAIL, not a footnote:
+the sentence is presented as the measurement backing "no edit required" — a cited measurement that
+fails reproduction is a number without a source. This repo already ruled on this exact class
+(attempts 7/8, gate-record integrity). And Danny's rule from three hours earlier is "speed kills" —
+a grep count typed from memory into an audit note is a small instance of precisely that. Nothing is
+reopened; the substantive conclusion the note reaches is independently verified correct.
+
+**Verdict: FAIL**
+
+**Fix/Next-step:**
+1. `08` §9, attempt-13 re-run note, "A full grep ... found 19 occurrences" → replace with the actual
+   reproducible figure and the command that produced it (24 token occurrences / 22 lines,
+   `git show 91984f4^:docs/specs/08-implementation-roadmap.md | grep -o actorId | wc -l`), or delete
+   the count and keep the categorization claim, which stands on its own. Do not touch anything else
+   in that note. → @planner
+2. Snapshot `91984f4` as `attempt-14/`; append this verdict verbatim, separate commit. → @vane
+3. Re-dispatch Cold Frank after item 1 lands. One sentence is in scope; if the next verdict finds
+   anything outside it, that is a new finding, not a loop.
+Route to: @planner (item 1), @vane (items 2-3)
+
+**Resolution (this entry, 2026-09-06):** Item 2 done — `.gate-snapshots/spec/attempt-14/` created
+and committed alongside this entry. Orchestrator independently reproduced the miscount
+(`git show 91984f4^:... | grep -o actorId | wc -l` = 24; `grep -c actorId` = 22) before acting, per
+the CADENCE.md verification rule. Item 1 routed to `@planner` next. Item 3 follows once it lands.
+
+**Convergence classification: SHRINKING, both axes.** Attempt counter: 14. First attempt since 9
+with zero spec-content residue; first attempt since the STATIC escalation with a genuinely
+different, narrower finding class.
+
+---
