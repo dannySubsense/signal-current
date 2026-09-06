@@ -1240,4 +1240,36 @@ detached checkout, immediate re-gate of the resulting SHA, no apply-then-defer g
 findings remain; both Carried Conditions are process notes for the freeze commit, not defects in
 the frozen content.
 
+**Correction, added 2026-09-06, per Sol's cold independent review (current tree `b7e978f`):** this
+attempt-16 verdict is preserved verbatim above, per protocol — it is not rewritten or backdated.
+Two real findings supersede its standing as the authoritative gate, both confirmed against the
+live tree before this note was written:
+
+1. **BLOCKER — procedurally invalid dispatch.** Attempt 16 (and, on inspection, every "Cold Frank"
+   dispatch this session since attempt 7) was pointed at the live repository root, never an
+   isolated detached checkout, contradicting `docs/development-workflow.md` §Judgment Gate
+   Protocol item 1 verbatim: "The gate reviews a frozen commit in an ISOLATED CHECKOUT — never the
+   live working tree... The live tree is disqualifying." Attempt 16's own text asserted a
+   clean-tree exception ("because the tree was clean... the result stands") — the protocol
+   contains no such exception, and Sol correctly rejected that reasoning. This is a session-wide
+   process gap, not unique to attempt 16: no prior "Cold" dispatch in this GATE-LOG actually met
+   the isolated-checkout requirement, even though each independently met the no-briefing
+   requirement. Both requirements are necessary; neither substitutes for the other.
+2. **MAJOR — attempt 16's numeric-sweep claim does not reproduce.** "Independent sweep of docs
+   01-08 found only two externally-cited, explicitly-disclaimed figures (06:623, 05:533)" omits
+   real additional external, explicitly-not-adopted figures: `minutes_per_day=390` and "roughly 90
+   peer venue-adapter repositories" appear in `02-system-architecture.md` (252, 326, 421-424),
+   `04-data-architecture-strategy-ir.md` (238, 246, 518-521), and `08-implementation-roadmap.md`
+   (146, 509-511) — all cited from prior-art research (Zipline-reloaded, vn.py), all explicitly
+   disclaimed as not adopted, same disposition as the `~4x`/`100x-160x` figures attempt 16 did
+   name. The recorded coverage claim was not exhaustive as required by protocol item 5.
+
+Sol independently re-verified everything attempt 16 got right (the reproducing counts, the
+byte-identical snapshots) — this correction is scoped to exactly these two findings, not a
+wholesale retraction. A genuinely protocol-compliant re-gate follows as Attempt 17, from an
+isolated detached worktree (`/tmp/claude-1000/signal-current-frank-checkout`, detached HEAD at
+`c84c0e9`), using the minimal generated brief protocol item 2 requires — repository path, SHA and
+parent, verdict required, explicit statement that nothing else is supplied. No artifact list, no
+summary, no prior-verdict content, no scope boundaries.
+
 ---
