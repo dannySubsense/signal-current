@@ -506,9 +506,15 @@ set, including this one, self-certifies its own readiness for implementation.
 | **U-10** — Artifact-store product (local filesystem vs. S3-compatible) | PROVISIONAL — unvalidated | Danny | A deployment-context decision (single-workstation vs. distributed-worker mode, per Matrix row 50) must be made first; this document does not make that decision, only notes that whichever product is chosen must present a content-addressed, immutable interface (Data Architecture §5) regardless of which mode is selected |
 | **U-13** — Exact P0/P1 acceptance thresholds and benchmark/conformance coverage (exact numeric pass/fail criteria, exact number and identity of heterogeneous combinations beyond "at least two, materially different") | PROVISIONAL — unvalidated | Danny | Set once §2's structural P0 scope and heterogeneity-coverage requirement (fixed by this document) are agreed, and informed by whichever numeric research-design outputs Phase R2 (U-04/U-05/U-06) produces for validation-specific thresholds; this document fixes the structure those thresholds must satisfy (§2.2), not the numbers themselves |
 
-No numeric constant is adopted as a Signal Current setting in this document — the only numeric literal
-present ("roughly 90 peer venue-adapter repositories," §2.1) is an external citation from prior-art research
-(vn.py), not an adopted value. Each PROVISIONAL item above is a technology/threshold decision the
+No numeric constant is adopted as a Signal Current setting in this document. The only numeric literal
+cited from prior-art research ("roughly 90 peer venue-adapter repositories," §2.1) is an external citation
+(vn.py), not an adopted value; §9's grep-derived counts (24 token occurrences / 22 lines) are audit
+measurements verifying a fix pass, not settings. **Correction, added 2026-09-06 per Frank's spec-gate
+attempt-15 Carried Condition 1:** the prior wording ("the only numeric literal present ... is an external
+citation") overstated this by omission — `≥1` (StrategyArtifact-existence preconditions, five places) and
+§9's audit counts are also numeric literals in this document; neither is a settable constant, so the
+substantive claim (no constant adopted) stands, but the literal claim did not. Each PROVISIONAL item above
+is a technology/threshold decision the
 Reconciliation Matrix itself flags (U-08/U-09/U-10/U-13) as requiring benchmark or research-design work this
 document does not substitute for — none is guessed here.
 
