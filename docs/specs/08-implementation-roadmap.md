@@ -593,9 +593,13 @@ the field that resolves the equivalence question and as the field the interim st
 it uses `actorId` only where that usage is itself correct (identifying a human actor across sessions, or
 naming the human side of a human/agent comparison), never as the resolution mechanism for the
 agent-controller side, which is already stated as "an agent's session-initiating human's own
-`controllingPrincipalId`." A full grep of this document for `actorId` found 19 occurrences: all either (a)
+`controllingPrincipalId`." A grep of this document for `actorId` was run to check for any stale sentence
+framing the human/controller-distinctness judgment call, its dependencies, or its resolution condition in
+terms of `actorId` where the current rule means `controllingPrincipalId`; the exact occurrence count is not
+restated here after attempt-14 found the previously stated count did not reproduce (see attempt-14 entry
+below) — what matters for this pass's categorization claim is that every occurrence found was either (a)
 dated historical Editorial-corrections/Fix-pass-history narration describing a past state, correctly
-preserved as history rather than restated as a live rule, or (b) live uses of `actorId` in a context where
+preserved as history rather than restated as a live rule, or (b) a live use of `actorId` in a context where
 `actorId` (not `controllingPrincipalId`) is in fact the correct field — e.g., "two human `actorId`s" (§3
 Phase R1 item 8, correctly comparing human actor identifiers, not agent-controller identifiers) and
 `AuditActor.actorId` authenticity as a named, distinct sub-item alongside (not a stand-in for)
@@ -605,6 +609,16 @@ call, its dependencies, or its resolution condition in terms of `actorId` where 
 sub-question were already corrected to name `controllingPrincipalId` explicitly per the attempt-12 fix
 above, before doc 05's own attempt-13 correction landed; this pass confirms that prior correction remains
 consistent with doc 05's now-corrected wording and that no further edit is required here. No other document
+required amendment as a result of this pass. No HALT condition applies.
+
+**Fix-pass history (re-run note, Frank spec-gate attempt-14, 2026-09-06):** Frank's spec-gate attempt-14
+found that the attempt-13 entry above claimed "a full grep of this document for `actorId` found 19
+occurrences," and that this count did not reproduce: independently verified against the pre-edit blob
+(`91984f4^`), `grep -o actorId | wc -l` gives 24 token occurrences and `grep -c actorId` gives 22 matching
+lines — neither is 19. The attempt-13 entry above has been corrected to drop the specific count rather than
+restate an unverified number; the surrounding categorization claim (every occurrence is either dated
+historical narration or a live, correct use of `actorId`) is unaffected by this fix and stands on its own
+merit, since that claim was not itself about the count but about what each occurrence was. No other document
 required amendment as a result of this pass. No HALT condition applies.
 
 No HALT condition applies.
