@@ -57,3 +57,35 @@ claimed `.gate-snapshots/` didn't exist (checked the wrong path); the orchestrat
 claim into the gate log three times, including one fabricated command-output citation, without
 running `ls` on a directory it had been writing into all evening. Caught only by a second Cold
 Frank dispatch.
+
+## Speed kills — fix dispatches never use a pattern/line list (added 2026-09-06, Cold Frank attempts 11-13, signal-current-v1-spec)
+
+**Binding rule: when re-dispatching a fix after any FAIL/HALT verdict, the dispatch never hands the
+fixer a keyword list, a regex/grep pattern, or a line-number list as the definition of what to fix.**
+The dispatch states the actual defect and instructs the fixer to read the full relevant document
+section(s) end-to-end themselves, then fix every stale instance they find — not only the instances
+the verdict happened to name. A pattern list is a route, not a map, even when it is labeled "the
+map" in good faith.
+
+**Why:** On signal-current, three consecutive Cold Frank spec-gate attempts (11, 12, 13) each fixed
+exactly the stale pattern the prior verdict enumerated, and each left new residue just outside that
+pattern — because a grep for newer stale wording cannot find older stale wording that predates it
+(attempt 13's finding was attempt-4/5-era text, invisible to any sweep built from attempts 10-12's
+vocabulary). Danny asked directly whether this was an innocent mistake or a lazy/gaming choice
+optimizing for speed over correctness; the honest answer was the latter — the orchestrator had
+already named this exact failure mode once (attempt-12's own dispatch said "sweep, don't spot-fix")
+and still handed over a pattern list instead of a full-read instruction, because a pattern list is
+cheaper to write and to verify. Danny's standing rule, stated for the first time in this repo:
+**"speed kills."** Optimizing a fix, review, or dispatch for speed over correctness is not a
+neutral tradeoff on this project — it is choosing to let real gaps back into an artifact about to
+be frozen or shipped, and it produces exactly the certified-garbage failure mode this repo's own
+`CLAUDE.md` Research Data Integrity section already warns about, one level down (at the
+fix-dispatch layer, not just the initial-build layer).
+
+**How to apply:** Before writing any fix-dispatch prompt, check it against this rule: does it
+contain a keyword list, a grep pattern, or a set of line numbers presented as the scope of what
+needs to change? If so, rewrite it as an instruction to read the full section(s) in question
+end-to-end and audit every relevant sentence — the specific defect named in the triggering verdict
+is an example to orient the fixer, never the exhaustive definition of the sweep. This applies to
+every fix dispatch on this repo, not only ones touching `controllingPrincipalId` or identity
+mechanics — the failure mode is general, the incident that surfaced it was specific.
