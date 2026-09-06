@@ -571,6 +571,42 @@ document 05 §2.1 items the distinctness check covers, and which field identifie
 comparison), not a new PROVISIONAL item, precondition, or phase-boundary change. No other document required
 amendment as a result of this pass.
 
+**Fix-pass history (re-run note, Frank spec-gate attempt-13, 2026-09-06):** re-checked this document in full,
+end to end, against `05-validation-statistical-controls.md` §2.1's now-corrected "Flagged open question"
+paragraph (commit `d9a673e`, which replaced `AuditActor.actorId` with `AuditActor.controllingPrincipalId`
+throughout that paragraph's false-positive example, its "does not pick between..." framing, its U-12
+dependency claim, and its stricter-reading default), specifically checking every section that discusses
+`AuditActor`, `orchestrationSessionId`, `controllingPrincipalId`, U-12, the human/agent distinctness judgment
+call, or the independent-reproduction gate: the Editorial-corrections header (attempt-12 entry), §1's roundup
+sentence, §3 Phase R1 item 8 and its named sub-question, §3 Phase R1's "Why this phase must complete before
+Phase R2" paragraph, §3 Phase R3's precondition note and item 4, the R1-R4 summary table's R1 row, and this
+section's own prior fix-pass history entries. Also specifically checked whether this document restates or
+paraphrases doc 05 §2.1's "Flagged open question" content (the shared-service-account false-positive example,
+the "does not pick between X and Y" framing): §3 Phase R1 item 8's named sub-question (the bullet beginning
+"Sub-question named explicitly") does paraphrase it — "whether the same human `AuditActor.actorId` across
+two distinct `orchestrationSessionId`s, or the same natural person behind two different human `actorId`s, or
+the same natural person behind a human `actorId` and an agent's session-initiating human's own
+`controllingPrincipalId`, can ever count as a distinct identity (e.g., two individuals sharing one team
+service account), or never counts as distinct once `controllingPrincipalId` resolves to the same person...
+— an interim stricter reading." This restatement already names `controllingPrincipalId`, not `actorId`, as
+the field that resolves the equivalence question and as the field the interim stricter reading applies to;
+it uses `actorId` only where that usage is itself correct (identifying a human actor across sessions, or
+naming the human side of a human/agent comparison), never as the resolution mechanism for the
+agent-controller side, which is already stated as "an agent's session-initiating human's own
+`controllingPrincipalId`." A full grep of this document for `actorId` found 19 occurrences: all either (a)
+dated historical Editorial-corrections/Fix-pass-history narration describing a past state, correctly
+preserved as history rather than restated as a live rule, or (b) live uses of `actorId` in a context where
+`actorId` (not `controllingPrincipalId`) is in fact the correct field — e.g., "two human `actorId`s" (§3
+Phase R1 item 8, correctly comparing human actor identifiers, not agent-controller identifiers) and
+`AuditActor.actorId` authenticity as a named, distinct sub-item alongside (not a stand-in for)
+`controllingPrincipalId` resolution. **No stale sentence framing the human/controller-distinctness judgment
+call, its dependencies, or its resolution condition in terms of `actorId` where the current rule means
+`controllingPrincipalId` was found in this document.** This document's own §3 Phase R1 item 8 and named
+sub-question were already corrected to name `controllingPrincipalId` explicitly per the attempt-12 fix
+above, before doc 05's own attempt-13 correction landed; this pass confirms that prior correction remains
+consistent with doc 05's now-corrected wording and that no further edit is required here. No other document
+required amendment as a result of this pass. No HALT condition applies.
+
 No HALT condition applies.
 
 ## 10. Amendment
