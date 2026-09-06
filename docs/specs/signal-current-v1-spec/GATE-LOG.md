@@ -827,3 +827,85 @@ two specific sentences. Not STATIC (this is a narrower residue of the same findi
 finding recurring unchanged) and not THRASHING (no new axis). Attempt counter: 10.
 
 ---
+
+### Attempt 11 — Cold Frank — 2026-09-06 — FAIL (namespace mismatch, item 2 not propagated)
+
+**Dispatch note:** repo + SHA `f63ac4b` only, fifth consecutive genuinely Cold dispatch.
+
+**Verdict (verbatim from Frank's report):**
+
+Findings:
+- Pre-checks: Premise [pass — `git show f63ac4b` touches only docs 04/05, prose only; no numeric
+  constant enters]. Input [pass — read the live `04` §5.4 (lines 330-440, 506-541) and `05` §2.1
+  (lines 187-310), §13, §14 directly; `.gate-snapshots/spec/attempt-9/` and `attempt-10/` exist and
+  `attempt-10/04-*.md` is byte-identical to `4d13d94`'s tree; gate-log entry `649a19c` is a separate
+  commit from the fix `f63ac4b`]. Evidence independence [pass — repo+SHA only; traced from
+  `docs/NORTHSTAR.md` Thesis forward].
+- Attempt-10 items 1-7: all landed as specified. Absence rule stated identically in 04 §5.4 and 05
+  §2.1 items 1 and 3; "whenever populated" deleted; "(ordinarily its own `actorId`)" deleted;
+  populator named as the recording component; backstop now enumerates `controllingPrincipalId`;
+  §9/§13 re-run paragraphs describe the actual change; snapshots and log discipline correct.
+- **F1 (blocking) — the two branches of `controllingPrincipalId` do not land in the same
+  namespace, so items 1 and 3 compare unlike values.** `04:339-343`: for `actorType: 'human'` the
+  field is "the natural-person identity `actorId` resolves to ... which may differ from `actorId`
+  itself"; for `actorType: 'agent'` it is "the `actorId` of the human who holds session-initiation
+  authority" — an *account* identifier, not a natural-person identity. Item 3 (`05:263-264`)
+  compares the human side's natural-person id against the agent side's account id. Under the
+  identity model where one person can hold several accounts (the very model this field exists to
+  handle), those two strings differ by construction even when the same person is on both sides,
+  and item 3 passes. The account-label-inequality loophole Sol closed for humans is reopened one
+  level down on the agent branch.
+- **F2 (blocking, same root) — item 2 is not covered by the rule the new definition sentence says
+  covers it.** `05:202-206` (added this commit) states items 1-3 "each ... additionally requires a
+  different `controllingPrincipalId` ... never satisfied by `actorId`/`orchestrationSessionId`
+  inequality alone." Item 2 (`05:220-239`) still tests exactly that: distinct
+  `orchestrationSessionId`s plus distinct session-initiating human `actorId`s. Two agents in two
+  sessions initiated by one person under two accounts pass item 2. §13's "No new contradiction was
+  found" is false on this point — the contradiction was introduced by this commit's definition
+  sentence.
+- Layer 1: pass. Layer 2: FAIL — F1/F2 leave two paths where the same natural person satisfies the
+  distinct-identity check mechanically.
+- Convergence (attempt 11, uncapped): **SHRINKING, but slowly and on one concept.** Attempt 9:
+  concept missing. Attempt 10: concept present, fail-open on absence. Attempt 11: absence closed;
+  the concept's *definition* is inconsistent across branches and not propagated to item 2. Not
+  STATIC, not THRASHING.
+
+Why: The nine-attempt identity line exists to make "someone other than its author" a value
+comparison rather than an assertion. A value comparison is only as good as the namespace both
+operands live in. Doc 04 defines `controllingPrincipalId` as "the natural person deemed to control
+this action, independent of which account or session produced it" and then, one sentence later,
+defines the agent branch as an account id — the human branch was written to the concept, the agent
+branch was written to whatever was already lying around (`orchestrationSessionId` →
+session-initiating `actorId`), and nobody re-derived it against the concept's own first sentence.
+F2 is a direct consequence of this commit: the fix correctly promoted the definition sentence to a
+universal claim over items 1-3, and did not touch item 2 because attempt-10 said item 2 was
+untouched-as-instructed — correct at attempt 10, incorrect the moment the definition sentence
+claimed item 2.
+
+This is FAIL, not HALT: intent is unambiguous, the correct pattern exists in the same paragraph,
+and the fix is a definitional one-liner plus propagation.
+
+**Verdict: FAIL**
+
+**Fix/Next-step:**
+1. `04:339-343`/`04:415-418`: define `controllingPrincipalId` once, for both `actorType`s, in the
+   same namespace — for agents, the session-initiating human's own `controllingPrincipalId`, not
+   that human's `actorId`. → @architect
+2. `05:220-239` (item 2): add the same `controllingPrincipalId` requirement and fail-closed clause
+   items 1 and 3 carry. → @architect
+3. `04:349`/`04:422-423`: "items 1 and 3" → "items 1-3" once item 2 is widened. → @architect
+4. `05` §13 and `04` §9: re-run after 1-3; name the item-2/definition contradiction this commit
+   introduced and state it is closed. → @architect
+5. Snapshot `f63ac4b` as `attempt-11/`; append this verdict verbatim in a commit separate from the
+   fix commit. → @vane
+6. Re-dispatch Cold Frank after 1-4 land. → @vane
+Route to: @architect (items 1-4), @vane (items 5-6)
+
+**Resolution (this entry, 2026-09-06):** Item 5 done — `.gate-snapshots/spec/attempt-11/` created
+and committed alongside this entry, in a commit separate from the fix that follows. Items 1-4
+routed to `@architect` next. Item 6 follows once 1-4 land.
+
+**Convergence classification: SHRINKING**, spec-content axis — three consecutive attempts on one
+concept, each residue strictly narrower than the last. Attempt counter: 11.
+
+---
