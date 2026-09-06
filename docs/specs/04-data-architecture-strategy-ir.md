@@ -1,9 +1,6 @@
 # Signal Current — Data Architecture & Strategy IR Specification
 
-**Status:** Draft — first pass, per `docs/specs/00-source-inventory-reconciliation.md` (the Reconciliation
-Matrix), `docs/specs/01-constitution.md`, `docs/specs/02-system-architecture.md`, and
-`docs/specs/03-research-methodology.md`. Not yet independently reviewed. Frozen only after the full
-eight-document set clears Frank's binding spec-gate.
+**Status:** LOCKED — v1.0, approved by Danny 2026-09-06. First pass per `docs/specs/00-source-inventory-reconciliation.md` (the Reconciliation Matrix), `docs/specs/01-constitution.md`, `docs/specs/02-system-architecture.md`, and `docs/specs/03-research-methodology.md`. Cleared Frank's binding spec-gate (see `docs/specs/signal-current-v1-spec/GATE-LOG.md`) across the full eight-document set. No further edits without a recorded amendment.
 
 **Provenance:** @architect.
 **Editorial corrections:** @architect, 2026-09-05, per `05-REVIEW.md` gap G8. @architect, 2026-09-05, per Frank's spec-gate attempt-2 finding F1/F2 — added the audit/lineage event

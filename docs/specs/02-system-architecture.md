@@ -1,8 +1,6 @@
 # Signal Current — System Architecture Specification
 
-**Status:** Draft — first pass, per `docs/specs/00-source-inventory-reconciliation.md` (the Reconciliation
-Matrix) and `docs/specs/01-constitution.md`. Not yet independently reviewed. Frozen only after the full
-eight-document set clears Frank's binding spec-gate.
+**Status:** LOCKED — v1.0, approved by Danny 2026-09-06. First pass per `docs/specs/00-source-inventory-reconciliation.md` (the Reconciliation Matrix) and `docs/specs/01-constitution.md`. Cleared Frank's binding spec-gate (see `docs/specs/signal-current-v1-spec/GATE-LOG.md`) across the full eight-document set. No further edits without a recorded amendment.
 
 **Provenance:** @architect.
 **Editorial corrections:** @architect, 2026-09-05, per `05-REVIEW.md` gaps G8/G11; @architect, 2026-09-05, per Frank's spec-gate attempt-1 finding F3 (§12 "zero remaining occurrences" rescoped). @architect, 2026-09-05, per Frank's spec-gate attempt-2 findings F2 (§3.1/§3.2/§5 amended to include independent reproduction) and F3-minor (§12 overshot sentence removed, kickoff doc added to historical-reference list). @architect, 2026-09-05, per Frank's

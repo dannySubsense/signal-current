@@ -1,8 +1,6 @@
 # Signal Current — Research Methodology Specification
 
-**Status:** Draft — first pass, per `docs/specs/00-source-inventory-reconciliation.md` (the Reconciliation
-Matrix), `docs/specs/01-constitution.md`, and `docs/specs/02-system-architecture.md`. Not yet
-independently reviewed. Frozen only after the full eight-document set clears Frank's binding spec-gate.
+**Status:** LOCKED — v1.0, approved by Danny 2026-09-06. First pass per `docs/specs/00-source-inventory-reconciliation.md` (the Reconciliation Matrix), `docs/specs/01-constitution.md`, and `docs/specs/02-system-architecture.md`. Cleared Frank's binding spec-gate (see `docs/specs/signal-current-v1-spec/GATE-LOG.md`) across the full eight-document set. No further edits without a recorded amendment.
 
 **Provenance:** @architect.
 **Editorial corrections:** @architect, 2026-09-05, per `05-REVIEW.md` gap G10.

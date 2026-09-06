@@ -1,6 +1,6 @@
 # Signal Current Constitution
 
-**Status:** Draft — corrected per Sol's cold review and two @spec-reviewer passes; Frank's spec-gate attempt 1 (2026-09-05) found one blocking gap (independent-reproduction requirement, now fixed) plus minor citation issues, also fixed; awaiting re-gate.
+**Status:** LOCKED — v1.0, approved by Danny 2026-09-06. Corrected per Sol's cold review and two @spec-reviewer passes; cleared Frank's binding spec-gate (see `docs/specs/signal-current-v1-spec/GATE-LOG.md`) across the full eight-document set. No further edits without a recorded amendment.
 **Provenance:** Initial draft: orchestrator (pre-dating this sprint's redispatch discipline); corrected: @architect, 2026-09-05, per Sol's cold-review findings.
 **Editorial corrections:** @architect, 2026-09-05, per `05-REVIEW.md` gaps G5/G6.
 **Fix pass (Frank spec-gate attempt 1):** @architect, 2026-09-05, per Frank's F1 (added §3 item 7, independent-reproduction requirement), F2 (added explicit synthesis-flag sentences to §7.2, §7.3, §9 item 3, §11), and F4 (Status line updated to reflect two @spec-reviewer passes and this gate). See `docs/specs/signal-current-v1-spec/GATE-LOG.md`, Spec Gate Attempt 1.

@@ -1,10 +1,6 @@
 # Signal Current — Portfolio, Deployment & Monitoring Specification
 
-**Status:** Draft — first pass, per `docs/specs/00-source-inventory-reconciliation.md` (the Reconciliation
-Matrix), `docs/specs/01-constitution.md`, `docs/specs/02-system-architecture.md`,
-`docs/specs/04-data-architecture-strategy-ir.md`, and `docs/specs/05-validation-statistical-controls.md`.
-Not yet independently reviewed. Frozen only after the full eight-document set clears Frank's binding
-spec-gate.
+**Status:** LOCKED — v1.0, approved by Danny 2026-09-06. First pass per `docs/specs/00-source-inventory-reconciliation.md` (the Reconciliation Matrix), `docs/specs/01-constitution.md`, `docs/specs/02-system-architecture.md`, `docs/specs/04-data-architecture-strategy-ir.md`, and `docs/specs/05-validation-statistical-controls.md`. Cleared Frank's binding spec-gate (see `docs/specs/signal-current-v1-spec/GATE-LOG.md`) across the full eight-document set. No further edits without a recorded amendment.
 
 **Provenance:** @architect.
 **Editorial corrections:** @architect, 2026-09-05, per `05-REVIEW.md` gaps G2/G11/G13. @architect, 2026-09-05, per Frank's spec-gate attempt-4 fix 2 — widened the U-12 PROVISIONAL row (§16) to also cover `AuditActor.actorId` authenticity and `orchestrationSessionId` minting/verification (document 04 §5.4), cross-referenced from document 04 §8 and document 07 §12. @architect, 2026-09-05, per Frank's spec-gate attempt-5 fix 2 — split the widened U-12 row's resolution condition (§16) so the actor/session-verification sub-items resolve in Phase R1 (not gated on a deployment target/user model) while the HumanAuthorizationRecord identity-provider/protocol sub-item resolves in Phase R3; matched the identical wording into document 04 §8 and document 07 §12. @architect, 2026-09-05,
