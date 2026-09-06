@@ -44,6 +44,25 @@ If the matrix in §2.1 does not resolve the decision — genuine ambiguity, not 
 
 **The specific failure this closes:** in department-os, an orchestrator narrowed Frank's scope across four gate rounds by naming files/areas to check as part of what felt like helpful framing — the real defect (a fabricated citation) sat just outside the boundary that kept getting drawn. Any scope hint at all, however well-intentioned, is leading the witness. Signal-current adopts the same protocol before that failure has a chance to recur here.
 
+**Amendment, 2026-09-06 — a second, equally mandatory requirement, missing from the original text
+above:** the unbriefed-dispatch requirement stated above is necessary but not sufficient. "Cold"
+also requires **an isolated detached checkout of the exact SHA under review — never the live
+repository root, never the working tree, even when the tree is clean.** A repo root can contain
+things outside the reviewed commit's own content that leak the answer (uncommitted scratch files,
+and — concretely, on this repo, running its own iterative gate-and-fix loop — prior
+`.gate-snapshots/` directories sitting next to the code under review, a visible record of every
+prior finding and fix). Ten consecutive Cold Frank dispatches on the `signal-current-v1-spec`
+sprint (spec-gate attempts 7-16) satisfied the requirement as originally written here and never
+used an isolated checkout, because this section did not name that requirement — the orchestrator
+was following this DDR's own definition faithfully. Caught by Sol's cold independent review
+(current tree `b7e978f`, 2026-09-06; see `docs/specs/signal-current-v1-spec/GATE-LOG.md`'s
+correction to the "Attempt 16" entry, and `docs/specs/signal-current-ddrs/COLD-GATES.md` for the
+full writeup). `docs/development-workflow.md`'s Judgment Gate Protocol item 1 already states the
+isolated-checkout requirement correctly and predates this gap; this amendment brings §2.2 into
+agreement with it rather than introducing new doctrine. **Both requirements — unbriefed dispatch
+and isolated detached checkout — are mandatory together; meeting one without the other is not
+"cold."**
+
 ---
 
 ## §3 Decision

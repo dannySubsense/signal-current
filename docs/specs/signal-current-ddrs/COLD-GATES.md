@@ -39,8 +39,12 @@ One dispatch additionally asserted a clean-tree exception ("because the tree was
 result stands") that does not exist in any governing protocol.
 
 An independent cold review from a separate tool (Codex CLI / Sol, itself run cold — no shared
-context with the gate history) caught this twice: once flagging the general gap, once specifically
-rejecting the clean-tree reasoning.
+context with the gate history) caught this: one review, of the current tree, flagged the general
+isolation gap and rejected the clean-tree reasoning together in the same pass (`GATE-LOG.md`,
+correction appended to the "Attempt 16" entry). Two earlier Sol reviews in this sprint (targeting
+`efa62d3` and `981e0d2`) had found other real defects — a numeric-sweep gap and a SHA-transfer
+process error, respectively — but neither surfaced the isolation problem; it took a third pass to
+find it.
 
 The first dispatch run from an actual isolated detached worktree, with a minimal generated brief
 (repo path, SHA, parent, verdict required, nothing else), passed cleanly. The underlying work was

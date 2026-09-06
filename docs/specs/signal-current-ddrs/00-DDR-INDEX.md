@@ -12,3 +12,9 @@ if accessible from this project; otherwise this paragraph is the authoritative s
 | # | Title | Status |
 |---|-------|--------|
 | 001 | [Decision Matrix and Cold Frank Dispatch Protocol](DDR-001-decision-matrix-and-cold-frank.md) | ACCEPTED |
+
+## Reference documents (not DDRs — no decision to accept, nothing to number)
+
+- [Cold Gates: Two Mandatory Requirements, Not One](COLD-GATES.md) — the isolated-detached-checkout
+  amendment to DDR-001 §2.2's Cold Frank protocol, with the incident that surfaced the gap. Read
+  alongside DDR-001 §2.2, not instead of it.
