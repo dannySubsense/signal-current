@@ -28,8 +28,16 @@ sentence, §3 Phase R1 item 8, and the R1-R4 summary table's R1 row to reflect t
 drafts collected this item only implicitly inside the general U-12 reference, never naming Validation
 §14's specific row. @planner, 2026-09-05, per Sol's cold review (target SHA 99d3673) — widened §3 Phase
 R1 item 8 (and its named sub-question) to also cover `AuditActor.controllingPrincipalId` resolution
-(document 04 §5.4), the mechanism document 05 §2.1 items 1 and 3 (not only item 2) now use to check
-human/agent controller equivalence; updated the R1-R4 summary table's R1 row to match.
+(document 04 §5.4), the mechanism document 05 §2.1 items 1-3 (not only item 2) now use to check
+human/agent controller equivalence; updated the R1-R4 summary table's R1 row to match. **@planner,
+2026-09-06, per Frank's spec-gate attempt-12 finding** — corrected two stale cross-references left behind
+by the items-1-and-3 → items-1-3 widening and the actorId → controllingPrincipalId correction made
+upstream in documents 04/05 (commit `e6dfe73`) and swept into documents 06/07 (commit `6294b1a`): §3 Phase
+R1 item 8's citation of "document 05 §2.1 items 1 and 3" now reads "items 1-3" (item 2 now also consumes
+`controllingPrincipalId`, per document 05 §2.1), and §3 Phase R1 item 8's named sub-question no longer
+describes the agent side of the human/controller-distinctness comparison as "an agent's session-initiating
+`actorId`" — it now reads "an agent's session-initiating human's own `controllingPrincipalId`", consistent
+with document 04 §5.4's definition and matching the equivalent fixes already made in documents 05/06/07.
 
 **Primary question this document answers:** In what sequence do we build and prove the system without
 violating the specification?
@@ -222,7 +230,7 @@ ExecutionContext/CostModel-shaped object as its own input.
    mechanism verifying an `AuditActor.actorId`'s authenticity, the exact mechanism minting or verifying an
    `orchestrationSessionId`, and the exact mechanism resolving `AuditActor.controllingPrincipalId` (whether
    two human `actorId`s, or a human and an agent's session-initiating human, are the same natural person,
-   per document 05 §2.1 items 1 and 3) — resolve alongside the independent-reproduction match tolerance
+   per document 05 §2.1 items 1-3) — resolve alongside the independent-reproduction match tolerance
    (item 7 above) in this same phase, not in Phase R3 alongside the narrower `HumanAuthorizationRecord`
    identity-provider/protocol sub-item of the same widened U-12 item (§3 Phase R3 below). These sub-items
    are load-bearing for the *first* `StrategyArtifact` promotion: Validation §2.1's reproduction gate
@@ -239,16 +247,16 @@ ExecutionContext/CostModel-shaped object as its own input.
      widened from item 2 alone to items 1-3 per Sol's cold review, target SHA 99d3673)** — whether the same
      human `AuditActor.actorId` across two distinct `orchestrationSessionId`s, or the same natural person
      behind two different human `actorId`s, or the same natural person behind a human `actorId` and an
-     agent's session-initiating `actorId`, can ever count as a distinct identity (e.g., two individuals
-     sharing one team service account), or never counts as distinct once `controllingPrincipalId` resolves
-     to the same person (Validation §2.1 items 1-3's interim stricter reading) — resolves within this same
-     Phase R1 U-12 sub-resolution, not as a separately-timed item. Validation §14 names its resolution
-     condition as "once document 06 §16's widened U-12 item's identity model (per-person vs.
-     per-shared-account `actorId`/`controllingPrincipalId` assignment) is chosen — the same Phase R1
-     sub-resolution the match-tolerance item above depends on." It shares this phase's precondition and
-     timing exactly because it is a sub-question of the same `AuditActor.actorId`/`controllingPrincipalId`
-     authenticity mechanism named in this item's opening sentence, not a distinct decision with its own
-     dependency chain.
+     agent's session-initiating human's own `controllingPrincipalId`, can ever count as a distinct identity
+     (e.g., two individuals sharing one team service account), or never counts as distinct once
+     `controllingPrincipalId` resolves to the same person (Validation §2.1 items 1-3's interim stricter
+     reading) — resolves within this same Phase R1 U-12 sub-resolution, not as a separately-timed item.
+     Validation §14 names its resolution condition as "once document 06 §16's widened U-12 item's identity
+     model (per-person vs. per-shared-account `actorId`/`controllingPrincipalId` assignment) is chosen — the
+     same Phase R1 sub-resolution the match-tolerance item above depends on." It shares this phase's
+     precondition and timing exactly because it is a sub-question of the same
+     `AuditActor.actorId`/`controllingPrincipalId` authenticity mechanism named in this item's opening
+     sentence, not a distinct decision with its own dependency chain.
 
 **Why this phase must complete before Phase R2:** Validation's `ValidationPlan` sub-decisions (Validation
 §§3-10) each reference a `SimulationRun`, a `CostModel`, or an `ExecutionContext` by ID — none of Validation's
@@ -541,6 +549,27 @@ item 2 alone to items 1-3. §1's roundup sentence, §3 Phase R1 item 8 (and its 
 R1-R4 summary table's R1 row are updated to name `controllingPrincipalId` explicitly, matching the identical
 sequencing (Phase R1, no new phase or precondition) already used for the narrower actor/session-verification
 sub-items. No other document required further amendment as a result of this pass.
+
+**Fix-pass history (re-run note, Frank spec-gate attempt-12, 2026-09-06):** re-checked §3 Phase R1 item 8 and
+its named sub-question against `04-data-architecture-strategy-ir.md` §5.4 and
+`05-validation-statistical-controls.md` §2.1, following the corrections already made to those two source
+documents (commit `e6dfe73`) and swept into documents 06/07 (commit `6294b1a`): document 05 §2.1's "distinct
+identity" check now covers items 1-3 (not just items 1 and 3), and the agent side of any comparison resolves
+to the session-initiating human's own `controllingPrincipalId` (never that human's `actorId`). Two stale
+references to the pre-correction wording were found and fixed in this document: §3 Phase R1 item 8's
+citation of "document 05 §2.1 items 1 and 3" (now "items 1-3"), and the same item's named sub-question,
+which described the agent side of the comparison as "an agent's session-initiating `actorId`" (now "an
+agent's session-initiating human's own `controllingPrincipalId`", consistent with document 04
+§5.4:419-425's definition). A targeted grep of this document for "items 1 and 3," "items 1 or 3,"
+"session-initiating human `actorId`," and "session-initiating `actorId`" was run beyond the two cited line
+numbers to catch sibling occurrences; no further live occurrences were found — the remaining matches (§3
+Phase R3 item 4, the R1-R4 summary table's R1 row, and both prior Fix-pass history entries above) already
+read "items 1-3" or are dated historical fix-pass narration describing what was checked at the time, not
+live rule restatements. Also re-checked this document's own Phase R1 sequencing (§3) against the
+now-corrected documents 04/05/06/07: no sequencing change results — the correction is wording-only (which
+document 05 §2.1 items the distinctness check covers, and which field identifies the agent side of the
+comparison), not a new PROVISIONAL item, precondition, or phase-boundary change. No other document required
+amendment as a result of this pass.
 
 No HALT condition applies.
 
