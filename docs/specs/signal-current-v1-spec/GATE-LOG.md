@@ -1181,3 +1181,63 @@ count for `≥1` did not reproduce against the resulting blob (six literal occur
 precondition clauses plus the audit-note occurrence itself); reworded to state both explicitly.
 
 ---
+
+### Attempt 16 — Cold Frank — 2026-09-06 — PASS
+
+**Dispatch note:** repo + SHA `c84c0e9` only — the exact SHA Sol's review named as needing its own
+gate. Tenth consecutive genuinely Cold dispatch.
+
+**Verdict (verbatim from Frank's report):**
+
+Findings:
+- Pre-checks: all pass. Both numeric claims in the delta since `f1c4c07` reproduce exactly:
+  `≥1` occurs 6 times in the `c84c0e9` blob (5 precondition clauses + the audit note itself);
+  `actorId` against `91984f4^` gives 24 tokens / 22 lines, matching §9. Independent sweep of docs
+  01-08 found only two externally-cited, explicitly-disclaimed figures (06:623, 05:533).
+- `.gate-snapshots/spec/attempt-15/` byte-identical to `f1c4c07` for all 8 docs.
+- The GATE-LOG correction is accurate: attempt-15's PASS covers `f1c4c07`; `981e0d2` modified a
+  canonical doc and was never gated; the correction states exactly that. This verdict is the
+  missing exact-SHA gate.
+- **F1 (non-blocking) — attempt-15's Carried Condition 2 undercounts.** It enumerates five stale
+  headers (`01:3, 02:4, 04:5, 06:6, 08:8`). Docs 03, 05, and 07 also carry "Not yet independently
+  reviewed" in their Status block (the phrase wraps across a line break, which is why a
+  single-line grep missed it). The fix action is correct; the line list is not.
+- Protocol note: this dispatch was pointed at the repo root, not an isolated detached checkout per
+  `docs/development-workflow.md` §Judgment Gate Protocol item 1. Because the tree was clean at
+  HEAD==`c84c0e9`, the result stands — but the dispatch shape didn't follow the repo's own rule.
+- Layer 1: pass. Layer 2: pass, binding — the delta under review is itself an instance of the
+  Non-goal on unsourced thresholds being enforced on the document's own numbers.
+- Convergence (attempt 16, uncapped): SHRINKING to zero. Nothing new surfaced beyond the CC2 count
+  fix and the isolated-checkout note.
+
+Why: This commit is the first in the chain where every stated figure reproduces exactly against
+the blob it describes. Sol's process finding was real and the orchestrator's response — writing
+the gap down truthfully rather than backdating coverage — is why this record can be trusted. The
+CC2 undercount matters for the same reason the whole loop exists: an enumerated count that doesn't
+reproduce is a defect, even a cosmetic one in an already-PASS document.
+
+**Verdict: PASS**
+
+**Fix/Next-step (Carried Conditions — non-blocking):**
+1. GATE-LOG attempt-15 entry, Carried Condition 2: amend the enumeration from five stale headers
+   to all eight (`01`-`08`), so the freeze-commit edit works from a correct list. → @vane
+2. Snapshot `c84c0e9` as `attempt-16/`; append this verdict verbatim. → @vane
+3. The freeze commit (CC2 application, when Danny approves) will modify eight canonical docs and
+   requires its own Cold re-gate against the resulting SHA, dispatched from an isolated detached
+   checkout per `docs/development-workflow.md` §Judgment Gate Protocol item 1 — do not repeat the
+   `981e0d2` shape (apply-then-forget-to-regate). → @vane
+Route to: @vane
+
+**Resolution (this entry, 2026-09-06):** Item 2 done — `.gate-snapshots/spec/attempt-16/` created
+and committed alongside this entry, verified byte-identical to `c84c0e9`. Item 1: **Carried
+Condition 2, corrected enumeration — all eight documents (`01-constitution.md` through
+`08-implementation-roadmap.md`) carry a stale "Draft"/"Not yet independently reviewed" Status line,
+not five.** This is the authoritative list for the freeze commit, superseding attempt-15's
+five-document enumeration. Item 3 noted and will be followed exactly at freeze time — isolated
+detached checkout, immediate re-gate of the resulting SHA, no apply-then-defer gap repeated.
+
+**Convergence classification: CLOSED, both axes.** Attempt counter: 16, PASS. Zero blocking
+findings remain; both Carried Conditions are process notes for the freeze commit, not defects in
+the frozen content.
+
+---
