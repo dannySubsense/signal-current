@@ -1106,3 +1106,63 @@ with zero spec-content residue; first attempt since the STATIC escalation with a
 different, narrower finding class.
 
 ---
+
+### Attempt 15 — Cold Frank — 2026-09-06 — PASS
+
+**Dispatch note:** repo + SHA `f1c4c07` only, ninth consecutive genuinely Cold dispatch.
+
+**Verdict (verbatim from Frank's report):**
+
+Findings:
+- Pre-checks: all pass. Reproduced the fix's own claim against the pre-edit blob independently:
+  24 token occurrences, 22 lines — matches. `.gate-snapshots/spec/attempt-14/` 8/8 files
+  byte-identical; verdict and fix are separate commits.
+- Identity mechanism, independently traced end to end: closed. One natural person under two
+  accounts fails item 1; same session fails item 2; two sessions from one person fails item 2 via
+  the initiator's `controllingPrincipalId`; human vs. own agent fails item 3; absence fails every
+  item. No fail-open link found.
+- New, minor, non-blocking: `08:509-510` states "the only numeric literal present ... is an
+  external citation" — now literally overstated (doc 08 also carries `≥1` in five places and the
+  three grep counts in §9). Substantive claim (no constant adopted) is true. Same class as
+  attempt-1 F3; not load-bearing.
+- Stale status prose persists: `01:3`, `02:4`, `04:5`, `06:6`, `08:8` — "awaiting re-gate"/"Not yet
+  independently reviewed." Attempt-9's Carried Condition covered doc 01 only; widens to all five.
+- Layer 1: pass. Layer 2: pass, binding — `docs/NORTHSTAR.md` Status ACTIVE; 05 §2.1 is the literal
+  operationalization of the Thesis sentence, terminating at an owned PROVISIONAL boundary scheduled
+  before the first artifact it gates.
+- Convergence (attempt 15, uncapped): SHRINKING to zero, both axes. Only residue is a pre-existing
+  one-clause overreach in 08 §8 no attempt in this loop introduced or targeted.
+
+Why: The attempt-14 fix went to the blob, ran the command, wrote down what came out, stated the
+command. Independently reproduced, same numbers. First fix in this loop whose own stated figures
+required no correction on either side. The identity mechanism is not a paraphrase chain — each link
+is a MUST/MUST-NOT with a named enforcing component, both operands of every comparison live in the
+natural-person namespace, absence fails closed. Traced cold; nothing left open. Fifteen rounds is
+enough ceremony for a document set whose remaining defects are two lines of self-description.
+
+This PASS certifies the eight-document set and its gate record at `f1c4c07`. It does not authorize
+implementation — 08 §7 and the Matrix §9 Freeze Rule require Danny's independent approval next.
+
+**Verdict: PASS**
+
+**Fix/Next-step (Carried Conditions — non-blocking, must land in the freeze commit):**
+1. `08:509-510`: reword the overstated "only numeric literal present" claim to name §9's grep
+   counts as audit measurements, not omit them. → @planner, freeze commit.
+2. `01:3`, `02:4`, `04:5`, `06:6`, `08:8`: stale Status/review lines → set all eight to the frozen
+   v1.0 status in one pass when Danny approves. Widens attempt-9's Carried Condition from doc 01 to
+   all five affected docs. → @vane, freeze commit.
+3. Append this verdict verbatim; snapshot `f1c4c07` as `attempt-15/`; present to Danny for freeze
+   approval. → @vane
+Route to: @vane (items 2-3), @planner (item 1). No @architect dispatch — docs 04/05/06/07 carry no
+defect at this SHA.
+
+**Resolution (this entry, 2026-09-06):** Item 3 done — `.gate-snapshots/spec/attempt-15/` created
+and committed alongside this entry. Orchestrator independently verified both Carried Conditions
+(the overstated §8 sentence; all five stale Status lines) against the live tree before recording
+this entry. Items 1-2 deferred to the freeze commit, per Frank's own routing — not a blocker to
+presenting this set to Danny now.
+
+**Convergence classification: CLOSED, both axes.** Attempt counter: 15, PASS. Two Carried
+Conditions, both cosmetic, both deferred to the freeze commit by design.
+
+---
