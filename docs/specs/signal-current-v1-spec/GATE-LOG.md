@@ -909,3 +909,79 @@ routed to `@architect` next. Item 6 follows once 1-4 land.
 concept, each residue strictly narrower than the last. Attempt counter: 11.
 
 ---
+
+### Attempt 12 — Cold Frank — 2026-09-06 — FAIL (concept closed; stale cross-references + skipped drift control)
+
+**Dispatch note:** repo + SHA `e6dfe73` only, sixth consecutive genuinely Cold dispatch.
+
+**Verdict (verbatim from Frank's report):**
+
+Findings:
+- Pre-checks and attempt-11 fix verification: all pass, items 1-6 landed as routed. Recursion in
+  the agent-branch `controllingPrincipalId` definition terminates correctly (sessions are
+  human-initiated only).
+- **The identity chain itself is closed.** Traced every path through items 1-3 with the
+  one-person/multiple-accounts model: same natural person on both sides now fails every item,
+  absence fails every item, both operands of every comparison live in the same natural-person
+  namespace. No fail-open link remains. First attempt since Sol's review where this is true.
+- **F1 (blocking, narrow) — the fix was confined to the two docs attempt-11 named; three
+  cross-referencing docs were not swept.** Live text still says "items 1 and 3" and/or describes
+  the agent side in the pre-attempt-11 `actorId` namespace at: `06:659` (U-12 row, twice),
+  `07:432` (U-12 row), `08:223-225` (Phase R1 item 8), `08:239-242` and `05:816` (§14 row and its
+  doc-08 restatement). Doc 05 says all three items consume the field; docs 06/07/08 say two do.
+- **F2 (blocking, same root) — the set's own drift controls were not run.** `05` §13's re-run
+  states it was checked against doc 04 only, though its list (per attempt-5 fix 5) covers
+  04/06/07/08. `06` §15 and `07` §11 were not re-run at all; their last dated entries verify
+  against "05 §2.1 items 1 and 3," a state doc 05 no longer has.
+- Layer 1: pass. Layer 2: FAIL, narrowly — the Thesis's enforcement chain is mechanically sound in
+  04/05, but the frozen set would describe that chain's scope inconsistently across 05 vs 06/07/08,
+  inside the one PROVISIONAL row (U-12) Danny personally owns.
+- Convergence (attempt 12, uncapped): **SHRINKING.** Attempt 9: concept missing. 10: fail-open.
+  11: namespace split, item 2 unpropagated. 12: concept correct and closed; residue is
+  cross-reference scope in docs the fix never opened, plus un-run consistency checks.
+  **Cross-attempt pattern worth naming: three consecutive fixes each edited exactly the line
+  numbers the prior verdict cited and nothing else. That is what produced 11's F2 and 12's F1.**
+
+Why: What stops this being a PASS is not a loophole in the mechanism; it is that the frozen
+artifact would contain a literal cross-document disagreement about what the rule covers. When
+06/07/08 tell the R1 implementer "items 1 and 3" and 05 says "items 1-3," the implementer picks a
+document. This is FAIL, not HALT — the mechanism is the same either way — but the spec's text is
+what binds. The deeper reason is F2: this set carries its own drift control (dated consistency-check
+paragraphs), and this pass shrank 05 §13's actual check to one document and skipped 06/07 entirely.
+A control that exists but is not run is the tag-mistaken-for-evidence pattern this repo's own
+CLAUDE.md names.
+
+**Verdict: FAIL**
+
+**Fix/Next-step:**
+1. `06:659`, `07:432`, `08:223-225`: "items 1 and 3" → "items 1-3"; session-initiating human
+   `actorId` wording → `controllingPrincipalId` wording, matching `04:419-425`. → @architect (06/07),
+   @planner (08)
+2. `05:816`, `08:239-242`: same-namespace wording as item 1. → @architect (05), @planner (08)
+3. **Sweep, don't spot-fix:** grep all eight docs for `items 1 and 3`, `items 1 or 3`,
+   `session-initiating human` + `actorId`, `session-initiating` + `actorId` in live (non-dated-
+   history) text; fix every hit, not only the ranges above. → @architect
+4. `05` §13 re-run against 06/07/08 as its list requires, not 04 alone; `06` §15 and `07` §11 add
+   dated re-run entries against post-`e6dfe73` docs 04/05. → @architect
+5. Snapshot `e6dfe73` as `attempt-12/`; append this verdict verbatim in a commit separate from the
+   fix commit. → @vane
+6. Re-dispatch Cold Frank after 1-4 land. If attempt 13 finds the identity concept itself reopened,
+   reclassify STATIC and escalate to Danny; if it finds only cross-reference residue again, the fix
+   discipline (edit-the-cited-lines-only) is the defect, not the spec — escalate that instead of
+   looping. → @vane
+Route to: @architect (items 1-4, docs 05/06/07), @planner (items 1-2, doc 08), @vane (items 5-6)
+
+**Resolution (this entry, 2026-09-06):** Item 5 done — `.gate-snapshots/spec/attempt-12/` created
+and committed alongside this entry, in a commit separate from the fix that follows. Items 1-4
+routed to `@architect`/`@planner` with the full grep sweep results as the map, not line-number
+spot-fixes, per Frank's explicit finding that the narrow-dispatch pattern itself is the defect.
+Item 6 follows once 1-4 land.
+
+**Convergence classification: SHRINKING**, spec-content axis. Attempt counter: 12. **Flagged to
+Danny, per this session's own standing instruction to surface a repeating pattern rather than
+silently keep looping:** this is the fourth consecutive FAIL on the `controllingPrincipalId`
+concept (attempts 9-12), though each is narrower than the last and Frank's own analysis says the
+identity mechanism is now substantively closed — the residue is documentation-propagation
+discipline on the orchestrator's part, not a reopened design question.
+
+---
