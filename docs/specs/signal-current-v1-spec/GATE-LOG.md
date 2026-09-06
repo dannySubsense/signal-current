@@ -1165,4 +1165,19 @@ presenting this set to Danny now.
 **Convergence classification: CLOSED, both axes.** Attempt counter: 15, PASS. Two Carried
 Conditions, both cosmetic, both deferred to the freeze commit by design.
 
+**Correction, added 2026-09-06, per Sol's cold independent review (target SHA `981e0d2`):** the
+above entry's "both Carried Conditions... deferred to the freeze commit by design" statement became
+inaccurate the moment Carried Condition 1 was applied in commit `981e0d2`, immediately after this
+attempt-15 entry was written — that commit modifies canonical document
+`docs/specs/08-implementation-roadmap.md`, and per this repo's `docs/development-workflow.md`
+§Judgment Gate Protocol, a binding verdict against one SHA (`f1c4c07`) does not transfer to a later
+SHA containing a fix (`981e0d2`); the fix requires its own re-gate. Applying Carried Condition 1
+without immediately re-gating the resulting SHA was a process error — the current canonical set had
+no exact-SHA binding verdict covering it. Corrected status, as of this note: **Carried Condition 1
+is CLOSED, at `981e0d2`, pending a fresh Cold Frank verdict against the exact current SHA (below).
+Carried Condition 2 (stale Status lines) remains genuinely deferred, unapplied, per its own routing
+("when Danny approves").** Sol also found a minor, now fixed: the fix commit's own "five places"
+count for `≥1` did not reproduce against the resulting blob (six literal occurrences — five
+precondition clauses plus the audit-note occurrence itself); reworded to state both explicitly.
+
 ---

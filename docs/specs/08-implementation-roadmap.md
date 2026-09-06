@@ -511,8 +511,9 @@ cited from prior-art research ("roughly 90 peer venue-adapter repositories," §2
 (vn.py), not an adopted value; §9's grep-derived counts (24 token occurrences / 22 lines) are audit
 measurements verifying a fix pass, not settings. **Correction, added 2026-09-06 per Frank's spec-gate
 attempt-15 Carried Condition 1:** the prior wording ("the only numeric literal present ... is an external
-citation") overstated this by omission — `≥1` (StrategyArtifact-existence preconditions, five places) and
-§9's audit counts are also numeric literals in this document; neither is a settable constant, so the
+citation") overstated this by omission — `≥1` (StrategyArtifact-existence preconditions, five precondition
+clauses, plus this audit-note occurrence) and §9's audit counts are also numeric literals in this document;
+neither is a settable constant, so the
 substantive claim (no constant adopted) stands, but the literal claim did not. Each PROVISIONAL item above
 is a technology/threshold decision the
 Reconciliation Matrix itself flags (U-08/U-09/U-10/U-13) as requiring benchmark or research-design work this
