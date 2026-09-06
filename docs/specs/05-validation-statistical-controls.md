@@ -33,7 +33,7 @@ operating under two accounts, and item 3 (human/agent pair) checked only the rub
 the human is the same person who controls the agent's session. Rewrote items 1 and 3 to require distinct
 `controllingPrincipalId` (document 04 §5.4, added this pass), widened the §2.1 "Flagged open question"
 paragraph and the §14 human-distinctness table row to cover all three items (not item 2 alone), and re-ran
-§13 against the now-further-amended documents 04/06/07/08. @architect, 2026-09-06, per Frank's spec-gate attempt-10 finding — closed the fail-open loophole Cold Frank found: document 04 declared `controllingPrincipalId` optional with no stated absence treatment while this document's §2.1 items 1 and 3 stated an unconditional MUST, so an absent field fell back to bare `actorId` comparison. Added an explicit fail-closed clause to items 1 and 3 (absence is non-distinct, never a fallback), reworded the §2.1 definition sentence so items 1-3 read as the sufficient conditions, deleted the "(ordinarily its own `actorId`)" default language from item 3, extended the §2.1 closing Phase R1 blocking paragraph to name `controllingPrincipalId` resolution, and re-ran §13 against document 04's matching fail-closed fix.
+§13 against the now-further-amended documents 04/06/07/08. @architect, 2026-09-06, per Frank's spec-gate attempt-10 finding — closed the fail-open loophole Cold Frank found: document 04 declared `controllingPrincipalId` optional with no stated absence treatment while this document's §2.1 items 1 and 3 stated an unconditional MUST, so an absent field fell back to bare `actorId` comparison. Added an explicit fail-closed clause to items 1 and 3 (absence is non-distinct, never a fallback), reworded the §2.1 definition sentence so items 1-3 read as the sufficient conditions, deleted the "(ordinarily its own `actorId`)" default language from item 3, extended the §2.1 closing Phase R1 blocking paragraph to name `controllingPrincipalId` resolution, and re-ran §13 against document 04's matching fail-closed fix. @architect, 2026-09-06, per Frank's spec-gate attempt-11 finding — closed two verified gaps: item 2 (agent vs. agent) now carries the same `controllingPrincipalId` requirement and fail-closed absence clause items 1 and 3 already had, matching the §2.1 definition sentence's existing (previously unimplemented) claim that all three items require it; reworded item 3 so the agent side resolves to the session-initiating human's own `controllingPrincipalId`, not that human's `actorId`, matching document 04 §5.4's redefinition in the same pass; re-ran §13 naming this specific item-2/definition-sentence contradiction as what the re-run closes.
 
 **Primary question this document answers:** What evidence is required before promotion, and how is
 self-deception constrained?
@@ -218,25 +218,35 @@ inequality alone, and never satisfied when `controllingPrincipalId` is absent on
    fallback to bare `actorId` comparison. Exactly how `controllingPrincipalId` is resolved for a human
    `actorId` is PROVISIONAL — see item 2's closing note and §14.
 2. Two `AuditActor` entries with `actorType: 'agent'` are distinct **only if** they carry different
-   `orchestrationSessionId`s. An agent rerun of an agent-authored validation **within the same
+   `orchestrationSessionId`s AND also resolve to different `controllingPrincipalId`s (document 04 §5.4)
+   (Frank spec-gate attempt-11 finding: the §2.1 definition sentence above already claimed items 1-3 all
+   require a distinct `controllingPrincipalId`, but this item was never actually amended to check it — this
+   closes that contradiction). An agent rerun of an agent-authored validation **within the same
    orchestration session** as the original — even when driven by a different tool/role name (e.g. a
    "validator" role and a separately-named "reproducer" role both invoked by one orchestrator in one
    session) — shares the same `orchestrationSessionId` and therefore does **NOT** satisfy Matrix row 59,
    regardless of the two role names being lexically different. This closes the "two agent roles, one
    orchestrator, one session = one well" loophole: role-name inequality is not identity
    inequality, and the promotion gate MUST check `orchestrationSessionId`, not role labels, when either
-   actor is `actorType: 'agent'`.
+   actor is `actorType: 'agent'`. **Fail-closed (Frank spec-gate attempt-10, extended to this item per
+   attempt-11):** if either side's `controllingPrincipalId` is absent, this item does NOT pass on
+   `orchestrationSessionId` inequality alone — an absent `controllingPrincipalId` is treated as
+   non-distinct, per document 04 §5.4's absence rule, never as a fallback to bare `orchestrationSessionId`
+   comparison.
 
    **Extended check (Frank spec-gate attempt-4 fix 4):** `orchestrationSessionId` inequality alone is
    necessary but not sufficient. Per document 04 §5.4's session-initiation-authority rule, every
    `orchestrationSessionId` traces back to exactly one session-initiation `AuditLineageEvent` whose `actor`
-   is the human principal who started it. When either `originalAuthor` or `reproducedBy` resolves to an
+   is the human principal who started it, and whose own `controllingPrincipalId` (document 04 §5.4, as
+   redefined per Frank spec-gate attempt-11) is what this item's `controllingPrincipalId` comparison above
+   actually resolves to for the agent side. When either `originalAuthor` or `reproducedBy` resolves to an
    `AuditActor` with `actorType: 'agent'`, the promotion gate MUST also resolve each side's session-initiation
-   event and compare the human `actorId` on each — not merely the `orchestrationSessionId`s themselves. Two
-   distinct `orchestrationSessionId`s initiated by the same human `actorId` do NOT, by themselves, satisfy
-   this item; this is what actually closes the residual "one orchestrator quietly spans two sessions"
-   loophole a fresh-session-per-role pattern would otherwise leave open, since fresh sessions alone no longer
-   suffice.
+   event and compare the human's `controllingPrincipalId` on each — not merely the `orchestrationSessionId`s
+   or the human `actorId`s themselves. Two distinct `orchestrationSessionId`s initiated by humans who share
+   the same `controllingPrincipalId` do NOT, by themselves, satisfy this item; this is what actually closes
+   the residual "one orchestrator quietly spans two sessions," and the further "one natural person holds two
+   session-initiating accounts," loopholes a fresh-session-per-role pattern would otherwise leave open, since
+   fresh sessions alone no longer suffice.
 
    **Flagged open question, not silently resolved (per this pass's explicit instruction):** whether this is
    the right disposition is a genuine judgment call this document does not have standing to settle
@@ -261,9 +271,12 @@ inequality alone, and never satisfied when `controllingPrincipalId` is absent on
    introduce a second, differently-scoped judgment call for items 1 or 3; §14's table row is widened to name
    all three items rather than item 2 alone.
 3. A human actor and an agent actor are distinct only if the human's `controllingPrincipalId`
-   differs from the agent's `controllingPrincipalId` — the `actorId` of the
-   human who holds session-initiation authority for its `orchestrationSessionId` (document 04 §5.4, added
-   per Sol's cold review, target SHA 99d3673). **Fail-closed (Frank spec-gate attempt-10):** if either
+   differs from the agent's `controllingPrincipalId` — which, for the agent side, resolves to the
+   `controllingPrincipalId` (never the `actorId`) of the human who holds session-initiation authority for
+   its `orchestrationSessionId` (document 04 §5.4, added per Sol's cold review, target SHA 99d3673;
+   redefined in one namespace for both `actorType`s per Frank spec-gate attempt-11, closing the gap where
+   resolving the agent side to that human's `actorId` instead let this item pass even when the same
+   natural person controlled both sides). **Fail-closed (Frank spec-gate attempt-10):** if either
    side's `controllingPrincipalId` is absent, this item does NOT pass — an absent `controllingPrincipalId`
    is treated as non-distinct, never as a fallback to bare `actorId`/`actorType` inequality. This is in
    addition to, not a replacement for, the existing
@@ -769,6 +782,26 @@ Phase R1 sub-resolution. Checked against document 04 §5.4/§8/§9 (amended the 
 fail-closed wording and the same recording-component populator statement) — both documents now state
 identically that absence is non-distinct, never a fallback. No new contradiction was found; no HALT
 condition applies.
+
+**Re-run 2026-09-06, per Frank's spec-gate attempt-11 finding:** this pass closes two related, verified
+gaps attempt-11 named. First, document 04 §5.4's `controllingPrincipalId` definition previously resolved
+to a different namespace on each `actorType` branch (a natural-person identity for humans, but the
+session-initiating human's own `actorId` — not that human's `controllingPrincipalId` — for agents), so
+item 3 (human vs. agent) here could pass even when the same natural person controlled both sides; document
+04 §5.4 is amended this pass to resolve both branches to the same kind of value, and item 3 above is
+reworded to match. Second, this document's own §2.1 definition sentence (line ~203) already asserted that
+items 1-3 all require a distinct `controllingPrincipalId` and are never satisfied by `actorId`/
+`orchestrationSessionId` inequality alone, but item 2 (agent vs. agent) was never actually amended to check
+`controllingPrincipalId` — it checked only `orchestrationSessionId` and session-initiating human `actorId`
+inequality, so two agents whose sessions were initiated by one person under two accounts could pass item 2
+despite the definition sentence's claim to cover it. Item 2 above is amended this pass to add the same
+`controllingPrincipalId` requirement and fail-closed absence clause items 1 and 3 already carry, closing
+that contradiction rather than merely asserting it does not exist. Checked against document 04 §5.4's
+matching redefinition (amended the same pass) and document 04 §9's re-run of the same finding — both
+documents now resolve `controllingPrincipalId` in one namespace across `actorType`s, and all three of this
+document's §2.1 items now consume it identically. This is the specific item-2/definition-sentence
+contradiction this pass closes, not a general "no new contradiction was found" restatement. No further
+contradiction was found; no HALT condition applies.
 
 ## 14. PROVISIONAL items and resolution paths
 

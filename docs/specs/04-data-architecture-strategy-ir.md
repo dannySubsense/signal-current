@@ -28,7 +28,7 @@ where an agent was on one side of a comparison; it defined no equivalent hook fo
 under multiple accounts, or for the human who controls both an original run and its own agent-driven
 reproduction. Added `AuditActor.controllingPrincipalId` and the "Controller/natural-person equivalence"
 paragraph (§5.4), widened the U-12 (extended) PROVISIONAL row (§8) to cover controller/natural-person
-resolution alongside the existing actor/session-authenticity sub-item, and re-ran §9's consistency check. @architect, 2026-09-05, per Frank's spec-gate attempt-10 finding — closed the fail-open loophole Cold Frank found in `controllingPrincipalId`: made the field fail-closed (an absent value is treated as non-distinct, never as license to fall back to bare `actorId` comparison), named the recording component as its sole populator (mirroring `orchestrationSessionId`'s existing treatment), deleted the "whenever populated" clause, extended §8's U-12 (extended) row and §5.4's Phase R1 dependency note to cover `controllingPrincipalId` resolution itself, and re-ran §9's consistency check.
+resolution alongside the existing actor/session-authenticity sub-item, and re-ran §9's consistency check. @architect, 2026-09-05, per Frank's spec-gate attempt-10 finding — closed the fail-open loophole Cold Frank found in `controllingPrincipalId`: made the field fail-closed (an absent value is treated as non-distinct, never as license to fall back to bare `actorId` comparison), named the recording component as its sole populator (mirroring `orchestrationSessionId`'s existing treatment), deleted the "whenever populated" clause, extended §8's U-12 (extended) row and §5.4's Phase R1 dependency note to cover `controllingPrincipalId` resolution itself, and re-ran §9's consistency check. @architect, 2026-09-06, per Frank's spec-gate attempt-11 finding — redefined `controllingPrincipalId` in one namespace for both `actorType`s (§5.4): the agent branch now resolves to the session-initiating human's own `controllingPrincipalId`, not that human's `actorId`, closing the gap where the two branches could resolve to different natural-person identities even under one shared identity model; updated remaining "items 1 and 3" cross-references in §5.4 to "items 1-3" now that document 05 §2.1 item 2 also consumes `controllingPrincipalId`, and re-ran §9's consistency check.
 
 **Primary question this document answers:** What are the canonical data, artifact, schema, lineage and
 executable strategy contracts?
@@ -340,13 +340,16 @@ interface AuditActor {
    * produced it. For `actorType: 'human'`, this is the natural-person identity `actorId` resolves to
    * under the identity-provider's account model — which may differ from `actorId` itself if that model
    * permits one person to hold multiple accounts/credentials. For `actorType: 'agent'`, this is the
-   * `actorId` of the human who holds session-initiation authority for `orchestrationSessionId` (per the
-   * session-initiation-authority paragraph below). Populated the same way `actor` itself is populated
-   * (Enforcement point below): by the recording component, resolved from an identity-provider lookup at
-   * the moment it records the event — never caller-supplied, never self-declared. Remains optional only
-   * because the identity-provider lookup this field depends on is not yet chosen (U-12, §8); it is NOT
-   * optional in the sense of "may be omitted from a well-formed event once that lookup exists." Document
-   * 05 §2.1's distinctness test (items 1 and 3) operates on `controllingPrincipalId`, per the
+   * `controllingPrincipalId` (this same field, resolved on the human side) of the human who holds
+   * session-initiation authority for `orchestrationSessionId` (per the session-initiation-authority
+   * paragraph below) — never that human's `actorId`, so both branches resolve to the same kind of
+   * natural-person identity rather than two different namespaces (Frank spec-gate attempt-11 finding).
+   * Populated the same way `actor` itself is populated (Enforcement point below): by the recording
+   * component, resolved from an identity-provider lookup at the moment it records the event — never
+   * caller-supplied, never self-declared. Remains optional only because the identity-provider lookup this
+   * field depends on is not yet chosen (U-12, §8); it is NOT optional in the sense of "may be omitted from
+   * a well-formed event once that lookup exists." Document 05 §2.1's distinctness test (items 1-3) operates
+   * on `controllingPrincipalId`, per the
    * "Controller/natural-person equivalence" paragraph below (added per Sol's cold review, target SHA
    * 99d3673) — and, per that same paragraph, a record with this field absent is treated as fail-closed
    * (non-distinct), never as license to fall back to bare `actorId` comparison.
@@ -412,18 +415,23 @@ session-initiating human. It supplies no equivalent hook for a pure human-vs-hum
 does not prevent one natural person from appearing distinct merely by holding two different human
 `actorId`s (e.g., two accounts or sets of credentials), nor does it check whether the human `actorId`
 recording a reproduction is the same natural person who, as session initiator, controls an agent-authored
-original (or vice versa). To close this, `AuditActor` carries `controllingPrincipalId` (defined above):
-for `actorType: 'human'`, the natural-person identity `actorId` resolves to under the identity-provider's
-account model; for `actorType: 'agent'`, the `actorId` of the human who holds session-initiation authority
-for its `orchestrationSessionId`. Populated the same way `actor` itself is populated (Enforcement point
-above): by the recording component, resolved from an identity-provider lookup, never caller-supplied.
+original (or vice versa). To close this, `AuditActor` carries `controllingPrincipalId` (defined above),
+resolved to the same kind of value — a natural-person identity — on both branches: for `actorType: 'human'`,
+the natural-person identity `actorId` resolves to under the identity-provider's account model; for
+`actorType: 'agent'`, the `controllingPrincipalId` of the human who holds session-initiation authority for
+its `orchestrationSessionId` — never that human's own `actorId` (Frank spec-gate attempt-11 finding: under
+this same one-person/multiple-accounts model, a human's `actorId` and that human's own
+`controllingPrincipalId` differ by construction, so resolving the agent branch to the human's `actorId`
+let the two branches land in different namespaces even when the same natural person controlled both sides).
+Populated the same way `actor` itself is populated (Enforcement point above): by the recording component,
+resolved from an identity-provider lookup, never caller-supplied.
 
 `controllingPrincipalId` remains typed optional only because the identity-provider lookup it depends on is
 not yet chosen (U-12, §8) — not because a well-formed event may omit it once that lookup exists. Document
-05 §2.1's distinctness test (items 1 and 3) operates on `controllingPrincipalId` unconditionally, never
+05 §2.1's distinctness test (items 1-3) operates on `controllingPrincipalId` unconditionally, never
 falling back to bare `actorId`/`orchestrationSessionId` comparison. **A record in which
 `controllingPrincipalId` is absent is treated as fail-closed: the distinctness test MUST NOT pass on that
-record, and the record MUST NOT be read as satisfying items 1 or 3 by virtue of `actorId` or
+record, and the record MUST NOT be read as satisfying items 1-3 by virtue of `actorId` or
 `orchestrationSessionId` inequality alone.** Absence of `controllingPrincipalId` is never license to fall
 back to the pre-Sol-review check this field exists to replace — that is the exact loophole Frank's
 spec-gate attempt-10 named. Exactly how a human `actorId` resolves to `controllingPrincipalId` — one
@@ -540,6 +548,20 @@ treatment §5.4 already gives `orchestrationSessionId`. Checked against the matc
 §8's U-12 (extended) row and the Phase R1 dependency note in §5.4 both now name `controllingPrincipalId`
 resolution as blocking, not merely `actorId`/`orchestrationSessionId` authenticity. No new contradiction was
 found; no HALT condition applies.
+
+**Re-run 2026-09-06, per Frank's spec-gate attempt-11 finding:** the prior pass's `controllingPrincipalId`
+fix defined the field in two different namespaces depending on `actorType` — the human branch resolved to
+a natural-person identity, but the agent branch resolved to the session-initiating human's own `actorId`,
+which differs by construction from that human's own `controllingPrincipalId` under the very
+multiple-accounts-per-person model this field exists to handle. This let document 05 §2.1 item 3 (human vs.
+agent) pass even when the same natural person controlled both sides. This pass redefines
+`controllingPrincipalId` (§5.4, both the field-comment and the "Controller/natural-person equivalence"
+paragraph) once, in one namespace, for both `actorType`s: for agents, it now resolves to the
+session-initiating human's own `controllingPrincipalId`, not that human's `actorId`. This pass also updates
+every remaining "items 1 and 3" cross-reference in §5.4 to "items 1-3," since document 05 §2.1 item 2 is
+separately amended this same pass to consume `controllingPrincipalId` (see document 05 §13's matching
+re-run). Checked against that document 05 fix — both documents now name the same single-namespace
+resolution rule and the same three-item scope. No new contradiction was found; no HALT condition applies.
 
 ## 10. Amendment
 
