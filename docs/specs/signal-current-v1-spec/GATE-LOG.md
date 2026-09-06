@@ -1323,3 +1323,17 @@ Condition 2 (stale Status lines, all eight documents) remains the sole open item
 freeze commit by design.
 
 ---
+
+## Step 9 — Human Approval
+
+**Danny approved the eight-document canonical v1.0 spec set, 2026-09-06.**
+
+Carried Condition 2 (all eight documents' Status lines) closed in the freeze commit `cbd2528` —
+every one of `01-constitution.md` through `08-implementation-roadmap.md` now reads
+`**Status:** LOCKED — v1.0, approved by Danny 2026-09-06`.
+
+This closes the `signal-current-v1-spec` sprint's spec phase. Per `docs/specs/08-implementation-roadmap.md`
+§7 and the Reconciliation Matrix's own Freeze Rule (§9), implementation may now begin. Next:
+`PROGRESS.md` and handoff to `/forge-start`.
+
+---
