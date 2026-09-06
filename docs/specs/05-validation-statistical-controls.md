@@ -33,7 +33,7 @@ operating under two accounts, and item 3 (human/agent pair) checked only the rub
 the human is the same person who controls the agent's session. Rewrote items 1 and 3 to require distinct
 `controllingPrincipalId` (document 04 §5.4, added this pass), widened the §2.1 "Flagged open question"
 paragraph and the §14 human-distinctness table row to cover all three items (not item 2 alone), and re-ran
-§13 against the now-further-amended documents 04/06/07/08.
+§13 against the now-further-amended documents 04/06/07/08. @architect, 2026-09-06, per Frank's spec-gate attempt-10 finding — closed the fail-open loophole Cold Frank found: document 04 declared `controllingPrincipalId` optional with no stated absence treatment while this document's §2.1 items 1 and 3 stated an unconditional MUST, so an absent field fell back to bare `actorId` comparison. Added an explicit fail-closed clause to items 1 and 3 (absence is non-distinct, never a fallback), reworded the §2.1 definition sentence so items 1-3 read as the sufficient conditions, deleted the "(ordinarily its own `actorId`)" default language from item 3, extended the §2.1 closing Phase R1 blocking paragraph to name `controllingPrincipalId` resolution, and re-ran §13 against document 04's matching fail-closed fix.
 
 **Primary question this document answers:** What evidence is required before promotion, and how is
 self-deception constrained?
@@ -199,7 +199,11 @@ checks a result, not *how* the method is applied.
 **Distinct identity, defined precisely:** Matrix row 59 requires
 "someone other than the original author (or authoring agent)." This document fixes that requirement as:
 `reproducedBy` and `originalAuthor` MUST resolve to a different `AuditActor.actorId` (document 04 §5.4) —
-not merely a different string, and not merely a different role label. Concretely:
+not merely a different string, and not merely a different role label. A different `actorId` is necessary
+but not sufficient (Frank spec-gate attempt-10): items 1-3 below state the actual sufficient conditions,
+each of which additionally requires a different `controllingPrincipalId` (document 04 §5.4), resolved and
+compared fail-closed per that document's absence rule — never satisfied by `actorId`/`orchestrationSessionId`
+inequality alone, and never satisfied when `controllingPrincipalId` is absent on either side. Concretely:
 
 1. Two `AuditActor` entries with `actorType: 'human'` and different `actorId`s are distinct only if they
    also resolve to different `controllingPrincipalId`s (document 04 §5.4, added per Sol's cold review,
@@ -208,8 +212,11 @@ not merely a different string, and not merely a different role label. Concretely
    one login and its own reproduction under another — has one `controllingPrincipalId` and therefore does
    **NOT** satisfy Matrix row 59, regardless of the two `actorId`s being lexically different. This closes
    the human-side analog of item 2's "one orchestrator, one session" loophole: account-label inequality is
-   not identity inequality. Exactly how `controllingPrincipalId` is resolved for a human `actorId` is
-   PROVISIONAL — see item 2's closing note and §14.
+   not identity inequality. **Fail-closed (Frank spec-gate attempt-10):** if either side's
+   `controllingPrincipalId` is absent, this item does NOT pass on `actorId` inequality alone — an absent
+   `controllingPrincipalId` is treated as non-distinct, per document 04 §5.4's absence rule, never as a
+   fallback to bare `actorId` comparison. Exactly how `controllingPrincipalId` is resolved for a human
+   `actorId` is PROVISIONAL — see item 2's closing note and §14.
 2. Two `AuditActor` entries with `actorType: 'agent'` are distinct **only if** they carry different
    `orchestrationSessionId`s. An agent rerun of an agent-authored validation **within the same
    orchestration session** as the original — even when driven by a different tool/role name (e.g. a
@@ -254,9 +261,12 @@ not merely a different string, and not merely a different role label. Concretely
    introduce a second, differently-scoped judgment call for items 1 or 3; §14's table row is widened to name
    all three items rather than item 2 alone.
 3. A human actor and an agent actor are distinct only if the human's `controllingPrincipalId`
-   (ordinarily its own `actorId`) differs from the agent's `controllingPrincipalId` — the `actorId` of the
+   differs from the agent's `controllingPrincipalId` — the `actorId` of the
    human who holds session-initiation authority for its `orchestrationSessionId` (document 04 §5.4, added
-   per Sol's cold review, target SHA 99d3673). This is in addition to, not a replacement for, the existing
+   per Sol's cold review, target SHA 99d3673). **Fail-closed (Frank spec-gate attempt-10):** if either
+   side's `controllingPrincipalId` is absent, this item does NOT pass — an absent `controllingPrincipalId`
+   is treated as non-distinct, never as a fallback to bare `actorId`/`actorType` inequality. This is in
+   addition to, not a replacement for, the existing
    rubber-stamp caveat below: a human who is the same natural person who initiated the orchestration session
    driving an agent-authored original (or its reproduction) is not a distinct identity merely because
    `actorType` differs across the two sides — that human controls both. Subject also to items 1-2 still
@@ -290,11 +300,14 @@ included is not a reproduction of "the same test" and MUST NOT be accepted as sa
 
 The exact tolerance for "matched" (exact byte-for-byte event-ledger match vs. some numeric tolerance
 band on derived metrics) is a new PROVISIONAL item — see §14. Mirroring that same treatment
-(Frank spec-gate attempt-5 fix 3): until document 06 §16's widened U-12 item's actor/session-verification
-sub-items (`AuditActor.actorId` authenticity, `orchestrationSessionId` minting/verification) resolve, an
-`IndependentReproductionRecord` cannot satisfy this gate either — the same Phase R1 dependency that blocks
-the match-tolerance item above also blocks this one, since both are load-bearing for the first
-`StrategyArtifact` promotion.
+(Frank spec-gate attempt-5 fix 3, extended per Frank spec-gate attempt-10): until document 06 §16's widened
+U-12 item's actor/session-verification sub-items — `AuditActor.actorId` authenticity,
+`orchestrationSessionId` minting/verification, AND `controllingPrincipalId` resolution (document 04 §5.4) —
+resolve, an `IndependentReproductionRecord` cannot satisfy this gate either — the same Phase R1 dependency
+that blocks the match-tolerance item above also blocks this one, since all three are load-bearing for the
+first `StrategyArtifact` promotion. This matches document 04 §8/§9, document 06 §16, document 07 §12, and
+document 08 §3, all of which now enumerate `controllingPrincipalId` resolution alongside actor/session
+authenticity as a single Phase R1 sub-resolution, not two.
 
 ## 3. Purge and embargo applicability (Matrix row 27)
 
@@ -741,6 +754,21 @@ particular:
   sub-items, checked against document 08 §3's Phase R1 sequencing and found consistent — this is the same
   Phase R1 sequencing document 06 §16, document 04 §8, and document 07 §12 all name identically. No further
   sequencing inconsistency was found in document 08 as a result of this check.
+
+**Re-run 2026-09-06, per Frank's spec-gate attempt-10 finding** — this document's §2.1 (definition sentence,
+items 1-3, and the closing "load-bearing" paragraph) was checked against document 04 §5.4's newly fail-closed
+`controllingPrincipalId` treatment. The gap attempt-10 found: document 04 declared `controllingPrincipalId`
+optional with no stated treatment for absence, while this document's items 1 and 3 stated an unconditional
+MUST — an absent field on either side fell straight back to bare `actorId` comparison, the exact loophole
+Sol's cold review closed by name. This pass adds an explicit fail-closed clause to items 1 and 3 (absence is
+non-distinct, never a fallback), rewords the definition sentence (§2.1) so items 1-3 read as the sufficient
+conditions rather than restating `actorId` inequality as sufficient on its own, deletes the "(ordinarily its
+own `actorId`)" default language from item 3, and extends the closing Phase R1 blocking paragraph to name
+`controllingPrincipalId` resolution alongside `actorId`/`orchestrationSessionId` authenticity as a single
+Phase R1 sub-resolution. Checked against document 04 §5.4/§8/§9 (amended the same pass with matching
+fail-closed wording and the same recording-component populator statement) — both documents now state
+identically that absence is non-distinct, never a fallback. No new contradiction was found; no HALT
+condition applies.
 
 ## 14. PROVISIONAL items and resolution paths
 

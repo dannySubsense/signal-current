@@ -28,7 +28,7 @@ where an agent was on one side of a comparison; it defined no equivalent hook fo
 under multiple accounts, or for the human who controls both an original run and its own agent-driven
 reproduction. Added `AuditActor.controllingPrincipalId` and the "Controller/natural-person equivalence"
 paragraph (§5.4), widened the U-12 (extended) PROVISIONAL row (§8) to cover controller/natural-person
-resolution alongside the existing actor/session-authenticity sub-item, and re-ran §9's consistency check.
+resolution alongside the existing actor/session-authenticity sub-item, and re-ran §9's consistency check. @architect, 2026-09-05, per Frank's spec-gate attempt-10 finding — closed the fail-open loophole Cold Frank found in `controllingPrincipalId`: made the field fail-closed (an absent value is treated as non-distinct, never as license to fall back to bare `actorId` comparison), named the recording component as its sole populator (mirroring `orchestrationSessionId`'s existing treatment), deleted the "whenever populated" clause, extended §8's U-12 (extended) row and §5.4's Phase R1 dependency note to cover `controllingPrincipalId` resolution itself, and re-ran §9's consistency check.
 
 **Primary question this document answers:** What are the canonical data, artifact, schema, lineage and
 executable strategy contracts?
@@ -341,9 +341,15 @@ interface AuditActor {
    * under the identity-provider's account model — which may differ from `actorId` itself if that model
    * permits one person to hold multiple accounts/credentials. For `actorType: 'agent'`, this is the
    * `actorId` of the human who holds session-initiation authority for `orchestrationSessionId` (per the
-   * session-initiation-authority paragraph below). Document 05 §2.1's distinctness test operates on
-   * `controllingPrincipalId`, not on `actorId`/`orchestrationSessionId` alone, per the "Controller/
-   * natural-person equivalence" paragraph below (added per Sol's cold review, target SHA 99d3673).
+   * session-initiation-authority paragraph below). Populated the same way `actor` itself is populated
+   * (Enforcement point below): by the recording component, resolved from an identity-provider lookup at
+   * the moment it records the event — never caller-supplied, never self-declared. Remains optional only
+   * because the identity-provider lookup this field depends on is not yet chosen (U-12, §8); it is NOT
+   * optional in the sense of "may be omitted from a well-formed event once that lookup exists." Document
+   * 05 §2.1's distinctness test (items 1 and 3) operates on `controllingPrincipalId`, per the
+   * "Controller/natural-person equivalence" paragraph below (added per Sol's cold review, target SHA
+   * 99d3673) — and, per that same paragraph, a record with this field absent is treated as fail-closed
+   * (non-distinct), never as license to fall back to bare `actorId` comparison.
    */
   controllingPrincipalId?: string;
 }
@@ -399,25 +405,38 @@ check on paper while remaining one well in fact. Document 07 §3.1 item 3/§3.2 
 agent-permission side and must not be read as permitting one orchestrator to legitimately span several
 sessions.
 
-**Controller/natural-person equivalence (Sol's cold review, target SHA 99d3673):** the session-initiation-
-authority rule above supplies a distinctness hook only where an agent is on one side of a comparison — via
-`orchestrationSessionId` resolving back to its session-initiating human. It supplies no equivalent hook for
-a pure human-vs-human comparison, and by itself does not prevent one natural person from appearing distinct
-merely by holding two different human `actorId`s (e.g., two accounts or sets of credentials), nor does it
-check whether the human `actorId` recording a reproduction is the same natural person who, as session
-initiator, controls an agent-authored original (or vice versa). To close this, `AuditActor` carries an
-optional `controllingPrincipalId` (defined above): for `actorType: 'human'`, the natural-person identity
-`actorId` resolves to under the identity-provider's account model; for `actorType: 'agent'`, the `actorId`
-of the human who holds session-initiation authority for its `orchestrationSessionId`. Document 05 §2.1's
-distinctness test (items 1 and 3) operates on `controllingPrincipalId`, not `actorId`/`orchestrationSessionId`
-alone, whenever `controllingPrincipalId` is populated. Exactly how a human `actorId` resolves to
-`controllingPrincipalId` — one `actorId` per natural person by construction, versus an identity-provider
-lookup that distinguishes shared or delegated accounts from the person actually operating them — is not
-fixed here. **PROVISIONAL — unvalidated; owner Danny.** This is the same identity-provider/account-model
-question §8's widened U-12 item already names for agent-side actor/session authenticity, now further
-widened to cover human-side controller resolution; resolved in Phase R1 alongside U-12's other
-actor/session-verification sub-items (§8), since this equally gates the first `StrategyArtifact` promotion
-(document 05 §2.1).
+**Controller/natural-person equivalence (Sol's cold review, target SHA 99d3673; fail-closed per Frank's
+spec-gate attempt-10):** the session-initiation-authority rule above supplies a distinctness hook only where
+an agent is on one side of a comparison — via `orchestrationSessionId` resolving back to its
+session-initiating human. It supplies no equivalent hook for a pure human-vs-human comparison, and by itself
+does not prevent one natural person from appearing distinct merely by holding two different human
+`actorId`s (e.g., two accounts or sets of credentials), nor does it check whether the human `actorId`
+recording a reproduction is the same natural person who, as session initiator, controls an agent-authored
+original (or vice versa). To close this, `AuditActor` carries `controllingPrincipalId` (defined above):
+for `actorType: 'human'`, the natural-person identity `actorId` resolves to under the identity-provider's
+account model; for `actorType: 'agent'`, the `actorId` of the human who holds session-initiation authority
+for its `orchestrationSessionId`. Populated the same way `actor` itself is populated (Enforcement point
+above): by the recording component, resolved from an identity-provider lookup, never caller-supplied.
+
+`controllingPrincipalId` remains typed optional only because the identity-provider lookup it depends on is
+not yet chosen (U-12, §8) — not because a well-formed event may omit it once that lookup exists. Document
+05 §2.1's distinctness test (items 1 and 3) operates on `controllingPrincipalId` unconditionally, never
+falling back to bare `actorId`/`orchestrationSessionId` comparison. **A record in which
+`controllingPrincipalId` is absent is treated as fail-closed: the distinctness test MUST NOT pass on that
+record, and the record MUST NOT be read as satisfying items 1 or 3 by virtue of `actorId` or
+`orchestrationSessionId` inequality alone.** Absence of `controllingPrincipalId` is never license to fall
+back to the pre-Sol-review check this field exists to replace — that is the exact loophole Frank's
+spec-gate attempt-10 named. Exactly how a human `actorId` resolves to `controllingPrincipalId` — one
+`actorId` per natural person by construction, versus an identity-provider lookup that distinguishes shared
+or delegated accounts from the person actually operating them — is not fixed here. **PROVISIONAL —
+unvalidated; owner Danny.** This is the same identity-provider/account-model question §8's widened U-12
+item already names for agent-side actor/session authenticity, now further widened to cover human-side
+controller resolution; resolved in Phase R1 alongside U-12's other actor/session-verification sub-items
+(§8), since this equally gates the first `StrategyArtifact` promotion (document 05 §2.1). Until U-12
+resolves and the recording component can populate this field on every event, the independent-reproduction
+gate (document 05 §2.1) cannot be satisfied at all — this is the same Phase R1 blocking dependency §14 and
+document 05 §2's closing paragraphs already state for the match-tolerance and actor/session-authenticity
+sub-items, now extended to cover `controllingPrincipalId` resolution itself.
 
 This is the binding target for document 05 §2's `IndependentReproductionRecord.originalAuthor` and
 `reproducedBy` fields, and both are derived by the Validation Service, never supplied by the caller.
@@ -509,6 +528,18 @@ U-12 (extended) row (§8), were checked against document 05 §2.1/§14 (which no
 `controllingPrincipalId` in items 1 and 3), document 06 §16, document 07 §3.1/§12, and document 08 §3's
 Phase R1 sequencing — all amended in the same pass with matching, non-duplicated wording. No new
 contradiction was found; no HALT condition applies.
+
+**Re-run 2026-09-05, per Frank's spec-gate attempt-10 finding:** the prior pass's `controllingPrincipalId`
+fix left the field fail-open — declared optional at §5's field-list with no stated treatment for absence,
+while document 05 §2.1's items 1 and 3 stated an unconditional MUST that this document's "whenever populated"
+clause (former §5.4 wording) silently contradicted. This pass makes §5.4's field and paragraph fail-closed
+(an absent `controllingPrincipalId` is non-distinct, never a fallback to bare `actorId`), deletes the
+"whenever populated" clause, and names the recording component as the field's sole populator — the same
+treatment §5.4 already gives `orchestrationSessionId`. Checked against the matching fixes in document 05
+§§2.1/14 — both documents now state the same fail-closed rule in the same terms, and
+§8's U-12 (extended) row and the Phase R1 dependency note in §5.4 both now name `controllingPrincipalId`
+resolution as blocking, not merely `actorId`/`orchestrationSessionId` authenticity. No new contradiction was
+found; no HALT condition applies.
 
 ## 10. Amendment
 
