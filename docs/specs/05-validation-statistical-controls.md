@@ -33,7 +33,7 @@ operating under two accounts, and item 3 (human/agent pair) checked only the rub
 the human is the same person who controls the agent's session. Rewrote items 1 and 3 to require distinct
 `controllingPrincipalId` (document 04 §5.4, added this pass), widened the §2.1 "Flagged open question"
 paragraph and the §14 human-distinctness table row to cover all three items (not item 2 alone), and re-ran
-§13 against the now-further-amended documents 04/06/07/08. @architect, 2026-09-06, per Frank's spec-gate attempt-10 finding — closed the fail-open loophole Cold Frank found: document 04 declared `controllingPrincipalId` optional with no stated absence treatment while this document's §2.1 items 1 and 3 stated an unconditional MUST, so an absent field fell back to bare `actorId` comparison. Added an explicit fail-closed clause to items 1 and 3 (absence is non-distinct, never a fallback), reworded the §2.1 definition sentence so items 1-3 read as the sufficient conditions, deleted the "(ordinarily its own `actorId`)" default language from item 3, extended the §2.1 closing Phase R1 blocking paragraph to name `controllingPrincipalId` resolution, and re-ran §13 against document 04's matching fail-closed fix. @architect, 2026-09-06, per Frank's spec-gate attempt-11 finding — closed two verified gaps: item 2 (agent vs. agent) now carries the same `controllingPrincipalId` requirement and fail-closed absence clause items 1 and 3 already had, matching the §2.1 definition sentence's existing (previously unimplemented) claim that all three items require it; reworded item 3 so the agent side resolves to the session-initiating human's own `controllingPrincipalId`, not that human's `actorId`, matching document 04 §5.4's redefinition in the same pass; re-ran §13 naming this specific item-2/definition-sentence contradiction as what the re-run closes.
+§13 against the now-further-amended documents 04/06/07/08. @architect, 2026-09-06, per Frank's spec-gate attempt-10 finding — closed the fail-open loophole Cold Frank found: document 04 declared `controllingPrincipalId` optional with no stated absence treatment while this document's §2.1 items 1 and 3 stated an unconditional MUST, so an absent field fell back to bare `actorId` comparison. Added an explicit fail-closed clause to items 1 and 3 (absence is non-distinct, never a fallback), reworded the §2.1 definition sentence so items 1-3 read as the sufficient conditions, deleted the "(ordinarily its own `actorId`)" default language from item 3, extended the §2.1 closing Phase R1 blocking paragraph to name `controllingPrincipalId` resolution, and re-ran §13 against document 04's matching fail-closed fix. @architect, 2026-09-06, per Frank's spec-gate attempt-11 finding — closed two verified gaps: item 2 (agent vs. agent) now carries the same `controllingPrincipalId` requirement and fail-closed absence clause items 1 and 3 already had, matching the §2.1 definition sentence's existing (previously unimplemented) claim that all three items require it; reworded item 3 so the agent side resolves to the session-initiating human's own `controllingPrincipalId`, not that human's `actorId`, matching document 04 §5.4's redefinition in the same pass; re-ran §13 naming this specific item-2/definition-sentence contradiction as what the re-run closes. @architect, 2026-09-06, per Frank's spec-gate attempt-13 finding — the §2.1 "Flagged open question" paragraph (attempt-4/5-era text predating the whole controllingPrincipalId fix sequence) still named `AuditActor.actorId` as what the interim distinct-identity default and its open judgment call depend on; read §2.1 and document 04 §5.4 in full end to end (not a keyword sweep against prior verdicts) and corrected every live sentence found to name `controllingPrincipalId` instead, re-ran §13, and identified document 08's remaining occurrences for `@planner` to fix under the same full-read instruction.
 
 **Primary question this document answers:** What evidence is required before promotion, and how is
 self-deception constrained?
@@ -254,14 +254,15 @@ inequality alone, and never satisfied when `controllingPrincipalId` is absent on
    configuration — e.g., two different individual validators who each independently drive a reproduction
    under one team's shared human-operated service account, which is a real distinct-identity case at the
    level Matrix row 59 actually cares about ("someone other than the original author"), even though both
-   sessions trace to the same `actorId`. This document does not pick between "same human `actorId`
-   disqualifies" and "same `actorId` is fine if the underlying operator is provably different" — that choice
-   depends on how `AuditActor.actorId` for humans is actually assigned (one `actorId` per natural person vs.
-   per shared account), which is exactly the identity-provider/token-mechanism question document 06 §16's
-   widened U-12 item (cross-referenced from document 04 §8 and document 07 §12) already defers. Until U-12
-   resolves, this document adopts the stricter reading above (same human `actorId` never satisfies
-   distinctness when either side is an agent) as the safer default, and flags it to Danny as requiring
-   confirmation once U-12's identity model is chosen — not as a settled design decision; see §14.
+   sessions trace to the same `controllingPrincipalId`. This document does not pick between "same human
+   `controllingPrincipalId` disqualifies" and "same `controllingPrincipalId` is fine if the underlying
+   operator is provably different" — that choice depends on how `controllingPrincipalId` for humans is
+   actually resolved (one `controllingPrincipalId` per natural person vs. per shared account), which is
+   exactly the identity-provider/token-mechanism question document 06 §16's widened U-12 item (cross-
+   referenced from document 04 §8 and document 07 §12) already defers. Until U-12 resolves, this document
+   adopts the stricter reading above (same human `controllingPrincipalId` never satisfies distinctness when
+   either side is an agent) as the safer default, and flags it to Danny as requiring confirmation once U-12's
+   identity model is chosen — not as a settled design decision; see §14.
 
    **Widened, not a new question (Sol's cold review, target SHA 99d3673):** the same open judgment call
    applies identically to item 1's pure human-vs-human comparison and item 3's human/agent-controller
@@ -815,6 +816,28 @@ document's own §2.1 close and §14 row to match document 04 §5.4's single-name
 document 06 §16/§14, document 07 §3.1/§15/§12 are corrected in the same pass with matching wording (see those
 documents' own re-run entries). Document 08 is `@planner`'s document and is reported separately, not edited
 here. No new contradiction was found; no HALT condition applies.
+
+**Re-run 2026-09-06, per Frank's spec-gate attempt-13 finding** — this document's §2.1 "Flagged open
+question" paragraph (lines ~251-265) still described the interim distinct-identity default in terms of
+`AuditActor.actorId` equality/inequality, when the actual rule (established across attempts 10-11 and
+confirmed correct by attempt 12) resolves distinctness via `controllingPrincipalId` instead. That paragraph
+predates the whole fix sequence (attempt-4/5-era text) and had never been touched by any of the three prior
+keyword sweeps, each of which searched only for the exact stale phrase the prior verdict had named and so
+never found older stale wording using a different, earlier vocabulary. Per Frank's explicit instruction, this
+pass read §2.1 (lines ~196-320) and document 04 §5.4 (lines ~338-437) in full, end to end, rather than
+grepping for named phrases, and corrected every live sentence in the "Flagged open question" paragraph that
+named `actorId` as the thing being compared or the thing the open question depends on: the false-positive
+example ("even though both sessions trace to the same `actorId`" → `controllingPrincipalId`), the "does not
+pick between..." framing (both options reworded to name `controllingPrincipalId`, not `actorId`), the claim
+that the dependency is "how `AuditActor.actorId` for humans is actually assigned" (corrected to "how
+`controllingPrincipalId` for humans is actually resolved"), and the closing stricter-reading parenthetical
+("same human `actorId` never satisfies distinctness" → "same human `controllingPrincipalId` never satisfies
+distinctness"). No other live sentence naming `actorId` (or `orchestrationSessionId`) as the thing determining
+distinctness was found on this full read of §2.1 or document 04 §5.4 — items 1-3, the §14 table row, and the
+attempt-10/11/12 re-run narration already used `controllingPrincipalId` correctly. Re-checked against document
+04 §5.4 (unchanged this pass), document 06 §16, and document 07 §11/§12 (both re-run below); document 08's
+remaining occurrences are reported separately for `@planner` to read and fix in full, per the same
+full-read instruction, rather than being patched here by line number. No HALT condition applies.
 
 ## 14. PROVISIONAL items and resolution paths
 

@@ -432,6 +432,14 @@ contradicting or silently re-deciding any of their fixed clauses. In particular:
   `controllingPrincipalId`, matching document 04 §5.4 and document 05 §2.1/§14 as amended in this same pass.
   No new contradiction was found; no HALT condition applies.
 
+- **Re-run 2026-09-06, per Frank's spec-gate attempt-13 finding:** document 05 §2.1's "Flagged open question"
+  paragraph was found to still name `AuditActor.actorId` (attempt-4/5-era text predating the
+  `controllingPrincipalId` fix sequence) as what the interim distinct-identity default and its open judgment
+  call depend on, and was corrected to name `controllingPrincipalId` throughout. This document's own §12
+  U-12 row already named `controllingPrincipalId` correctly (corrected in the attempt-12 re-run above) and
+  required no further change. Checked against document 05's corrected §2.1/§14 in full; no new contradiction
+  was found; no HALT condition applies.
+
 No HALT condition applies.
 
 ## 12. PROVISIONAL items and resolution paths
