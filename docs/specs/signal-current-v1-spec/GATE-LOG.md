@@ -985,3 +985,64 @@ identity mechanism is now substantively closed — the residue is documentation-
 discipline on the orchestrator's part, not a reopened design question.
 
 ---
+
+### Attempt 13 — Cold Frank — 2026-09-06 — FAIL (STATIC on fix-discipline axis — escalated, not re-looped)
+
+**Dispatch note:** repo + SHA `3a3e6a7` only, seventh consecutive genuinely Cold dispatch.
+
+**Verdict (verbatim from Frank's report):**
+
+Findings:
+- Pre-checks: all pass. Attempt-12 fix items 1-5 verified landed correctly across 05/06/07/08.
+- The identity mechanism remains closed: 04 §5.4, 05 §2.1's definition sentence and items 1-3, and
+  all four U-12 rows agree on one namespace, fail-closed absence, three-item scope.
+- **F1 (blocking, one paragraph) — `05` §2.1 item 2's "Flagged open question" paragraph (lines
+  252-263) still states the interim default and its dependency in the pre-Sol-review `actorId`
+  namespace** — "same human `actorId` never satisfies distinctness," and "depends on how
+  `AuditActor.actorId` for humans is actually assigned." The paragraph immediately below it (264-
+  272), §14's row, and doc 04 §5.4 all state the same interim default in `controllingPrincipalId`
+  terms. These two statements literally disagree about the shared-service-account case the
+  paragraph itself names as its motivating example — inside the one PROVISIONAL row Danny owns.
+- Layer 1: pass. Layer 2: FAIL, narrowly, same reason as attempts 10-12.
+- Convergence: **SHRINKING on the spec-content axis** (concept not reopened; one paragraph left).
+  **STATIC on the fix-discipline axis** — attempts 11, 12, and 13 each fixed exactly the pattern
+  set the prior verdict enumerated and nothing outside it. This paragraph predates attempt 10 (it
+  is attempt-4/5-era text); no grep for the newer stale phrasing could ever have found it.
+
+Why: This was never in any prior fix list because a grep for the *newer* stale phrases cannot find
+*older* stale phrasing that never used those words. Three consecutive fixes, three grep-scoped
+sweeps, three residues each just outside the enumerated patterns — Frank's own words: "a sweep that
+consists of running the reviewer's grep list is the reviewer's checklist handed over as a route —
+it caps the fixer's ceiling at mine." This is FAIL, not HALT: the mechanism is sound, the design is
+not reopened.
+
+**Verdict: FAIL**
+
+**Fix/Next-step:**
+1. `05` §2.1 item 2's "Flagged open question" paragraph (252-263): restate the false-positive
+   example, the "does not pick between..." sentence, the assignment-dependency clause, and the
+   stricter-reading parenthetical, all in `controllingPrincipalId` terms, matching the paragraph
+   immediately below it. → @architect
+2. **Fix discipline, not a grep:** before touching line 252, read `05` §2.1 (196-320) and `04` §5.4
+   (338-437) in full, end to end, and list every live sentence naming `actorId` as the thing being
+   compared or the thing the open question depends on. Fix every one found. No pattern strings
+   from any prior verdict are to be used as the sweep definition. → @architect
+3. `05` §13, `06` §15, `07` §11, `08` §9: dated re-run entries after item 1 lands. → @architect
+   (05/06/07), @planner (08)
+4. Snapshot `3a3e6a7` as `attempt-13/`; append this verdict verbatim, separate commit. → @vane
+5. **Escalate to Danny, per attempt-12 item 6's own stated trigger:** the fix-discipline pattern is
+   now confirmed STATIC across attempts 11-13. Surface as a decision for him, not a note: either he
+   accepts item 2's read-the-section discipline as the binding fix method for attempt 14, or he
+   calls the loop himself. Re-dispatch Cold Frank only after items 1-3 land. → @vane
+Route to: @architect (items 1-3, docs 05/06/07), @planner (item 3, doc 08), @vane (items 4-5)
+
+**Resolution (this entry, 2026-09-06):** Item 4 done — `.gate-snapshots/spec/attempt-13/` created
+and committed alongside this entry. **Item 5: this entry is the escalation.** Per this session's own
+standing instruction to surface a repeating pattern to Danny rather than silently keep looping —
+and per Frank's own explicit routing above — items 1-3 are NOT dispatched pending Danny's direct
+call on the fix method. This is a deliberate stop, not a delay.
+
+**Convergence classification: SHRINKING (spec-content), STATIC (fix-discipline).** Attempt counter:
+13. Escalated to Danny in the orchestrator's own chat, this same turn.
+
+---
