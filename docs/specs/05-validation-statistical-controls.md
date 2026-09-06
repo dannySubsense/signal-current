@@ -268,7 +268,7 @@ inequality alone, and never satisfied when `controllingPrincipalId` is absent on
    comparison, not only to this item's agent-vs-agent case — all three items now resolve `controllingPrincipalId`
    the same way, and all three inherit the same interim stricter reading (a shared `controllingPrincipalId`
    never satisfies distinctness) pending the same U-12 identity-model resolution. This document does not
-   introduce a second, differently-scoped judgment call for items 1 or 3; §14's table row is widened to name
+   introduce a second, differently-scoped judgment call for items 1-3; §14's table row is widened to name
    all three items rather than item 2 alone.
 3. A human actor and an agent actor are distinct only if the human's `controllingPrincipalId`
    differs from the agent's `controllingPrincipalId` — which, for the agent side, resolves to the
@@ -803,6 +803,19 @@ document's §2.1 items now consume it identically. This is the specific item-2/d
 contradiction this pass closes, not a general "no new contradiction was found" restatement. No further
 contradiction was found; no HALT condition applies.
 
+**Re-run 2026-09-06, per Frank's spec-gate attempt-12 finding** — this document's §2.1 (items 1-3, the
+"items 1 or 3" wording at the close of the widened-scope note, and the §14 human/controller-distinctness
+row) was checked against post-`e6dfe73` documents 04 (§5.4/§8/§9), 06 (§16), 07 (§3.1/§12/§15), and 08 (§3).
+The gap attempt-12 found: three sibling documents (06, 07, 08) still cross-referenced this document's rule
+using pre-attempt-11 "items 1 and 3"/"items 1 or 3" wording (implying item 2 was excluded), and two live
+occurrences (this document's own §14 row and document 08's roadmap text) still described the agent side of
+the comparison as resolving to a session-initiating human's own `actorId` rather than that human's
+`controllingPrincipalId`, contradicting document 04 §5.4's attempt-11 redefinition. This pass corrects this
+document's own §2.1 close and §14 row to match document 04 §5.4's single-namespace, three-item scope, and
+document 06 §16/§14, document 07 §3.1/§15/§12 are corrected in the same pass with matching wording (see those
+documents' own re-run entries). Document 08 is `@planner`'s document and is reported separately, not edited
+here. No new contradiction was found; no HALT condition applies.
+
 ## 14. PROVISIONAL items and resolution paths
 
 | Item | Tag | Owner | Concrete resolution condition |
@@ -813,7 +826,7 @@ contradiction was found; no HALT condition applies.
 | Adverse-cost-stress magnitude/percentage (§8) | PROVISIONAL — unvalidated | Danny | Resolved in the same execution-semantics ADR Data Architecture §8 already names for U-02c's cost-model default values — not a separate, second-guessed number |
 | Robustness-family (§9) applicability-by-candidate-type rules and pass/fail thresholds per family | PROVISIONAL — unvalidated | Danny | Resolved alongside U-04, since family applicability depends on the same asset/timeframe/event-structure context U-04's research design must characterize |
 | **Independent-reproduction match tolerance** (§2.1) — whether `IndependentReproductionRecord.matched` requires exact event-ledger match or some numeric tolerance band on derived metrics, and if the latter, the tolerance value itself | PROVISIONAL — unvalidated | Danny | Resolved alongside U-01's schema design session (Roadmap §3 Phase R1), since the exact reproduction bar depends on the same content-addressing/hashing mechanism (Data Architecture §2.4/§5, U-01c) that determines what "same content-addressed inputs" precisely means |
-| **Human/controller-distinctness judgment call** (§2.1 items 1-3, widened from item 2 alone per Sol's cold review, target SHA 99d3673) — whether the same human `AuditActor.actorId`, or the same natural person behind two different human `actorId`s, or the same natural person behind a human `actorId` and an agent's session-initiating `actorId`, can ever count as a distinct identity (e.g., two individuals sharing one team service account), or never counts as distinct once `controllingPrincipalId` (document 04 §5.4) resolves to the same person | PROVISIONAL — unvalidated | Danny | Interim disposition already implemented in §2.1 items 1-3: the stricter reading (same `controllingPrincipalId` never satisfies distinctness, whether both sides are human, both are agents, or one is human and one is an agent). Resolved once document 06 §16's widened U-12 item's identity model (per-person vs. per-shared-account `actorId`/`controllingPrincipalId` assignment) is chosen — the same Phase R1 sub-resolution the match-tolerance item above depends on. |
+| **Human/controller-distinctness judgment call** (§2.1 items 1-3, widened from item 2 alone per Sol's cold review, target SHA 99d3673) — whether the same human `AuditActor.actorId`, or the same natural person behind two different human `actorId`s, or the same natural person behind a human `actorId` and the `controllingPrincipalId` of the human who holds session-initiation authority for an agent's `orchestrationSessionId`, can ever count as a distinct identity (e.g., two individuals sharing one team service account), or never counts as distinct once `controllingPrincipalId` (document 04 §5.4) resolves to the same person | PROVISIONAL — unvalidated | Danny | Interim disposition already implemented in §2.1 items 1-3: the stricter reading (same `controllingPrincipalId` never satisfies distinctness, whether both sides are human, both are agents, or one is human and one is an agent). Resolved once document 06 §16's widened U-12 item's identity model (per-person vs. per-shared-account `actorId`/`controllingPrincipalId` assignment) is chosen — the same Phase R1 sub-resolution the match-tolerance item above depends on. |
 
 No numeric constant (p-value, DSR cutoff, minimum sample size, CPCV fold count, cost-stress percentage,
 purge-window/embargo-period length, independent-reproduction match tolerance) is introduced anywhere in
